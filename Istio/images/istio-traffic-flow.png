@@ -1,0 +1,12 @@
+# This is a placeholder for the istio-traffic-flow.png image
+# The actual image should show:
+# - Title: "Istio: Traffic Flow"
+# - User icon (person at laptop) on left with "Request" arrow to "Istio Gateway"
+# - "Istio Gateway" (blue rectangle) with white arrow to "Webserver" Pod
+# - "Istiod Control Plane" at top right with Istio and Kubernetes logos
+# - Three Pods at bottom: "Webserver", "Payment", "Database"
+# - Each Pod contains: Envoy proxy (blue) and Service (grey)
+# - White arrows showing inter-service communication between Envoy proxies
+# - Black oval: "Gather metrics data and send to Control Plane" with arrow to Istiod
+# - Black lines with upward arrows from Envoy proxies to Istiod Control Plane
+# - Blue squares at connection points to Control Plane 

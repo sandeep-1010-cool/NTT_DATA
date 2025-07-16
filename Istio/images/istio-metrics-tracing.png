@@ -1,0 +1,12 @@
+# This is a placeholder for the istio-metrics-tracing.png image
+# The actual image should show:
+# - Title: "Metrics and Tracing"
+# - Istio features on left: "configuration", "service discovery", "certificate management", "gather telemetry data" with checkmarks
+# - Istiod control plane with Istio logo and three blue modules: "Pilot", "Citadel", "Galley"
+# - Three Pods at bottom, each with Envoy proxy (blue) and Service (grey)
+# - Teal arrows labeled "Metrics" from Istiod components to Envoy proxies
+# - Pink hexagonal icons on connection points
+# - Vertical double-headed arrow in rightmost Pod between proxy and service
+# - Arrows from Pilot to first and second Pod proxies
+# - Arrows from Citadel to all three Pod proxies
+# - Arrow from Galley to third Pod proxy 

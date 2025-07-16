@@ -1,0 +1,12 @@
+# This is a placeholder for the istio-service-discovery.png image
+# The actual image should show:
+# - Title: "Dynamic Service discovery"
+# - Istio features on left: "configuration", "service discovery" with checkmarks
+# - Text: "Internal Registry for Services & their endpoints"
+# - Text: "new microservice gets registered automatically" with thumbs-up icon
+# - Istiod control plane with Istio logo and three blue modules: "Pilot", "Citadel", "Galley"
+# - Three Pods at bottom, each with Envoy proxy (blue) and Service (grey)
+# - Black lines from Istiod components to Envoy proxies
+# - Pink hexagonal icons on Envoy proxies
+# - Green double-arrow in rightmost Pod between proxy and service
+# - Footer: "Features: Service Discovery, Security, Metrics & Tracing" 

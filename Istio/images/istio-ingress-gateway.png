@@ -1,0 +1,14 @@
+# This is a placeholder for the istio-ingress-gateway.png image
+# The actual image should show:
+# - Title: "Istio Ingress Gateway"
+# - Text: "entrypoint to your cluster"
+# - Text: "Gateway directs traffic to MS using VirtualService"
+# - Kubernetes cluster boundary with Kubernetes logo
+# - "Cluster Request" on left with white arrow to "Ingress Gateway"
+# - "Ingress Gateway" (blue rectangle) connected to "Virtual Service" (small white box)
+# - Istiod control plane with Istio logo and three blue modules: "Pilot", "Citadel", "Galley"
+# - Three Pods at bottom, each with Envoy proxy (blue) and Service (grey)
+# - Black lines from Istiod to Envoy proxies
+# - Pink hexagonal icons on Envoy proxies
+# - Green arrows labeled "Mesh traffic" connecting Envoy proxies
+# - Traffic arrows and green icons in Pods 

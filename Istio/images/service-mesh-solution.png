@@ -1,0 +1,8 @@
+# This is a placeholder for the service-mesh-solution.png image
+# The actual image should show:
+# - Control Plane at the top (teal rectangle)
+# - Three arrows pointing down to three Pods
+# - Each Pod contains a Proxy (top) and Service (bottom)
+# - Double-headed arrows connecting the Proxy components
+# - "network layer" label in upper right
+# - Light blue-gray background 

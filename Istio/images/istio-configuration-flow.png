@@ -1,0 +1,10 @@
+# This is a placeholder for the istio-configuration-flow.png image
+# The actual image should show:
+# - CRD concepts on left side with "CRD's" label
+# - Four functionalities: "traffic routing", "which services can communicate?", "traffic split", "retry rules"
+# - Three YAML document icons in middle top
+# - Black arrows pointing down from YAML documents to Istiod
+# - Istiod component with Istio logo and three blue modules: "Pilot", "Citadel", "Galley"
+# - Black arrows from Istiod to three Pods at bottom
+# - Each Pod contains: Envoy proxy (blue) and Service (grey)
+# - Green horizontal arrows labeled "Mesh traffic" connecting Envoy proxies 

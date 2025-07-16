@@ -1,0 +1,12 @@
+# This is a placeholder for the istio-security-certificates.png image
+# The actual image should show:
+# - Title: "Security - Certificate Management"
+# - Istio features on left: "configuration", "service discovery", "certificate management" with checkmarks
+# - Text: "secure TLS communication between microservices"
+# - Istiod control plane with Istio logo and three blue modules: "Pilot", "Citadel", "Galley"
+# - Three Pods at bottom, each with Envoy proxy (blue) and Service (grey)
+# - Black lines from Istiod components to Envoy proxies
+# - Pink hexagonal icons on Envoy proxies
+# - Horizontal double-headed light blue arrows labeled "mTLS" between Envoy proxies
+# - Vertical double-headed light blue arrows within Pods between proxy and service
+# - Footer: "features: Service Discovery, Security, Metrics & Tracing" 

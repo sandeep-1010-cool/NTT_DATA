@@ -1,0 +1,11 @@
+# This is a placeholder for the traffic-splitting-canary.png image
+# The actual image should show:
+# - Title: "Core feature: Traffic Splitting" and "Canary Deployment"
+# - Webserver Service on the right (blue rectangle)
+# - Payment Service on top left (teal rectangle) with payment icon
+# - Three service instances below: two "Version 2.0" and one "Version 3.0"
+# - Arrows from Webserver Service to service instances
+# - "90%" label near arrows to Version 2.0 instances
+# - "10%" label near arrow to Version 3.0 instance
+# - Thumbs-up icon and benefit text: "release new versions without worrying about breaking the application"
+# - Lightbulb icon on the right 
