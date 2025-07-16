@@ -11,19 +11,37 @@
 ## 📚 **Visual Learning Resources**
 
 ### **GitOps Overview Images:**
-- **GitOps Workflow**: https://www.weave.works/wp-content/uploads/2019/08/gitops-workflow.png
-- **GitOps Principles**: https://www.gitops.tech/images/gitops-principles.png
-- **GitOps vs Traditional CD**: https://argoproj.github.io/argo-cd/images/gitops-vs-traditional.png
+
+![GitOps Workflow](https://www.weave.works/wp-content/uploads/2019/08/gitops-workflow.png)
+*GitOps Workflow - Source: Weaveworks*
+
+![GitOps Principles](https://www.gitops.tech/images/gitops-principles.png)
+*GitOps Core Principles*
+
+![GitOps vs Traditional CD](https://argoproj.github.io/argo-cd/images/gitops-vs-traditional.png)
+*GitOps vs Traditional Continuous Delivery*
 
 ### **ArgoCD Architecture Images:**
-- **ArgoCD High-Level Architecture**: https://argoproj.github.io/argo-cd/images/architecture.png
-- **ArgoCD Component Diagram**: https://argoproj.github.io/argo-cd/images/argocd-components.png
-- **ArgoCD Application Flow**: https://argoproj.github.io/argo-cd/images/application-flow.png
+
+![ArgoCD Architecture](https://argoproj.github.io/argo-cd/images/architecture.png)
+*ArgoCD High-Level Architecture*
+
+![ArgoCD Components](https://argoproj.github.io/argo-cd/images/argocd-components.png)
+*ArgoCD Core Components*
+
+![ArgoCD Application Flow](https://argoproj.github.io/argo-cd/images/application-flow.png)
+*ArgoCD Application Deployment Flow*
 
 ### **Kubernetes & GitOps Integration:**
-- **GitOps Reconciliation Loop**: https://www.gitops.tech/images/reconciliation-loop.png
-- **Multi-Cluster GitOps**: https://argoproj.github.io/argo-cd/images/multi-cluster.png
-- **GitOps Security Model**: https://www.gitops.tech/images/security-model.png
+
+![GitOps Reconciliation Loop](https://www.gitops.tech/images/reconciliation-loop.png)
+*GitOps Continuous Reconciliation Loop*
+
+![Multi-Cluster GitOps](https://argoproj.github.io/argo-cd/images/multi-cluster.png)
+*Multi-Cluster GitOps Management*
+
+![GitOps Security Model](https://www.gitops.tech/images/security-model.png)
+*GitOps Security Architecture*
 
 ---
 
@@ -74,7 +92,8 @@ Risk: No mechanism to prevent or track unwanted modifications
 6. Changes are automatically deployed to Kubernetes cluster
 ```
 
-**📊 Visual Reference**: https://www.weave.works/wp-content/uploads/2019/08/gitops-workflow.png
+![GitOps Workflow Example](https://www.weave.works/wp-content/uploads/2019/08/gitops-workflow.png)
+*GitOps Workflow - Visual Reference*
 
 #### Example Scenario:
 ```
@@ -85,7 +104,8 @@ Node Configuration Update:
 - Node configuration is automatically updated in cluster
 ```
 
-**🔄 Workflow Diagram**: https://argoproj.github.io/argo-cd/images/gitops-workflow-diagram.png
+![GitOps Workflow Diagram](https://argoproj.github.io/argo-cd/images/gitops-workflow-diagram.png)
+*Detailed GitOps Workflow Process*
 
 ### Step 4: GitOps Principles
 
@@ -128,8 +148,11 @@ Node Configuration Update:
    - Always takes Git as single source of truth
 ```
 
-**🔄 Reconciliation Loop Diagram**: https://www.gitops.tech/images/reconciliation-loop.png
-**📊 Drift Detection Flow**: https://argoproj.github.io/argo-cd/images/drift-detection.png
+![GitOps Reconciliation Loop](https://www.gitops.tech/images/reconciliation-loop.png)
+*Continuous Reconciliation Process*
+
+![Drift Detection Flow](https://argoproj.github.io/argo-cd/images/drift-detection.png)
+*GitOps Drift Detection and Correction*
 
 #### Security Benefits:
 ```
@@ -171,7 +194,8 @@ GitOps Response:
 
 ### Step 7: ArgoCD Architecture Deep Dive
 
-**🏗️ Architecture Overview**: https://argoproj.github.io/argo-cd/images/architecture.png
+![ArgoCD Architecture Overview](https://argoproj.github.io/argo-cd/images/architecture.png)
+*ArgoCD High-Level Architecture*
 
 #### Core Components:
 
@@ -185,7 +209,8 @@ Function:
 Role: Git interface microservice
 ```
 
-**📊 Component Diagram**: https://argoproj.github.io/argo-cd/images/argocd-components.png
+![ArgoCD Component Diagram](https://argoproj.github.io/argo-cd/images/argocd-components.png)
+*ArgoCD Core Components and Interactions*
 
 **Component 2: Application Controller**
 ```
@@ -242,7 +267,8 @@ Git Repository ←→ Repo Server ←→ Application Controller ←→ Kubernete
                               Redis Cache
 ```
 
-**🔄 Detailed Flow Diagram**: https://argoproj.github.io/argo-cd/images/application-flow.png
+![ArgoCD Detailed Flow](https://argoproj.github.io/argo-cd/images/application-flow.png)
+*ArgoCD Application Deployment Flow*
 
 #### Detailed Flow Explanation:
 ```
@@ -257,7 +283,8 @@ Git Repository ←→ Repo Server ←→ Application Controller ←→ Kubernete
 5. Redis: Caches state for persistence
 ```
 
-**📊 Data Flow Visualization**: https://argoproj.github.io/argo-cd/images/data-flow.png
+![ArgoCD Data Flow](https://argoproj.github.io/argo-cd/images/data-flow.png)
+*ArgoCD Data Flow Visualization*
 
 ### Step 9: GitOps Tool Architecture Principles
 
@@ -319,7 +346,8 @@ Benefits:
 4. Deploy through GitOps workflow
 ```
 
-**🚀 Deployment Flow**: https://argoproj.github.io/argo-cd/images/deployment-flow.png
+![Deployment Flow](https://argoproj.github.io/argo-cd/images/deployment-flow.png)
+*GitOps Application Deployment Process*
 
 #### Scenario 2: Infrastructure Changes
 ```
@@ -329,7 +357,8 @@ Benefits:
 4. Automatic deployment
 ```
 
-**🏗️ Infrastructure as Code**: https://www.gitops.tech/images/infrastructure-as-code.png
+![Infrastructure as Code](https://www.gitops.tech/images/infrastructure-as-code.png)
+*GitOps Infrastructure Management*
 
 #### Scenario 3: Existing Applications
 ```
@@ -337,7 +366,8 @@ Question: Will GitOps delete existing apps not in Git?
 Answer: Depends on configuration - can be selective
 ```
 
-**⚙️ Configuration Options**: https://argoproj.github.io/argo-cd/images/configuration-options.png
+![Configuration Options](https://argoproj.github.io/argo-cd/images/configuration-options.png)
+*GitOps Configuration Management*
 
 ### Step 12: Advanced GitOps Concepts
 
@@ -361,8 +391,11 @@ GitOps Value:
 - Infrastructure as code at scale
 ```
 
-**🌐 Multi-Cluster Architecture**: https://argoproj.github.io/argo-cd/images/multi-cluster.png
-**📊 Cluster Management**: https://www.gitops.tech/images/cluster-management.png
+![Multi-Cluster Architecture](https://argoproj.github.io/argo-cd/images/multi-cluster.png)
+*GitOps Multi-Cluster Management*
+
+![Cluster Management](https://www.gitops.tech/images/cluster-management.png)
+*Centralized Cluster Management with GitOps*
 
 ---
 
@@ -387,8 +420,11 @@ Recommended Structure:
     └── applications/
 ```
 
-**📁 Repository Layout**: https://www.gitops.tech/images/repository-structure.png
-**🗂️ Best Practices**: https://argoproj.github.io/argo-cd/images/best-practices.png
+![Repository Layout](https://www.gitops.tech/images/repository-structure.png)
+*Recommended GitOps Repository Structure*
+
+![Best Practices](https://argoproj.github.io/argo-cd/images/best-practices.png)
+*GitOps Best Practices and Guidelines*
 
 #### 2. Security Considerations
 ```
@@ -398,8 +434,11 @@ Recommended Structure:
 - Monitor for unauthorized changes
 ```
 
-**🔒 Security Model**: https://www.gitops.tech/images/security-model.png
-**🛡️ RBAC Configuration**: https://argoproj.github.io/argo-cd/images/rbac-configuration.png
+![Security Model](https://www.gitops.tech/images/security-model.png)
+*GitOps Security Architecture*
+
+![RBAC Configuration](https://argoproj.github.io/argo-cd/images/rbac-configuration.png)
+*Role-Based Access Control in GitOps*
 
 #### 3. Monitoring and Observability
 ```
@@ -409,8 +448,11 @@ Recommended Structure:
 - Log all reconciliation activities
 ```
 
-**📊 Monitoring Dashboard**: https://argoproj.github.io/argo-cd/images/monitoring-dashboard.png
-**🔔 Alerting Configuration**: https://www.gitops.tech/images/alerting-configuration.png
+![Monitoring Dashboard](https://argoproj.github.io/argo-cd/images/monitoring-dashboard.png)
+*GitOps Monitoring and Observability*
+
+![Alerting Configuration](https://www.gitops.tech/images/alerting-configuration.png)
+*GitOps Alerting and Notification Setup*
 
 ### Step 14: GitOps vs Traditional Deployment Comparison
 
@@ -436,8 +478,11 @@ Benefits:
 ✅ Auto-healing capabilities
 ```
 
-**📊 Comparison Chart**: https://argoproj.github.io/argo-cd/images/gitops-vs-traditional.png
-**🔄 Workflow Comparison**: https://www.gitops.tech/images/workflow-comparison.png
+![GitOps vs Traditional](https://argoproj.github.io/argo-cd/images/gitops-vs-traditional.png)
+*GitOps vs Traditional Deployment Comparison*
+
+![Workflow Comparison](https://www.gitops.tech/images/workflow-comparison.png)
+*GitOps vs Traditional Workflow Comparison*
 
 ### Step 15: Key Takeaways
 
@@ -476,10 +521,18 @@ Benefits:
 - **Flux CD**: fluxcd.io/
 
 ### **📚 Additional Visual Resources:**
-- **GitOps Cheat Sheet**: https://www.gitops.tech/images/gitops-cheat-sheet.png
-- **ArgoCD UI Screenshots**: https://argoproj.github.io/argo-cd/images/ui-screenshots.png
-- **GitOps Maturity Model**: https://www.gitops.tech/images/maturity-model.png
-- **Implementation Roadmap**: https://argoproj.github.io/argo-cd/images/implementation-roadmap.png
+
+![GitOps Cheat Sheet](https://www.gitops.tech/images/gitops-cheat-sheet.png)
+*Quick Reference GitOps Cheat Sheet*
+
+![ArgoCD UI Screenshots](https://argoproj.github.io/argo-cd/images/ui-screenshots.png)
+*ArgoCD User Interface Examples*
+
+![GitOps Maturity Model](https://www.gitops.tech/images/maturity-model.png)
+*GitOps Implementation Maturity Model*
+
+![Implementation Roadmap](https://argoproj.github.io/argo-cd/images/implementation-roadmap.png)
+*GitOps Implementation Roadmap*
 
 ### Key Concepts Summary:
 1. **GitOps Definition**: Git as single source of truth for application and infrastructure delivery
