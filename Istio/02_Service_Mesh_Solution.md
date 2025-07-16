@@ -12,6 +12,10 @@
 - Developers can focus on actual business logic
 - No need to add sidecar configuration to microservice deployment YAML files
 
+![Service Mesh with Sidecar Pattern](images/service-mesh-solution.png)
+
+*This diagram shows the service mesh solution using the sidecar pattern. The Control Plane manages the entire service mesh, while each Pod contains a Proxy (sidecar) alongside the Service. The proxies communicate with each other, handling all the non-business logic that was previously duplicated in each microservice.*
+
 ![Sidecar Pattern](https://istio.io/latest/docs/ops/deployment/architecture/arch.svg)
 
 *Source: [Istio Architecture](https://istio.io/latest/docs/ops/deployment/architecture/)*
@@ -53,6 +57,10 @@ One of the most important features of service mesh is **traffic split configurat
 
 **Result:** Canary deployment pattern for safe rollouts
 
+![Traffic Splitting - Canary Deployment](images/traffic-splitting-canary.png)
+
+*This diagram illustrates traffic splitting for canary deployment. The Webserver Service routes 90% of traffic to Payment Service Version 2.0 and 10% to Version 3.0, allowing safe testing of new versions without breaking the application.*
+
 ![Canary Deployment](https://istio.io/latest/docs/tasks/traffic-management/traffic-shifting/overview.svg)
 
 *Source: [Istio Traffic Shifting](https://istio.io/latest/docs/tasks/traffic-management/traffic-shifting/)*
@@ -88,6 +96,10 @@ One of the most important features of service mesh is **traffic split configurat
 **Istio Architecture = Control Plane + Data Plane**
 - **Control Plane:** Istiod component
 - **Data Plane:** Group of all Envoy proxies
+
+![Istio Architecture](images/istio-architecture.png)
+
+*This diagram shows the complete Istio architecture with Control Plane (Istiod with Pilot, Citadel, Galley) managing the Data Plane (Envoy proxies in each Pod). The Control Plane configures the proxies, which then handle "Mesh traffic" between services.*
 
 ![Istio Architecture](https://istio.io/latest/docs/ops/deployment/architecture/arch.svg)
 

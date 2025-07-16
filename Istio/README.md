@@ -15,24 +15,47 @@ These notes are based on the YouTube video: **"Istio & Service Mesh - simply exp
    - What is Service Mesh?
    - Why do we need it?
    - Microservices challenges
+   - Visual diagrams showing challenges and solutions
 
 2. **[Service Mesh Solution](02_Service_Mesh_Solution.md)**
    - How service mesh solves challenges
    - Sidecar pattern
    - Traffic split feature
    - Istio implementation
+   - Canary deployment illustrations
 
 3. **[Istio Configuration](03_Istio_Configuration.md)**
    - CRDs and configuration
    - Control plane features
    - Ingress Gateway
    - Complete traffic flow
+   - Configuration flow diagrams
 
 4. **[Summary and Key Concepts](04_Summary_and_Key_Concepts.md)**
    - Complete summary
    - Key benefits
    - Important notes
    - Practical takeaways
+
+### 🖼️ Visual Resources
+
+- **[Images Directory](images/)** - Contains all diagrams and visual aids
+- **[Images Documentation](images/README.md)** - Detailed descriptions of each diagram
+
+## Visual Learning Aids
+
+This documentation includes **12 comprehensive diagrams** that illustrate:
+
+- **Microservices Challenges** - Problems with non-business logic in each service
+- **Service Mesh Solution** - How sidecar pattern solves these challenges
+- **Traffic Splitting** - Canary deployment strategies
+- **Istio Architecture** - Control plane and data plane components
+- **Configuration Flow** - How CRDs are processed and applied
+- **Security & Certificates** - Mutual TLS implementation
+- **Service Discovery** - Dynamic service registration
+- **Metrics & Tracing** - Telemetry data collection
+- **Ingress Gateway** - Entry point configuration
+- **Complete Traffic Flow** - End-to-end request handling
 
 ## Quick Reference
 
@@ -65,4 +88,4 @@ These notes are based on the YouTube video: **"Istio & Service Mesh - simply exp
 
 ---
 
-*These notes follow the exact structure and content of the video transcript, providing a complete reference for understanding Istio and Service Mesh concepts.* 
+*These notes follow the exact structure and content of the video transcript, providing a complete reference for understanding Istio and Service Mesh concepts. The documentation now includes visual diagrams to enhance learning and understanding of complex concepts.* 

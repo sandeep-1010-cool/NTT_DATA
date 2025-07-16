@@ -33,6 +33,15 @@ When moving from **monolith to microservices**, we introduce new challenges that
 
 ## 2. Microservices Challenges
 
+### The Core Problem: Non-Business Logic Burden
+
+![Challenges of Microservice Architecture](images/microservices-challenges.png)
+
+*This diagram illustrates the challenges of microservice architecture, showing how each microservice is burdened with non-business logic components like security, communication, retry logic, metrics, and tracing. This leads to:*
+- *These NON business logic must be added to **each application***
+- *Developers don't work on actual service/application logic*
+- *Adds complexity to the services*
+
 ### Challenge 1: Service Communication Configuration
 **Problem:** How do services know how to talk to each other?
 
