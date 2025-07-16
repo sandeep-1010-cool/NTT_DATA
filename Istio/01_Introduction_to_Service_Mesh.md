@@ -25,9 +25,9 @@ When moving from **monolith to microservices**, we introduce new challenges that
 
 **Deployment:** Kubernetes cluster
 
-![Microservices Architecture](https://www.nginx.com/wp-content/uploads/2018/08/NGINX-Microservices-Architecture-1.png)
+[View a Microservices Architecture Diagram (Wikimedia)](https://commons.wikimedia.org/wiki/File:Microservices.svg)
 
-*Source: [NGINX Microservices Architecture](https://www.nginx.com/blog/building-microservices-using-an-api-gateway/)*
+*Source: Wikimedia Commons*
 
 ---
 
