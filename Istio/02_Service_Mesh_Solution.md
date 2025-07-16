@@ -12,6 +12,10 @@
 - Developers can focus on actual business logic
 - No need to add sidecar configuration to microservice deployment YAML files
 
+![Sidecar Pattern](https://istio.io/latest/docs/ops/deployment/architecture/sidecar.svg)
+
+*Source: [Istio Sidecar Pattern](https://istio.io/latest/docs/ops/deployment/architecture/)*
+
 ### Service Mesh Architecture
 **Components:**
 1. **Control Plane:** Manages the entire service mesh
@@ -49,6 +53,10 @@ One of the most important features of service mesh is **traffic split configurat
 
 **Result:** Canary deployment pattern for safe rollouts
 
+![Canary Deployment](https://istio.io/latest/docs/tasks/traffic-management/traffic-shifting/overview.svg)
+
+*Source: [Istio Traffic Shifting](https://istio.io/latest/docs/tasks/traffic-management/traffic-shifting/)*
+
 ---
 
 ## 5. Istio Implementation
@@ -79,4 +87,8 @@ One of the most important features of service mesh is **traffic split configurat
 ### Architecture Summary
 **Istio Architecture = Control Plane + Data Plane**
 - **Control Plane:** Istiod component
-- **Data Plane:** Group of all Envoy proxies 
+- **Data Plane:** Group of all Envoy proxies
+
+![Istio Architecture](https://istio.io/latest/docs/ops/deployment/architecture/arch.svg)
+
+*Source: [Istio Architecture Overview](https://istio.io/latest/docs/ops/deployment/architecture/)* 

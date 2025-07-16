@@ -9,6 +9,10 @@
 - **Istio** = One implementation of service mesh
 - Solves microservices challenges through **sidecar pattern**
 
+![Service Mesh Pattern](https://istio.io/latest/docs/ops/deployment/architecture/arch.svg)
+
+*Source: [Istio Service Mesh Architecture](https://istio.io/latest/docs/ops/deployment/architecture/)*
+
 #### 2. Microservices Challenges Solved
 - ✅ **Service Communication:** Automatic endpoint discovery
 - ✅ **Security:** Mutual TLS between all services
@@ -25,6 +29,10 @@
 - **Envoy Proxies:** Sidecar containers in each pod
 - Handle all inter-service communication
 
+![Istio Control and Data Plane](https://istio.io/latest/docs/ops/deployment/architecture/arch.svg)
+
+*Source: [Istio Architecture Overview](https://istio.io/latest/docs/ops/deployment/architecture/)*
+
 #### 4. Key Features
 - **Traffic Split:** Canary deployments (90% v2.0, 10% v3.0)
 - **Automatic Injection:** Proxies added to pods automatically
@@ -40,6 +48,10 @@
 4. **Destination Rules** → Load balancing policies
 5. **Mutual TLS** → Secure communication
 6. **Metrics/Tracing** → Automatic collection
+
+![Istio Traffic Management](https://istio.io/latest/docs/tasks/traffic-management/traffic-shifting/overview.svg)
+
+*Source: [Istio Traffic Management](https://istio.io/latest/docs/tasks/traffic-management/traffic-shifting/)*
 
 ---
 

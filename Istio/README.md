@@ -3,6 +3,10 @@
 ## Overview
 These notes are based on the YouTube video: **"Istio & Service Mesh - simply explained in 15 mins"**
 
+![Istio Logo](https://istio.io/latest/img/istio-logo.svg)
+
+*Source: [Istio Official Documentation](https://istio.io/)*
+
 ## Table of Contents
 
 ### 📚 Detailed Notes Sections

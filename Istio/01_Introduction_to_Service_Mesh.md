@@ -6,6 +6,10 @@
 - **Service Mesh** is a popular solution for managing communication between individual microservices in a microservice application
 - It's a dedicated tool designed to solve the challenges of microservices communication
 
+![Service Mesh Overview](https://istio.io/latest/docs/ops/deployment/architecture/arch.svg)
+
+*Source: [Istio Architecture Diagram](https://istio.io/latest/docs/ops/deployment/architecture/)*
+
 ### Why Do We Need Service Mesh?
 
 When moving from **monolith to microservices**, we introduce new challenges that didn't exist with monolithic applications.
@@ -20,6 +24,10 @@ When moving from **monolith to microservices**, we introduce new challenges that
 - Additional services
 
 **Deployment:** Kubernetes cluster
+
+![Microservices Architecture](https://miro.medium.com/max/1400/1*2lJcXq1mYU1B5iM2TjE2TQ.png)
+
+*Source: [Microservices Architecture Example](https://medium.com/@madhukaudantha/microservices-architecture-2e713e9760a1)*
 
 ---
 
@@ -39,6 +47,10 @@ When moving from **monolith to microservices**, we introduce new challenges that
 3. Web server hands over to shopping cart microservice
 4. Shopping cart talks to database to persist data
 
+![Service Communication Challenge](https://www.nginx.com/wp-content/uploads/2018/08/NGINX-Microservices-Architecture-1.png)
+
+*Source: [NGINX Microservices Communication](https://www.nginx.com/blog/building-microservices-using-an-api-gateway/)*
+
 ### Challenge 2: Security
 **Current Security Model:**
 - Firewall rules around Kubernetes cluster
@@ -52,6 +64,10 @@ When moving from **monolith to microservices**, we introduce new challenges that
 - Higher security needed for important applications (online banks, apps with personal data)
 - Additional configuration needed to secure communication between services
 - Each service needs security implementation
+
+![Microservices Security](https://www.nginx.com/wp-content/uploads/2018/08/NGINX-Microservices-Architecture-2.png)
+
+*Source: [NGINX Microservices Security](https://www.nginx.com/blog/building-microservices-inter-process-communication/)*
 
 ### Challenge 3: Retry Logic
 **Requirement:** Each microservice needs retry logic for robustness

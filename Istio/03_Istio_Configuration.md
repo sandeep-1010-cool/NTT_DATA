@@ -32,6 +32,10 @@
 **Purpose:** Configure policies on traffic after it reaches the destination service
 **Function:** Define load balancing strategies for pods behind destination service
 
+![Istio CRDs](https://istio.io/latest/docs/tasks/traffic-management/request-routing/overview.svg)
+
+*Source: [Istio Request Routing](https://istio.io/latest/docs/tasks/traffic-management/request-routing/)*
+
 ### Configuration Flow
 1. **Create CRDs** in Kubernetes
 2. **Istiod** (control plane) reads CRDs
@@ -80,6 +84,10 @@
 **Method:** Configure using Gateway CRD
 **Function:** Accept incoming traffic and direct to microservices using Virtual Service component
 
+![Istio Gateway](https://istio.io/latest/docs/tasks/traffic-management/ingress/ingress-control/overview.svg)
+
+*Source: [Istio Ingress Control](https://istio.io/latest/docs/tasks/traffic-management/ingress/ingress-control/)*
+
 ---
 
 ## 9. Complete Traffic Flow
@@ -112,6 +120,10 @@
 2. **Proxies gather metrics and tracing information** throughout the flow
 3. Data sent back to control plane
 4. **Automatic monitoring** for entire application
+
+![Istio Traffic Flow](https://istio.io/latest/docs/tasks/observability/distributed-tracing/overview.svg)
+
+*Source: [Istio Distributed Tracing](https://istio.io/latest/docs/tasks/observability/distributed-tracing/)*
 
 ### Key Benefits of This Flow
 - **Automatic Security:** Mutual TLS between all services
