@@ -10,6 +10,9 @@
 
 *Source: [Istio Architecture Diagram](https://istio.io/latest/docs/ops/deployment/architecture/)*
 
+<img width="1920" height="1080" alt="Screenshot (2)" src="https://github.com/user-attachments/assets/afb92128-3085-4221-a769-68af0d804a49" />
+
+
 ### Why Do We Need Service Mesh?
 
 When moving from **monolith to microservices**, we introduce new challenges that didn't exist with monolithic applications.
