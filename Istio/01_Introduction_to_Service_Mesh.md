@@ -25,9 +25,9 @@ When moving from **monolith to microservices**, we introduce new challenges that
 
 **Deployment:** Kubernetes cluster
 
-![Microservices Architecture](https://miro.medium.com/max/1400/1*2lJcXq1mYU1B5iM2TjE2TQ.png)
+![Microservices Architecture](https://www.nginx.com/wp-content/uploads/2018/08/NGINX-Microservices-Architecture-1.png)
 
-*Source: [Microservices Architecture Example](https://medium.com/@madhukaudantha/microservices-architecture-2e713e9760a1)*
+*Source: [NGINX Microservices Architecture](https://www.nginx.com/blog/building-microservices-using-an-api-gateway/)*
 
 ---
 
@@ -47,9 +47,9 @@ When moving from **monolith to microservices**, we introduce new challenges that
 3. Web server hands over to shopping cart microservice
 4. Shopping cart talks to database to persist data
 
-![Service Communication Challenge](https://www.nginx.com/wp-content/uploads/2018/08/NGINX-Microservices-Architecture-1.png)
+![Service Communication Challenge](https://istio.io/latest/docs/tasks/traffic-management/request-routing/overview.svg)
 
-*Source: [NGINX Microservices Communication](https://www.nginx.com/blog/building-microservices-using-an-api-gateway/)*
+*Source: [Istio Request Routing](https://istio.io/latest/docs/tasks/traffic-management/request-routing/)*
 
 ### Challenge 2: Security
 **Current Security Model:**
@@ -65,9 +65,9 @@ When moving from **monolith to microservices**, we introduce new challenges that
 - Additional configuration needed to secure communication between services
 - Each service needs security implementation
 
-![Microservices Security](https://www.nginx.com/wp-content/uploads/2018/08/NGINX-Microservices-Architecture-2.png)
+![Microservices Security](https://istio.io/latest/docs/tasks/security/authentication/authn-policy/overview.svg)
 
-*Source: [NGINX Microservices Security](https://www.nginx.com/blog/building-microservices-inter-process-communication/)*
+*Source: [Istio Authentication Policy](https://istio.io/latest/docs/tasks/security/authentication/authn-policy/)*
 
 ### Challenge 3: Retry Logic
 **Requirement:** Each microservice needs retry logic for robustness

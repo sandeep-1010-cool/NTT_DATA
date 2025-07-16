@@ -12,9 +12,9 @@
 - Developers can focus on actual business logic
 - No need to add sidecar configuration to microservice deployment YAML files
 
-![Sidecar Pattern](https://istio.io/latest/docs/ops/deployment/architecture/sidecar.svg)
+![Sidecar Pattern](https://istio.io/latest/docs/ops/deployment/architecture/arch.svg)
 
-*Source: [Istio Sidecar Pattern](https://istio.io/latest/docs/ops/deployment/architecture/)*
+*Source: [Istio Architecture](https://istio.io/latest/docs/ops/deployment/architecture/)*
 
 ### Service Mesh Architecture
 **Components:**
