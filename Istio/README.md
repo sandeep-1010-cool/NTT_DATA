@@ -41,6 +41,7 @@ These notes are based on the YouTube video: **"Istio & Service Mesh - simply exp
 
 - **[Images Directory](images/)** - Contains all diagrams and visual aids
 - **[Images Documentation](images/README.md)** - Detailed descriptions of each diagram
+- **[Istio Service Mesh Introduction Slide](images/istio-service-mesh-intro.png)** - Presentation slide explaining "What is Istio? What is Service Mesh?"
 
 ## Visual Learning Aids
 
