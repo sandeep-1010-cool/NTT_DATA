@@ -1,9 +1,0 @@
-# This is a placeholder for the microservices-challenges.png image
-# The actual image should show:
-# - Four blue rectangular boxes representing Pods with microservices
-# - Each containing "BL SEC COMM R MS" indicating Business Logic, Security, Communication, Retry, Microservice
-# - Three human icons connected to the pods
-# - Challenges listed: "These NON business logic must be added to each application", 
-#   "Developers don't work on actual service/application logic", "adds complexity to the services"
-# - A sad face emoji in the center
-# - Detailed breakdown showing business logic vs non-business logic components 
