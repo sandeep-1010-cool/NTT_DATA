@@ -76,17 +76,7 @@ This repository contains comprehensive GitOps and ArgoCD documentation organized
 
 ## 🖼️ **Visual Learning Resources**
 
-### **GitOps Overview:**
-![GitOps Workflow](https://www.weave.works/wp-content/uploads/2019/08/gitops-workflow.png)
-*GitOps Workflow - Source: Weaveworks*
 
-### **ArgoCD Architecture:**
-![ArgoCD Architecture](https://argoproj.github.io/argo-cd/images/architecture.png)
-*ArgoCD High-Level Architecture*
-
-### **Multi-Cluster Management:**
-![Multi-Cluster GitOps](https://argoproj.github.io/argo-cd/images/multi-cluster.png)
-*Multi-Cluster GitOps Management*
 
 ---
 

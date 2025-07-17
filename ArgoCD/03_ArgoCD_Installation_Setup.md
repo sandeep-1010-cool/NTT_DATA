@@ -28,8 +28,7 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/st
 - Deployments, Services
 - Network Policies
 
-![ArgoCD Installation Components](https://argoproj.github.io/argo-cd/images/installation-components.png)
-*Components Created During ArgoCD Installation*
+
 
 ### Method 2: Helm Chart Installation
 ```bash
@@ -48,8 +47,7 @@ kubectl apply -f https://raw.githubusercontent.com/argoproj-labs/argocd-operator
 kubectl apply -f https://raw.githubusercontent.com/argoproj-labs/argocd-operator/master/deploy/
 ```
 
-![ArgoCD Installation Guide](https://argoproj.github.io/argo-cd/images/installation-guide.png)
-*Step-by-Step Installation Guide*
+
 
 ---
 
@@ -69,8 +67,7 @@ kubectl get pods -n argocd -w
 # - argocd-notifications-controller (Notifications)
 ```
 
-![ArgoCD Components Running](https://argoproj.github.io/argo-cd/images/components-running.png)
-*ArgoCD Components in Kubernetes*
+
 
 ### Verify Services:
 ```bash
@@ -131,8 +128,7 @@ spec:
               number: 443
 ```
 
-![ArgoCD UI Access](https://argoproj.github.io/argo-cd/images/ui-access.png)
-*Accessing ArgoCD User Interface*
+
 
 ---
 
@@ -151,8 +147,7 @@ kubectl -n argocd describe secret argocd-initial-admin-secret
 - **Username**: `admin`
 - **Password**: Generated from secret (see above)
 
-![ArgoCD Login Screen](https://argoproj.github.io/argo-cd/images/login-screen.png)
-*ArgoCD Authentication Interface*
+
 
 ### Configure SSO (Optional):
 ```yaml
@@ -174,8 +169,7 @@ data:
         clientSecret: your-github-client-secret
 ```
 
-![SSO Configuration](https://argoproj.github.io/argo-cd/images/sso-configuration.png)
-*Single Sign-On Configuration*
+
 
 ---
 
@@ -206,8 +200,7 @@ argocd login localhost:8080
 argocd login argocd.example.com
 ```
 
-![ArgoCD CLI Reference](https://argoproj.github.io/argo-cd/images/cli-reference.png)
-*Complete CLI Command Reference*
+
 
 ### Essential CLI Commands:
 ```bash
@@ -271,8 +264,7 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 # Ensure ports 443/8080 are accessible
 ```
 
-![Troubleshooting Dashboard](https://argoproj.github.io/argo-cd/images/troubleshooting.png)
-*ArgoCD Troubleshooting Interface*
+
 
 ---
 
@@ -331,8 +323,7 @@ spec:
       maxUnavailable: 1
 ```
 
-![Configuration Best Practices](https://argoproj.github.io/argo-cd/images/best-practices.png)
-*ArgoCD Configuration Best Practices*
+
 
 ---
 

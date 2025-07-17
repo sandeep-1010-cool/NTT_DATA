@@ -48,8 +48,7 @@ argocd app create guestbook \
   --dest-server https://kubernetes.default.svc
 ```
 
-![Application Creation](https://argoproj.github.io/argo-cd/images/app-creation.png)
-*Creating ArgoCD Application*
+
 
 ### Application YAML Example:
 ```yaml
@@ -179,8 +178,7 @@ patches:
     name: guestbook
 ```
 
-![Different Manifest Formats](https://argoproj.github.io/argo-cd/images/manifest-formats.png)
-*ArgoCD Supports Multiple Manifest Formats*
+
 
 ---
 
@@ -252,8 +250,7 @@ argocd repo rm <repo-url>
 argocd repo get <repo-url>
 ```
 
-![ArgoCD CLI Interface](https://argoproj.github.io/argo-cd/images/cli-interface.png)
-*ArgoCD Command Line Interface*
+
 
 ---
 
@@ -327,8 +324,7 @@ spec:
     - guestbook
 ```
 
-![Advanced Configuration](https://argoproj.github.io/argo-cd/images/advanced-config.png)
-*Advanced ArgoCD Configuration Options*
+
 
 ---
 
@@ -376,11 +372,7 @@ argocd cluster list
 argocd cluster get cluster-1
 ```
 
-![Multi-Cluster Architecture](https://argoproj.github.io/argo-cd/images/multi-cluster.png)
-*GitOps Multi-Cluster Management*
 
-![Cluster Management](https://www.gitops.tech/images/cluster-management.png)
-*Centralized Cluster Management with GitOps*
 
 ---
 
@@ -451,9 +443,6 @@ argocd cluster get <cluster-name>
 argocd repo list
 ```
 
-![Troubleshooting Dashboard](https://argoproj.github.io/argo-cd/images/troubleshooting.png)
-*ArgoCD Troubleshooting Interface*
-
 ---
 
 ## Best Practices
@@ -475,31 +464,6 @@ Recommended Structure:
     └── applications/
 ```
 
-![Repository Layout](https://www.gitops.tech/images/repository-structure.png)
-*Recommended GitOps Repository Structure*
-
-### 2. Security Considerations
-```
-- Use RBAC for GitOps controller
-- Implement proper authentication
-- Regular security audits
-- Monitor for unauthorized changes
-```
-
-![Security Model](https://www.gitops.tech/images/security-model.png)
-*GitOps Security Architecture*
-
-### 3. Monitoring and Observability
-```
-- Monitor GitOps controller health
-- Track deployment status
-- Alert on drift detection
-- Log all reconciliation activities
-```
-
-![Monitoring Dashboard](https://argoproj.github.io/argo-cd/images/monitoring-dashboard.png)
-*GitOps Monitoring and Observability*
-
 ---
 
 ## Resources and References
@@ -510,8 +474,6 @@ Recommended Structure:
 - **ArgoCD Best Practices**: argoproj.github.io/argo-cd/user-guide/best_practices/
 
 ### **🔧 Hands-on Practice Resources:**
-![ArgoCD Example Apps](https://github.com/argoproj/argocd-example-apps/raw/main/images/example-apps.png)
-*ArgoCD Example Applications Repository*
 
 ### Key Learning Path:
 1. **Start with Simple Apps**: Use guestbook example

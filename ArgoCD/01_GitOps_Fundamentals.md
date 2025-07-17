@@ -29,9 +29,6 @@
 6. Changes are automatically deployed to Kubernetes cluster
 ```
 
-![GitOps Workflow](https://www.weave.works/wp-content/uploads/2019/08/gitops-workflow.png)
-*GitOps Workflow - Source: Weaveworks*
-
 ### Example Scenario:
 ```
 Node Configuration Update:
@@ -40,9 +37,6 @@ Node Configuration Update:
 - ArgoCD picks up the change
 - Node configuration is automatically updated in cluster
 ```
-
-![GitOps Workflow Diagram](https://argoproj.github.io/argo-cd/images/gitops-workflow-diagram.png)
-*Detailed GitOps Workflow Process*
 
 ---
 
@@ -97,8 +91,7 @@ Risk: No mechanism to prevent or track unwanted modifications
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-![GitOps vs Traditional](https://argoproj.github.io/argo-cd/images/gitops-vs-traditional.png)
-*GitOps vs Traditional Deployment Comparison*
+
 
 ---
 
@@ -142,8 +135,7 @@ Risk: No mechanism to prevent or track unwanted modifications
 📊 Status reported back to GitOps UI
 ```
 
-![GitOps Principles](https://www.gitops.tech/images/gitops-principles.png)
-*GitOps Core Principles*
+
 
 ---
 
@@ -171,8 +163,7 @@ Benefits:
 ✅ Auto-healing capabilities
 ```
 
-![Workflow Comparison](https://www.gitops.tech/images/workflow-comparison.png)
-*GitOps vs Traditional Workflow Comparison*
+
 
 ---
 
@@ -231,9 +222,6 @@ Benefits:
    - Always takes Git as single source of truth
 ```
 
-![GitOps Reconciliation Loop](https://www.gitops.tech/images/reconciliation-loop.png)
-*Continuous Reconciliation Process*
-
 ### Security Benefits:
 ```
 Scenario: Hacker modifies cluster directly
@@ -244,19 +232,9 @@ GitOps Response:
 - No panic needed - GitOps handles it
 ```
 
-![Drift Detection Flow](https://argoproj.github.io/argo-cd/images/drift-detection.png)
-*GitOps Drift Detection and Correction*
-
 ---
 
 ## Visual Learning Resources
-
-### **GitOps Overview Images:**
-![GitOps Workflow](https://www.weave.works/wp-content/uploads/2019/08/gitops-workflow.png)
-*GitOps Workflow - Source: Weaveworks*
-
-![GitOps vs Traditional CD](https://argoproj.github.io/argo-cd/images/gitops-vs-traditional.png)
-*GitOps vs Traditional Continuous Delivery*
 
 ### **Additional Resources:**
 - **GitOps Cheat Sheet**: https://www.gitops.tech/images/gitops-cheat-sheet.png

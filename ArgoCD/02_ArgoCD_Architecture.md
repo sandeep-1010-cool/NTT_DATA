@@ -34,8 +34,7 @@
 - **Limitation**: Not primarily designed for GitOps
 - **Use Case**: Can do GitOps but not optimal
 
-![GitOps Tools Comparison](https://argoproj.github.io/argo-cd/images/tools-comparison.png)
-*Popular GitOps Tools Comparison*
+
 
 ---
 
@@ -52,8 +51,7 @@ Git Repository ←→ Repo Server ←→ Application Controller ←→ Kubernete
                               Redis Cache
 ```
 
-![ArgoCD Architecture Overview](https://argoproj.github.io/argo-cd/images/architecture.png)
-*ArgoCD High-Level Architecture*
+
 
 ### Detailed Flow Explanation:
 ```
@@ -68,8 +66,7 @@ Git Repository ←→ Repo Server ←→ Application Controller ←→ Kubernete
 5. Redis: Caches state for persistence
 ```
 
-![ArgoCD Detailed Flow](https://argoproj.github.io/argo-cd/images/application-flow.png)
-*ArgoCD Application Deployment Flow*
+
 
 ---
 
@@ -128,8 +125,7 @@ Function:
 Role: Caching microservice
 ```
 
-![ArgoCD Component Diagram](https://argoproj.github.io/argo-cd/images/argocd-components.png)
-*ArgoCD Core Components and Interactions*
+
 
 ---
 
@@ -147,8 +143,7 @@ Role: Caching microservice
 5. Redis caches state for persistence
 ```
 
-![ArgoCD Data Flow](https://argoproj.github.io/argo-cd/images/data-flow.png)
-*ArgoCD Data Flow Visualization*
+
 
 ### Component Communication:
 - **API Server ↔ Dex**: Authentication requests
@@ -178,32 +173,13 @@ Benefits:
 - Standard pattern across GitOps tools
 ```
 
-![Universal GitOps Architecture](https://www.gitops.tech/images/universal-architecture.png)
-*Universal GitOps Tool Architecture Pattern*
+
 
 ---
 
 ## Visual Learning Resources
 
-### **ArgoCD Architecture Images:**
-![ArgoCD Architecture](https://argoproj.github.io/argo-cd/images/architecture.png)
-*ArgoCD High-Level Architecture*
 
-![ArgoCD Components](https://argoproj.github.io/argo-cd/images/argocd-components.png)
-*ArgoCD Core Components*
-
-![ArgoCD Application Flow](https://argoproj.github.io/argo-cd/images/application-flow.png)
-*ArgoCD Application Deployment Flow*
-
-### **Kubernetes & GitOps Integration:**
-![GitOps Reconciliation Loop](https://www.gitops.tech/images/reconciliation-loop.png)
-*GitOps Continuous Reconciliation Loop*
-
-![Multi-Cluster GitOps](https://argoproj.github.io/argo-cd/images/multi-cluster.png)
-*Multi-Cluster GitOps Management*
-
-![GitOps Security Model](https://www.gitops.tech/images/security-model.png)
-*GitOps Security Architecture*
 
 ---
 
