@@ -93,9 +93,35 @@ kubectl top pods -n argocd
 # Purpose: Check cluster events for failure clues
 kubectl get events -n argocd --sort-by='.lastTimestamp'
 # Expected: Shows recent events that might explain the failures
+
+# Purpose: Check if CRDs are missing (common cause of "resource not found" errors)
+kubectl get crds | grep argoproj
+# Expected: Should show applications.argoproj.io, appprojects.argoproj.io, etc.
+# If empty, CRDs are missing and need to be installed
+```
 ```
 
 **Note**: CRDs must be installed separately if not already present in the cluster.
+
+#### 🔧 **Fix Missing CRDs (if troubleshooting shows "resource not found" errors):**
+
+```bash
+# Purpose: Install ArgoCD CRDs that are required for operation
+kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds.yaml
+# Expected: Multiple CRDs created (applications.argoproj.io, appprojects.argoproj.io, etc.)
+
+# Purpose: Restart ArgoCD deployments to pick up the new CRDs
+kubectl rollout restart deployment -n argocd
+# Expected: All ArgoCD deployments restart and become healthy
+
+# Purpose: Verify CRDs are now available
+kubectl get crds | grep argoproj
+# Expected: Shows applications.argoproj.io, appprojects.argoproj.io, etc.
+
+# Purpose: Verify ArgoCD pods are now healthy
+kubectl get pods -n argocd
+# Expected: All pods should be in Running state with 1/1 Ready
+```
 
 
 ---
@@ -347,6 +373,11 @@ kubectl logs -n argocd argo-cd-argocd-application-controller-0
 # Issue: ApplicationSet controller CrashLoopBackOff
 # Solution: Check ApplicationSet controller logs
 kubectl logs -n argocd argo-cd-argocd-applicationset-controller-6b45d7ddb8-nbxbt
+
+# Issue: "resource not found" errors (applications.argoproj.io, appprojects.argoproj.io)
+# Solution: Check if CRDs are installed
+kubectl get crds | grep argoproj
+# Expected: Should show ArgoCD CRDs, if empty run: kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds.yaml
 ```
 ```
 
