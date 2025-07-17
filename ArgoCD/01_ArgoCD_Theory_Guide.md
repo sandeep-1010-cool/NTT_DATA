@@ -31,6 +31,13 @@ By the end of this guide, you will understand:
 3. **Automated**: Changes automatically applied
 4. **Auditable**: Complete change history
 
+#### **Declarative vs Imperative Deployment:**
+
+**Declarative (GitOps)**: Describe the desired state, let the system figure out how to achieve it
+**Imperative (Traditional)**: Provide step-by-step commands to execute
+
+GitOps declarative model provides better consistency, reproducibility, and auditability compared to imperative scripts.
+
 #### **GitOps vs Traditional Deployment:**
 
 | Aspect | Traditional | GitOps |
