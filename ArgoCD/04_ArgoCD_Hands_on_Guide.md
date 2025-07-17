@@ -18,7 +18,7 @@ This guide provides a structured, time-bound, hands-on lab to learn and practice
 
 #### ✅ Killercoda Lab
 
-* Visit: [https://killercoda.com](https://killercoda.com)
+* Visit: [https://killercoda.com](https://killercoda.com/neo-lab/course/scenarios/argocd-killercoda)
 * Search for "ArgoCD" or "Kubernetes"
 * Launch Kubernetes + ArgoCD scenario
 * **Note**: Killercoda environments are pre-configured with Kubernetes and often have ArgoCD pre-installed
