@@ -138,7 +138,12 @@ kubectl get pods -n argocd
 
 ```bash
 # Purpose: Create secure tunnel to access ArgoCD web UI
-kubectl port-forward svc/argocd-server -n argocd 8080:443
+# First, check the correct service name
+kubectl get svc -n argocd
+# Expected: Shows all ArgoCD services with their names
+
+# Purpose: Port forward using the correct service name (usually argo-cd-argocd-server)
+kubectl port-forward svc/argo-cd-argocd-server -n argocd 8080:443
 # Expected: Forwarding from 127.0.0.1:8080 -> 443:8080
 
 # Purpose: Retrieve admin password for ArgoCD login
@@ -354,8 +359,10 @@ kubectl delete all -l app=guestbook -n default
 
 ```bash
 # Issue: Port forward fails
-# Solution: Check if ArgoCD server is running
+# Solution: Check if ArgoCD server is running and get correct service name
 kubectl get pods -n argocd | grep argocd-server
+kubectl get svc -n argocd
+# Expected: Shows service names like argo-cd-argocd-server
 
 # Issue: Login fails
 # Solution: Verify password and server URL
