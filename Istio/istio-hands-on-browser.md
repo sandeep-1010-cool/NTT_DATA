@@ -14,19 +14,53 @@ Learn & practice Istio **step-by-step** on a **free browser-based platform**, wi
 
 ---
 
-### 🧪 Best Free Platform: [Katacoda (Istio Scenario)](https://www.katacoda.com/solo-io/scenarios/istio-workshop)
+### 🧪 Best Free Platforms (Katacoda Alternative):
 
-> ✅ **No install needed** — runs in browser  
-> ✅ **Pre-configured cluster** with Istio + sample apps  
-> ✅ **CLI & editor in browser**
+#### Option 1: **Play with Kubernetes (PWK)**
+> ✅ **Free browser-based Kubernetes**  
+> ✅ **Pre-installed Istio**  
+> ✅ **Terminal access**  
+> 🔗 [https://labs.play-with-k8s.com/](https://labs.play-with-k8s.com/)
+
+#### Option 2: **Killercoda**
+> ✅ **Free Istio scenarios**  
+> ✅ **Pre-configured environments**  
+> ✅ **Step-by-step tutorials**  
+> 🔗 [https://killercoda.com/istio](https://killercoda.com/istio)
+
+#### Option 3: **Google Cloud Shell**
+> ✅ **Free tier available**  
+> ✅ **Pre-installed kubectl & istioctl**  
+> ✅ **Integrated terminal**  
+> 🔗 [https://shell.cloud.google.com/](https://shell.cloud.google.com/)
+
+#### Option 4: **GitHub Codespaces**
+> ✅ **Free tier available**  
+> ✅ **Full development environment**  
+> ✅ **Pre-configured with Docker & kubectl**  
+> 🔗 [https://github.com/features/codespaces](https://github.com/features/codespaces)
 
 ---
 
 ### 🚀 Quick Start Steps:
 
-## Step 1: Launch Istio Lab in Browser
-👉 Open this link: https://www.katacoda.com/solo-io/scenarios/istio-workshop  
-✅ It will launch a browser-based terminal with Kubernetes & Istio installed.
+## Step 1: Choose Your Platform
+
+### Option A: Play with Kubernetes (Recommended)
+👉 Open: https://labs.play-with-k8s.com/  
+✅ Click "Start" → "Add New Instance" → Install Istio
+
+### Option B: Killercoda
+👉 Open: https://killercoda.com/istio  
+✅ Choose an Istio scenario and click "Start Scenario"
+
+### Option C: Google Cloud Shell
+👉 Open: https://shell.cloud.google.com/  
+✅ Run: `gcloud container clusters create istio-demo --zone=us-central1-a`
+
+### Option D: GitHub Codespaces
+👉 Create a new repository with Istio manifests  
+✅ Use GitHub Codespaces for full development environment
 
 ---
 
@@ -171,7 +205,10 @@ kubectl get virtualservice,destinationrule,gateway -n default
 * [Istio Official Documentation](https://istio.io/latest/docs/)
 * [Istio Examples](https://istio.io/latest/docs/examples/)
 * [Istio GitHub Repository](https://github.com/istio/istio)
-* [Katacoda Istio Scenarios](https://www.katacoda.com/solo-io/scenarios)
+* [Play with Kubernetes](https://labs.play-with-k8s.com/)
+* [Killercoda Istio Scenarios](https://killercoda.com/istio)
+* [Google Cloud Shell](https://shell.cloud.google.com/)
+* [GitHub Codespaces](https://github.com/features/codespaces)
 
 ---
 
