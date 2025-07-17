@@ -19,15 +19,25 @@ This guide provides a structured, time-bound, hands-on lab to learn and practice
 #### ✅ Killercoda Lab
 
 * Visit: [https://killercoda.com](https://killercoda.com)
-* Search for "ArgoCD"
+* Search for "ArgoCD" or "Kubernetes"
 * Launch Kubernetes + ArgoCD scenario
+* **Note**: Killercoda environments are pre-configured with Kubernetes and often have ArgoCD pre-installed
+* **Time Limit**: 60 minutes per session
 
 #### 👉 Verify Setup:
 
 ```bash
+# Purpose: Check if Kubernetes cluster is ready and accessible
 kubectl cluster-info
+# Expected: Shows cluster info and API server URL
+
+# Purpose: Verify ArgoCD pods are running properly
 kubectl get pods -n argocd
+# Expected: Shows all ArgoCD components (server, repo-server, controller, etc.) in Running state
+
+# Purpose: Check ArgoCD services for networking setup
 kubectl get svc -n argocd
+# Expected: Shows argocd-server and other services with their cluster IPs
 ```
 
 ---
@@ -35,8 +45,13 @@ kubectl get svc -n argocd
 ### **Phase 2: Access ArgoCD UI (5 min)**
 
 ```bash
+# Purpose: Create secure tunnel to access ArgoCD web UI
 kubectl port-forward svc/argocd-server -n argocd 8080:443
+# Expected: Forwarding from 127.0.0.1:8080 -> 443:8080
+
+# Purpose: Retrieve admin password for ArgoCD login
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+# Expected: Outputs the admin password (e.g., "abc123def456")
 ```
 
 * **URL**: [https://localhost:8080](https://localhost:8080)
@@ -48,9 +63,17 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 ### **Phase 3: CLI Setup & Login (3 min)**
 
 ```bash
+# Purpose: Download ArgoCD CLI binary for Linux
 curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+# Expected: Downloads argocd-linux-amd64 file to current directory
+
+# Purpose: Install CLI with execute permissions to system PATH
 sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
+# Expected: argocd command becomes available system-wide
+
+# Purpose: Authenticate with ArgoCD server using CLI
 argocd login localhost:8080 --username admin --password <password>
+# Expected: Login successful
 ```
 
 ---
@@ -58,15 +81,22 @@ argocd login localhost:8080 --username admin --password <password>
 ### **Phase 4: Deploy First App - Guestbook (CLI) (7 min)**
 
 ```bash
+# Purpose: Create a guestbook application with automated sync policy
 argocd app create guestbook \
   --repo https://github.com/argoproj/argocd-example-apps \
   --path guestbook \
   --dest-namespace default \
   --dest-server https://kubernetes.default.svc \
   --sync-policy automated
+# Expected: Application 'guestbook' created
 
+# Purpose: List all ArgoCD applications to verify creation
 argocd app list
+# Expected: Shows guestbook app with status (Healthy/Synced/OutOfSync)
+
+# Purpose: Get detailed information about the guestbook application
 argocd app get guestbook
+# Expected: Shows detailed app configuration, sync status, and health information
 ```
 
 ---
@@ -223,6 +253,46 @@ kubectl delete all -l app=guestbook -n default
 | Advanced Settings  | 5 min      |
 | Cleanup            | 3 min      |
 | **Total**          | **50 min** |
+
+---
+
+## 🛠️ **Troubleshooting Tips**
+
+### **Common Issues & Solutions:**
+
+```bash
+# Issue: Port forward fails
+# Solution: Check if ArgoCD server is running
+kubectl get pods -n argocd | grep argocd-server
+
+# Issue: Login fails
+# Solution: Verify password and server URL
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+
+# Issue: App sync fails
+# Solution: Check application logs
+argocd app logs guestbook
+
+# Issue: Pods not starting
+# Solution: Check resource constraints
+kubectl describe pods -n default | grep guestbook
+```
+
+### **Quick Verification Commands:**
+
+```bash
+# Verify ArgoCD installation
+kubectl get all -n argocd
+
+# Check application health
+argocd app get guestbook --output yaml
+
+# Test repository connectivity
+argocd repo list
+
+# Verify cluster connectivity
+argocd cluster list
+```
 
 ---
 
