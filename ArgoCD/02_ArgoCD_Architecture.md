@@ -51,7 +51,30 @@ Git Repository ←→ Repo Server ←→ Application Controller ←→ Kubernete
                               Redis Cache
 ```
 
+### 🏗️ Visual Architecture Diagram
 
+```text
+               ┌────────────┐
+               │   Git Repo │
+               └────┬───────┘
+                    │
+           ┌────────▼────────┐
+           │   Repo Server   │
+           └────────┬────────┘
+                    │
+           ┌────────▼────────────┐
+           │ Application Controller│
+           │   (Reconciliation)   │
+           └────────┬────────────┘
+                    │
+            ┌───────▼────────┐
+            │ Kubernetes API │
+            └────────────────┘
+
+       Users ─────→ API Server ←────→ Redis
+                        ↑
+                     Dex (OIDC)
+```
 
 ### Detailed Flow Explanation:
 ```
@@ -71,6 +94,16 @@ Git Repository ←→ Repo Server ←→ Application Controller ←→ Kubernete
 ---
 
 ## Core Components
+
+### 📊 Component Overview Table
+
+| Component          | Purpose                 | Key Function(s)                          | Role                    |
+| ------------------ | ----------------------- | ---------------------------------------- | ----------------------- |
+| **Repo Server**    | Git interface           | Fetches manifests from Git repo          | Git interface microservice |
+| **App Controller** | Reconciliation engine   | Compares Git vs K8s, applies diffs       | Kubernetes interface microservice |
+| **API Server**     | UI/CLI interface        | Serves web, CLI APIs, handles RBAC       | User interaction microservice |
+| **Dex**            | Authentication via OIDC | Integrates with LDAP, Google, etc.       | Authentication microservice |
+| **Redis**          | Caching layer           | Caches app state, helps restart recovery | Caching microservice |
 
 ### Component 1: Repo Server
 ```
@@ -152,6 +185,17 @@ Role: Caching microservice
 - **Application Controller ↔ Kubernetes**: Cluster state management
 - **All Components ↔ Redis**: State caching
 
+### 🔄 Real-World Use Case Example
+
+```yaml
+Scenario: Updating a Deployment YAML
+- Dev updates image version in Git
+- Repo Server fetches new commit
+- App Controller detects drift
+- New Deployment applied to cluster
+- Redis stores updated sync state
+```
+
 ---
 
 ## Universal Architecture Pattern
@@ -161,6 +205,26 @@ Role: Caching microservice
 1. Git Interface (Repo Server equivalent)
 2. Target Platform Interface (Application Controller equivalent)
 3. User Interface (API Server equivalent)
+```
+
+### 🏗️ Universal GitOps Architecture Pattern
+
+```text
+                   ┌──────────────┐
+                   │    Git       │
+                   └─────┬────────┘
+                         │
+         ┌───────────────▼──────────────┐
+         │      Git Interface Layer     │  ← e.g., Repo Server
+         └───────────────┬──────────────┘
+                         │
+         ┌───────────────▼──────────────┐
+         │ Target Platform Interface    │  ← e.g., App Controller
+         └───────────────┬──────────────┘
+                         │
+         ┌───────────────▼──────────────┐
+         │    User Interaction Layer    │  ← e.g., API Server
+         └──────────────────────────────┘
 ```
 
 ### Why This Architecture?
@@ -209,6 +273,86 @@ Benefits:
 - Authentication through Dex
 - RBAC for authorization
 - Secure communication between components
+
+---
+
+## Operational Best Practices
+
+### 🛠️ Day 2 Operations for SREs
+
+#### **1. Security & Access Control**
+```yaml
+# Enable RBAC to limit manual sync actions
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+  namespace: argocd
+data:
+  rbac.defaultPolicy: role:readonly
+  rbac.policy: |
+    g, admin, role:admin
+    g, developer, role:developer
+```
+
+#### **2. Performance Optimization**
+```yaml
+# Scale App Controller if syncing 1000+ apps
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argocd-application-controller
+spec:
+  replicas: 3  # Scale based on app count
+```
+
+#### **3. Monitoring & Observability**
+```bash
+# Monitor sync status and health
+argocd app list --output wide
+argocd app get <app-name> --output yaml
+
+# Check component health
+kubectl get pods -n argocd
+kubectl logs -n argocd deployment/argocd-application-controller
+```
+
+#### **4. Backup & Recovery**
+```yaml
+# Backup Redis for mission-critical state
+# Use persistent volumes for Redis
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: argocd-redis
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 10Gi
+```
+
+#### **5. Webhook Integration**
+```yaml
+# Enable webhooks for real-time Git triggers
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+  namespace: argocd
+data:
+  url: https://argocd.example.com
+  webhook.secret: your-webhook-secret
+```
+
+### 📊 Operational Checklist
+
+- [ ] **Security**: Configure RBAC and authentication
+- [ ] **Performance**: Scale components based on workload
+- [ ] **Monitoring**: Set up health checks and alerts
+- [ ] **Backup**: Configure Redis persistence
+- [ ] **Automation**: Enable webhooks for Git triggers
+- [ ] **Documentation**: Maintain runbooks and procedures
 
 ---
 
