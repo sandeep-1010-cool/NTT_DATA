@@ -149,6 +149,10 @@ kubectl port-forward svc/argo-cd-argocd-server -n argocd 8080:443
 # Purpose: Retrieve admin password for ArgoCD login
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 # Expected: Outputs the admin password (e.g., "abc123def456")
+
+# Purpose: Authenticate with ArgoCD server using CLI
+argocd login localhost:8080 --username admin --password <password>
+# Expected: Login successful
 ```
 
 * **URL**: [https://localhost:8080](https://localhost:8080)
@@ -344,9 +348,17 @@ spec:
 ### **Phase 7: Monitor & Sync (5 min)**
 
 ```bash
+# Purpose: Manually trigger synchronization of the guestbook application
 argocd app sync guestbook
+# Expected: Shows sync progress and result (e.g., "Application 'guestbook' synced successfully")
+
+# Purpose: List all Kubernetes resources managed by the guestbook application
 argocd app resources guestbook
+# Expected: Shows table of resources (deployments, services, etc.) with their sync status
+
+# Purpose: View application deployment logs and sync history
 argocd app logs guestbook
+# Expected: Shows detailed logs of application deployment and sync operations
 ```
 
 ---
@@ -354,9 +366,17 @@ argocd app logs guestbook
 ### **Phase 8: Simulate & Resolve Sync Failure (5 min)**
 
 ```bash
+# Purpose: Simulate a deployment failure by deleting the guestbook deployment
 kubectl delete deployment guestbook -n default
+# Expected: deployment.apps/guestbook deleted
+
+# Purpose: Check application status after the deletion to see drift detection
 argocd app get guestbook
+# Expected: Shows application as "OutOfSync" due to missing deployment
+
+# Purpose: Manually sync to restore the deleted deployment
 argocd app sync guestbook
+# Expected: Recreates the deployment and shows "Application 'guestbook' synced successfully"
 ```
 
 ---
@@ -398,8 +418,13 @@ EOF
 ### **Phase 10: Cleanup (3 min)**
 
 ```bash
+# Purpose: Delete the ArgoCD application and all its managed resources
 argocd app delete guestbook --cascade
+# Expected: Application 'guestbook' deleted
+
+# Purpose: Remove any remaining Kubernetes resources with guestbook label
 kubectl delete all -l app=guestbook -n default
+# Expected: Removes any remaining deployments, services, etc. with app=guestbook label
 ```
 
 ---
@@ -468,17 +493,21 @@ kubectl get crds | grep argoproj
 ### **Quick Verification Commands:**
 
 ```bash
-# Verify ArgoCD installation
+# Purpose: Verify all ArgoCD components are properly installed and running
 kubectl get all -n argocd
+# Expected: Shows all ArgoCD resources (pods, services, deployments) in healthy state
 
-# Check application health
+# Purpose: Get detailed application health and configuration information
 argocd app get guestbook --output yaml
+# Expected: Shows complete YAML configuration with health status and sync state
 
-# Test repository connectivity
+# Purpose: List all Git repositories configured in ArgoCD
 argocd repo list
+# Expected: Shows table of repositories with their connection status
 
-# Verify cluster connectivity
+# Purpose: List all Kubernetes clusters managed by ArgoCD
 argocd cluster list
+# Expected: Shows table of clusters with their health status and connection info
 ```
 
 ---
