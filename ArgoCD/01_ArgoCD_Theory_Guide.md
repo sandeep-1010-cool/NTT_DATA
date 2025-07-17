@@ -1,5 +1,19 @@
 # ArgoCD Theory Guide - Complete Conceptual Foundation
 
+## 📋 **Quick Navigation**
+
+| Phase | Topic | Key Concepts |
+|-------|-------|--------------|
+| **1** | [GitOps Fundamentals](#-phase-1-gitops-fundamentals) | GitOps principles, Declarative vs Imperative, ArgoCD benefits |
+| **2** | [ArgoCD Architecture](#️-phase-2-argocd-architecture) | Components, Sync Lifecycle, Data flow |
+| **3** | [Core Concepts](#-phase-3-core-concepts) | Applications, Projects, Sync Policies |
+| **4** | [Security & RBAC](#-phase-4-security--rbac) | Authentication, RBAC, Access control |
+| **5** | [Advanced Features](#️-phase-5-advanced-features) | ApplicationSets, App of Apps, Health Checks |
+| **6** | [Monitoring & Observability](#-phase-6-monitoring--observability) | Metrics, Logging, Audit Trail |
+| **7** | [Best Practices](#-phase-7-best-practices) | Repository structure, Security, Performance |
+
+---
+
 ## 🎯 **Learning Objectives**
 
 By the end of this guide, you will understand:
