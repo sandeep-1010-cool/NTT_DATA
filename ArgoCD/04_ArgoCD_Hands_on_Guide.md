@@ -71,19 +71,19 @@ kubectl get pods -n argocd
 # Expected: Shows all ArgoCD pods in Running state
 
 # Purpose: Check ArgoCD server logs if pod is in Error/CrashLoopBackOff state
-kubectl logs -n argocd argo-cd-argocd-server-75595c4dcf-kh4pk
+kubectl logs -n argocd $(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o jsonpath='{.items[0].metadata.name}')
 # Expected: Shows error messages explaining why server is failing
 
 # Purpose: Check application controller logs if not ready (0/1 Running)
-kubectl logs -n argocd argo-cd-argocd-application-controller-0
+kubectl logs -n argocd $(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-application-controller -o jsonpath='{.items[0].metadata.name}')
 # Expected: Shows application controller startup logs or errors
 
 # Purpose: Check ApplicationSet controller logs if in CrashLoopBackOff
-kubectl logs -n argocd argo-cd-argocd-applicationset-controller-6b45d7ddb8-49dzx
+kubectl logs -n argocd $(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-applicationset-controller -o jsonpath='{.items[0].metadata.name}')
 # Expected: Shows error messages for ApplicationSet controller crashes
 
 # Purpose: Get detailed information about failing pods
-kubectl describe pod -n argocd argo-cd-argocd-server-75595c4dcf-kh4pk
+kubectl describe pod -n argocd $(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o jsonpath='{.items[0].metadata.name}')
 # Expected: Shows events, resource limits, and failure reasons
 
 # Purpose: Check resource usage to identify constraints
@@ -363,16 +363,16 @@ kubectl describe pods -n default | grep guestbook
 
 # Issue: CrashLoopBackOff in ArgoCD pods
 # Solution: Check pod logs and events
-kubectl logs -n argocd argo-cd-argocd-server-75595c4dcf-9lpfm
-kubectl describe pod -n argocd argo-cd-argocd-server-75595c4dcf-9lpfm
+kubectl logs -n argocd $(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o jsonpath='{.items[0].metadata.name}')
+kubectl describe pod -n argocd $(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o jsonpath='{.items[0].metadata.name}')
 
 # Issue: Application controller not ready (0/1 Running)
 # Solution: Check application controller logs
-kubectl logs -n argocd argo-cd-argocd-application-controller-0
+kubectl logs -n argocd $(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-application-controller -o jsonpath='{.items[0].metadata.name}')
 
 # Issue: ApplicationSet controller CrashLoopBackOff
 # Solution: Check ApplicationSet controller logs
-kubectl logs -n argocd argo-cd-argocd-applicationset-controller-6b45d7ddb8-nbxbt
+kubectl logs -n argocd $(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-applicationset-controller -o jsonpath='{.items[0].metadata.name}')
 
 # Issue: "resource not found" errors (applications.argoproj.io, appprojects.argoproj.io)
 # Solution: Check if CRDs are installed
