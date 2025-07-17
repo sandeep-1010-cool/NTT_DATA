@@ -44,11 +44,30 @@ Learn & practice Istio **step-by-step** on a **free browser-based platform**, wi
 
 ### 🚀 Quick Start Steps:
 
-## Step 1: Choose Your Platform
+## Step 1: Launch Play with Kubernetes (PWK)
 
-### Option A: Play with Kubernetes (Recommended)
-👉 Open: https://labs.play-with-k8s.com/  
-✅ Click "Start" → "Add New Instance" → Install Istio
+### 🚀 Getting Started with PWK:
+
+1. **Open PWK**: Go to https://labs.play-with-k8s.com/
+2. **Start Session**: Click the "Start" button
+3. **Add Instance**: Click "Add New Instance" to create a Kubernetes node
+4. **Wait for Ready**: Wait for the instance to show "Ready" status (green dot)
+5. **Access Terminal**: Click on your instance to open the terminal
+
+### 📋 Verify Setup:
+```bash
+# Check Kubernetes is running
+kubectl get nodes
+
+# Check if Istio is pre-installed
+istioctl version
+
+# If Istio is not installed, install it:
+curl -L https://istio.io/downloadIstio | sh -
+cd istio-1.17.0
+export PATH=$PWD/bin:$PATH
+istioctl install --set profile=demo -y
+```
 
 ### Option B: Killercoda
 👉 Open: https://killercoda.com/istio  
@@ -64,13 +83,26 @@ Learn & practice Istio **step-by-step** on a **free browser-based platform**, wi
 
 ---
 
-## Step 2: Deploy Sample App
+## Step 2: Deploy Sample App (PWK Specific)
 
+### 📦 Deploy BookInfo App:
 ```bash
+# Deploy the BookInfo sample application
 kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.17/samples/bookinfo/platform/kube/bookinfo.yaml
+
+# Verify pods are running
+kubectl get pods
+
+# Wait for all pods to be in Running state
+kubectl wait --for=condition=Ready pod --all --timeout=300s
 ```
 
-✅ Deploys the `BookInfo` microservices demo app.
+✅ Deploys the `BookInfo` microservices demo app with 6 services:
+- `productpage` - Frontend
+- `details` - Product details
+- `reviews` - Product reviews
+- `ratings` - Product ratings
+- `reviews-v1`, `reviews-v2`, `reviews-v3` - Different review versions
 
 ---
 
@@ -101,11 +133,28 @@ kubectl get virtualservice
 
 ---
 
-## Step 6: Test App via Ingress
+## Step 6: Test App via Ingress (PWK Specific)
+
+### 🌐 Access the Application:
 
 ```bash
-export GATEWAY_URL=$(kubectl get svc istio-ingressgateway -n istio-system -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-curl http://$GATEWAY_URL/productpage
+# Get the external IP (in PWK, this will be the node IP)
+export GATEWAY_URL=$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[?(@.type=="ExternalIP")].address}')
+
+# If no external IP, use the node IP
+if [ -z "$GATEWAY_URL" ]; then
+  export GATEWAY_URL=$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}')
+fi
+
+# Get the port
+export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
+
+# Test the application
+curl http://$GATEWAY_URL:$INGRESS_PORT/productpage
+
+# Or use port-forward for easier access
+kubectl port-forward -n istio-system service/istio-ingressgateway 8080:80 &
+curl http://localhost:8080/productpage
 ```
 
 ---
