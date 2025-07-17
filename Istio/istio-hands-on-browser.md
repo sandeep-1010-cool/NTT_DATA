@@ -16,17 +16,18 @@ Learn & practice Istio **step-by-step** on a **free browser-based platform**, wi
 
 ### 🧪 Best Free Platforms (Katacoda Alternative):
 
-#### Option 1: **Play with Kubernetes (PWK)**
+#### Option 1: **Killercoda** (Recommended)
+> ✅ **Free Istio scenarios**  
+> ✅ **Pre-configured environments**  
+> ✅ **Step-by-step tutorials**  
+> ✅ **No setup required**  
+> 🔗 [https://killercoda.com/istio](https://killercoda.com/istio)
+
+#### Option 2: **Play with Kubernetes (PWK)**
 > ✅ **Free browser-based Kubernetes**  
 > ✅ **Pre-installed Istio**  
 > ✅ **Terminal access**  
 > 🔗 [https://labs.play-with-k8s.com/](https://labs.play-with-k8s.com/)
-
-#### Option 2: **Killercoda**
-> ✅ **Free Istio scenarios**  
-> ✅ **Pre-configured environments**  
-> ✅ **Step-by-step tutorials**  
-> 🔗 [https://killercoda.com/istio](https://killercoda.com/istio)
 
 #### Option 3: **Google Cloud Shell**
 > ✅ **Free tier available**  
@@ -44,34 +45,31 @@ Learn & practice Istio **step-by-step** on a **free browser-based platform**, wi
 
 ### 🚀 Quick Start Steps:
 
-## Step 1: Launch Play with Kubernetes (PWK)
+## Step 1: Launch Killercoda Istio Environment
 
-### 🚀 Getting Started with PWK:
+### 🚀 Getting Started with Killercoda:
 
-1. **Open PWK**: Go to https://labs.play-with-k8s.com/
-2. **Start Session**: Click the "Start" button
-3. **Add Instance**: Click "Add New Instance" to create a Kubernetes node
-4. **Wait for Ready**: Wait for the instance to show "Ready" status (green dot)
-5. **Access Terminal**: Click on your instance to open the terminal
+1. **Open Killercoda**: Go to https://killercoda.com/istio
+2. **Choose Scenario**: Select "Istio Playground" or "Istio Fundamentals"
+3. **Start Scenario**: Click "Start Scenario" button
+4. **Wait for Ready**: Wait for the environment to initialize (usually 30-60 seconds)
+5. **Access Terminal**: The terminal will automatically open in the right pane
 
 ### 📋 Verify Setup:
 ```bash
 # Check Kubernetes is running
 kubectl get nodes
 
-# Check if Istio is pre-installed
+# Check Istio installation
 istioctl version
 
-# If Istio is not installed, install it:
-curl -L https://istio.io/downloadIstio | sh -
-cd istio-1.17.0
-export PATH=$PWD/bin:$PATH
-istioctl install --set profile=demo -y
+# Verify Istio is properly installed
+kubectl get pods -n istio-system
 ```
 
-### Option B: Killercoda
-👉 Open: https://killercoda.com/istio  
-✅ Choose an Istio scenario and click "Start Scenario"
+### Alternative: Play with Kubernetes (PWK)
+👉 Open: https://labs.play-with-k8s.com/  
+✅ Click "Start" and add a new instance
 
 ### Option C: Google Cloud Shell
 👉 Open: https://shell.cloud.google.com/  
@@ -83,7 +81,7 @@ istioctl install --set profile=demo -y
 
 ---
 
-## Step 2: Deploy Sample App (PWK Specific)
+## Step 2: Deploy Sample App (Killercoda Environment)
 
 ### 📦 Deploy BookInfo App:
 ```bash
@@ -133,28 +131,22 @@ kubectl get virtualservice
 
 ---
 
-## Step 6: Test App via Ingress (PWK Specific)
+## Step 6: Test App via Ingress (Killercoda Environment)
 
 ### 🌐 Access the Application:
 
 ```bash
-# Get the external IP (in PWK, this will be the node IP)
-export GATEWAY_URL=$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[?(@.type=="ExternalIP")].address}')
-
-# If no external IP, use the node IP
-if [ -z "$GATEWAY_URL" ]; then
-  export GATEWAY_URL=$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}')
-fi
-
-# Get the port
-export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
+# In Killercoda, use port-forward for easy access
+kubectl port-forward -n istio-system service/istio-ingressgateway 8080:80 &
 
 # Test the application
-curl http://$GATEWAY_URL:$INGRESS_PORT/productpage
-
-# Or use port-forward for easier access
-kubectl port-forward -n istio-system service/istio-ingressgateway 8080:80 &
 curl http://localhost:8080/productpage
+
+# Alternative: Get the service URL (if available in Killercoda)
+kubectl get svc istio-ingressgateway -n istio-system
+
+# For external access, Killercoda provides a public URL
+# Check the scenario instructions for the specific URL
 ```
 
 ---
@@ -254,8 +246,8 @@ kubectl get virtualservice,destinationrule,gateway -n default
 * [Istio Official Documentation](https://istio.io/latest/docs/)
 * [Istio Examples](https://istio.io/latest/docs/examples/)
 * [Istio GitHub Repository](https://github.com/istio/istio)
-* [Play with Kubernetes](https://labs.play-with-k8s.com/)
 * [Killercoda Istio Scenarios](https://killercoda.com/istio)
+* [Play with Kubernetes](https://labs.play-with-k8s.com/)
 * [Google Cloud Shell](https://shell.cloud.google.com/)
 * [GitHub Codespaces](https://github.com/features/codespaces)
 
