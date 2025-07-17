@@ -107,8 +107,16 @@ kubectl get crds | grep argoproj
 
 ```bash
 # Purpose: Install ArgoCD CRDs that are required for operation
-kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.8.4/manifests/crds.yaml
+# Option 1: Latest stable CRDs (recommended)
+kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds.yaml
 # Expected: Multiple CRDs created (applications.argoproj.io, appprojects.argoproj.io, etc.)
+
+# Option 2: If Option 1 fails, use full install.yaml (includes CRDs + all components)
+kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.8.4/manifests/install.yaml
+# Expected: All ArgoCD components including CRDs, services, deployments, etc.
+
+# Note: If you applied the full install.yaml, you may have duplicate resources
+# This is okay - Kubernetes will handle conflicts gracefully
 
 # Purpose: Restart ArgoCD deployments to pick up the new CRDs
 kubectl rollout restart deployment -n argocd
@@ -377,7 +385,7 @@ kubectl logs -n argocd $(kubectl get pods -n argocd -l app.kubernetes.io/name=ar
 # Issue: "resource not found" errors (applications.argoproj.io, appprojects.argoproj.io)
 # Solution: Check if CRDs are installed
 kubectl get crds | grep argoproj
-# Expected: Should show ArgoCD CRDs, if empty run: kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.8.4/manifests/crds.yaml
+# Expected: Should show ArgoCD CRDs, if empty run: kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds.yaml
 ```
 ```
 
