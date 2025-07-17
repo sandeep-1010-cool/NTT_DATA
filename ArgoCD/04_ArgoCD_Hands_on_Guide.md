@@ -40,6 +40,39 @@ kubectl get svc -n argocd
 # Expected: Shows argocd-server and other services with their cluster IPs
 ```
 
+#### 🔧 **Killercoda Installation Steps (if ArgoCD not pre-installed):**
+
+```bash
+# Purpose: Add ArgoCD Helm repository
+helm repo add argo https://argoproj.github.io/argo-helm
+# Expected: "argo" has been added to your repositories
+
+# Purpose: Update Helm repositories to get latest charts
+helm repo update
+# Expected: Hang tight while we grab the latest from your chart repositories...
+
+# Purpose: Render ArgoCD manifest without CRDs (Helm v8.0.17)
+helm template argo-cd argo/argo-cd \
+  --version 8.0.17 \
+  --namespace argocd \
+  --set crds.install=false > argo-template.yaml
+# Expected: Creates argo-template.yaml file with ArgoCD manifests
+
+# Purpose: Create ArgoCD namespace
+kubectl create namespace argocd
+# Expected: namespace/argocd created
+
+# Purpose: Apply ArgoCD manifests to cluster
+kubectl apply -f argo-template.yaml
+# Expected: Multiple resources created (deployments, services, configmaps, etc.)
+
+# Purpose: Verify ArgoCD installation
+kubectl get pods -n argocd
+# Expected: Shows all ArgoCD pods in Running state
+```
+
+**Note**: CRDs must be installed separately if not already present in the cluster.
+
 ---
 
 ### **Phase 2: Access ArgoCD UI (5 min)**
@@ -281,6 +314,15 @@ kubectl describe pods -n default | grep guestbook
 # Solution: Check pod logs and events
 kubectl logs -n argocd argo-cd-argocd-server-75595c4dcf-9lpfm
 kubectl describe pod -n argocd argo-cd-argocd-server-75595c4dcf-9lpfm
+
+# Issue: Application controller not ready (0/1 Running)
+# Solution: Check application controller logs
+kubectl logs -n argocd argo-cd-argocd-application-controller-0
+
+# Issue: ApplicationSet controller CrashLoopBackOff
+# Solution: Check ApplicationSet controller logs
+kubectl logs -n argocd argo-cd-argocd-applicationset-controller-6b45d7ddb8-nbxbt
+```
 ```
 
 ### **Quick Verification Commands:**
