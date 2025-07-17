@@ -1,61 +1,84 @@
-# ArgoCD Hands-on Guide - Step-by-Step Tutorials
+**# ArgoCD Hands-on Practice Guide: Step-by-Step Lab**
 
-## Table of Contents
-1. [Creating Your First Application](#creating-your-first-application)
-2. [Application Deployment Examples](#application-deployment-examples)
-3. [CLI Commands Reference](#cli-commands-reference)
-4. [Advanced Configuration](#advanced-configuration)
-5. [Multi-Cluster Management](#multi-cluster-management)
-6. [Troubleshooting Common Issues](#troubleshooting-common-issues)
+## 🔍 Overview
+
+This guide provides a structured, time-bound, hands-on lab to learn and practice ArgoCD with focus on:
+
+* UI & CLI application creation
+* Deployment methods (YAML, Helm, Kustomize)
+* Advanced sync and health policies
+* Multi-cluster setups
+* Troubleshooting and cleanup
 
 ---
 
-## Creating Your First Application
+## 🔢 Lab Phases
 
-### Application Creation via UI:
-```
-1. Click "Create Application"
-2. Fill Application Details:
-   - Name: "my-first-application"
-   - Project: "default"
-   - Sync Policy: "Automatic"
-3. Repository Configuration:
-   - Repository URL: "https://github.com/argoproj/argocd-example-apps"
-   - Path: "guestbook"
-4. Destination:
-   - Cluster: "in-cluster"
-   - Namespace: "default"
-```
+### **Phase 1: Environment Setup (5 min)**
 
-### Application Creation via CLI:
+#### ✅ Killercoda Lab
+
+* Visit: [https://killercoda.com](https://killercoda.com)
+* Search for "ArgoCD"
+* Launch Kubernetes + ArgoCD scenario
+
+#### 👉 Verify Setup:
+
 ```bash
-# Install ArgoCD CLI
-# macOS
-brew install argocd
+kubectl cluster-info
+kubectl get pods -n argocd
+kubectl get svc -n argocd
+```
 
-# Linux
+---
+
+### **Phase 2: Access ArgoCD UI (5 min)**
+
+```bash
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+```
+
+* **URL**: [https://localhost:8080](https://localhost:8080)
+* **Username**: `admin`
+* **Password**: (from command above)
+
+---
+
+### **Phase 3: CLI Setup & Login (3 min)**
+
+```bash
 curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
 sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
+argocd login localhost:8080 --username admin --password <password>
+```
 
-# Login to ArgoCD
-argocd login <argocd-server-url>
+---
 
-# Create application
+### **Phase 4: Deploy First App - Guestbook (CLI) (7 min)**
+
+```bash
 argocd app create guestbook \
   --repo https://github.com/argoproj/argocd-example-apps \
   --path guestbook \
   --dest-namespace default \
-  --dest-server https://kubernetes.default.svc
+  --dest-server https://kubernetes.default.svc \
+  --sync-policy automated
+
+argocd app list
+argocd app get guestbook
 ```
 
+---
 
+### **Phase 5: YAML-Based App Deployment (5 min)**
 
-### Application YAML Example:
-```yaml
+```bash
+cat << EOF > guestbook-app.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: guestbook
+  name: guestbook-yaml
   namespace: argocd
 spec:
   project: default
@@ -70,223 +93,92 @@ spec:
     automated:
       prune: true
       selfHeal: true
+EOF
+
+kubectl apply -f guestbook-app.yaml
 ```
 
 ---
 
-## Application Deployment Examples
+### **Phase 6: Custom App Deployment (7 min)**
 
-### Example 1: Plain Kubernetes Manifests
-```yaml
-# Repository Structure
-guestbook/
-├── deployment.yaml
-└── service.yaml
-```
+```bash
+mkdir my-app && cd my-app
 
-**deployment.yaml:**
-```yaml
+# Create Deployment
+cat << EOF > deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: guestbook
+  name: my-app
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
-      app: guestbook
+      app: my-app
   template:
     metadata:
       labels:
-        app: guestbook
+        app: my-app
     spec:
       containers:
-      - name: guestbook
-        image: gcr.io/google-samples/gb-frontend:v5
+      - name: my-app
+        image: nginx:alpine
         ports:
         - containerPort: 80
-```
+EOF
 
-**service.yaml:**
-```yaml
+# Create Service
+cat << EOF > service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: guestbook
+  name: my-app
 spec:
   selector:
-    app: guestbook
+    app: my-app
   ports:
   - port: 80
     targetPort: 80
-  type: LoadBalancer
+  type: ClusterIP
+EOF
 ```
 
-### Example 2: Helm Charts
-```yaml
-# Repository Structure
-helm-guestbook/
-├── Chart.yaml
-├── values.yaml
-└── templates/
-    ├── deployment.yaml
-    └── service.yaml
-```
-
-**Chart.yaml:**
-```yaml
-apiVersion: v2
-name: guestbook
-description: A Helm chart for Guestbook application
-version: 0.1.0
-appVersion: "1.0.0"
-```
-
-**values.yaml:**
-```yaml
-replicaCount: 3
-image:
-  repository: gcr.io/google-samples/gb-frontend
-  tag: v5
-service:
-  type: LoadBalancer
-  port: 80
-```
-
-### Example 3: Kustomize
-```yaml
-# Repository Structure
-kustomize-guestbook/
-├── base/
-│   ├── deployment.yaml
-│   └── service.yaml
-└── overlays/
-    └── production/
-        └── kustomization.yaml
-```
-
-**kustomization.yaml:**
-```yaml
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- ../../base
-patches:
-- path: replica-patch.yaml
-  target:
-    kind: Deployment
-    name: guestbook
-```
-
-
+> Commit these to GitHub and deploy using an Application YAML manifest similar to guestbook.
 
 ---
 
-## CLI Commands Reference
+### **Phase 7: Monitor & Sync (5 min)**
 
-### Essential CLI Commands:
 ```bash
-# List applications
-argocd app list
-
-# Get application details
-argocd app get <app-name>
-
-# Sync application
-argocd app sync <app-name>
-
-# Delete application
-argocd app delete <app-name>
-
-# Get application logs
-argocd app logs <app-name>
-
-# Set sync policy
-argocd app set <app-name> --sync-policy automated
+argocd app sync guestbook
+argocd app resources guestbook
+argocd app logs guestbook
 ```
-
-### Application Status Commands:
-```bash
-# Check application health
-argocd app get <app-name> --output yaml
-
-# View application resources
-argocd app resources <app-name>
-
-# Get application events
-argocd app events <app-name>
-
-# Check application history
-argocd app history <app-name>
-```
-
-### Cluster Management:
-```bash
-# List clusters
-argocd cluster list
-
-# Add cluster
-argocd cluster add <cluster-name> --server <cluster-url>
-
-# Remove cluster
-argocd cluster rm <cluster-name>
-
-# Get cluster info
-argocd cluster get <cluster-name>
-```
-
-### Repository Management:
-```bash
-# List repositories
-argocd repo list
-
-# Add repository
-argocd repo add <repo-url>
-
-# Remove repository
-argocd repo rm <repo-url>
-
-# Get repository info
-argocd repo get <repo-url>
-```
-
-
 
 ---
 
-## Advanced Configuration
+### **Phase 8: Simulate & Resolve Sync Failure (5 min)**
 
-### Sync Policies:
-```yaml
-# Automatic sync with pruning
-spec:
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-    - CreateNamespace=true
+```bash
+kubectl delete deployment guestbook -n default
+argocd app get guestbook
+argocd app sync guestbook
 ```
 
-### Application Health Checks:
-```yaml
-# Custom health checks
-spec:
-  source:
-    repoURL: https://github.com/argoproj/argocd-example-apps
-    path: guestbook
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: default
-  syncPolicy:
-    syncOptions:
-    - PrunePropagationPolicy=foreground
-    - PruneLast=true
-```
+---
 
-### Resource Hooks:
-```yaml
-# Pre-sync and post-sync hooks
+### **Phase 9: Advanced App Management (5 min)**
+
+```bash
+# Enable sync policy & self-heal
+argocd app set guestbook --sync-policy automated --self-heal --prune
+
+# Check app history
+argocd app history guestbook
+
+# Create hook job
+kubectl apply -f - <<EOF
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -298,194 +190,54 @@ spec:
   template:
     spec:
       containers:
-      - name: pre-sync
+      - name: hook
         image: busybox
-        command: ["echo", "Pre-sync hook executed"]
+        command: ["echo", "Running PreSync Hook"]
       restartPolicy: Never
-  backoffLimit: 1
-```
-
-### Sync Windows:
-```yaml
-# Configure sync windows
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: guestbook
-spec:
-  syncPolicy:
-    syncOptions:
-    - RespectIgnoreDifferences=true
-  syncWindows:
-  - kind: allow
-    schedule: "10 1 * * *"
-    duration: 1h
-    applications:
-    - guestbook
-```
-
-
-
----
-
-## Multi-Cluster Management
-
-### Application Sets (Multi-Cluster):
-```yaml
-# Generate applications for multiple clusters
-apiVersion: argoproj.io/v1alpha1
-kind: ApplicationSet
-metadata:
-  name: guestbook
-spec:
-  generators:
-  - list:
-      elements:
-      - cluster: cluster-1
-        url: https://cluster-1.example.com
-      - cluster: cluster-2
-        url: https://cluster-2.example.com
-  template:
-    metadata:
-      name: '{{cluster}}-guestbook'
-    spec:
-      project: default
-      source:
-        repoURL: https://github.com/argoproj/argocd-example-apps
-        targetRevision: HEAD
-        path: guestbook
-      destination:
-        server: '{{url}}'
-        namespace: default
-```
-
-### Cluster Management:
-```bash
-# Add multiple clusters
-argocd cluster add cluster-1 --server https://cluster-1.example.com
-argocd cluster add cluster-2 --server https://cluster-2.example.com
-
-# List all clusters
-argocd cluster list
-
-# Get cluster details
-argocd cluster get cluster-1
-```
-
-
-
----
-
-## Troubleshooting Common Issues
-
-### Issue 1: Application Sync Failed
-```bash
-# Check application status
-argocd app get <app-name>
-
-# Check application logs
-argocd app logs <app-name>
-
-# Manual sync
-argocd app sync <app-name>
-
-# Check sync history
-argocd app history <app-name>
-```
-
-### Issue 2: Repository Connection Issues
-```bash
-# Test repository connection
-argocd repo list
-
-# Check repository logs
-argocd repo get <repo-url>
-
-# Re-add repository
-argocd repo rm <repo-url>
-argocd repo add <repo-url>
-```
-
-### Issue 3: Resource Conflicts
-```bash
-# Check resource status
-kubectl get all -n <namespace>
-
-# Check events
-kubectl get events -n <namespace>
-
-# Force sync with replace
-argocd app sync <app-name> --replace
-```
-
-### Issue 4: Authentication Problems
-```bash
-# Check login status
-argocd account get-user-info
-
-# Re-login
-argocd logout
-argocd login <server-url>
-
-# Check RBAC
-argocd account list-roles
-```
-
-### Issue 5: Network Connectivity
-```bash
-# Test cluster connectivity
-argocd cluster list
-
-# Check cluster health
-argocd cluster get <cluster-name>
-
-# Test repository access
-argocd repo list
+EOF
 ```
 
 ---
 
-## Best Practices
+### **Phase 10: Cleanup (3 min)**
 
-### 1. Application Structure
-```
-Recommended Structure:
-├── applications/
-│   ├── app1/
-│   │   ├── deployment.yaml
-│   │   ├── service.yaml
-│   │   └── configmap.yaml
-│   └── app2/
-├── infrastructure/
-│   ├── namespaces/
-│   ├── nodes/
-│   └── policies/
-└── argocd/
-    └── applications/
+```bash
+argocd app delete guestbook --cascade
+kubectl delete all -l app=guestbook -n default
 ```
 
 ---
 
-## Resources and References
+## 📅 Practice Time Management Summary
 
-### Official Resources:
-- **ArgoCD Examples**: github.com/argoproj/argocd-example-apps
-- **ArgoCD CLI Reference**: argoproj.github.io/argo-cd/user-guide/commands/
-- **ArgoCD Best Practices**: argoproj.github.io/argo-cd/user-guide/best_practices/
+| Task               | Time       |
+| ------------------ | ---------- |
+| Environment Setup  | 5 min      |
+| UI Access          | 5 min      |
+| CLI Setup          | 3 min      |
+| Deploy App via CLI | 7 min      |
+| YAML Deployment    | 5 min      |
+| Custom App Deploy  | 7 min      |
+| Monitoring         | 5 min      |
+| Failure Simulation | 5 min      |
+| Advanced Settings  | 5 min      |
+| Cleanup            | 3 min      |
+| **Total**          | **50 min** |
 
-### **🔧 Hands-on Practice Resources:**
+---
 
-### Key Learning Path:
-1. **Start with Simple Apps**: Use guestbook example
-2. **Learn CLI Commands**: Practice with basic operations
-3. **Explore Advanced Features**: Sync policies, hooks, windows
-4. **Multi-Cluster Setup**: Application sets and cluster management
-5. **Troubleshooting**: Common issues and solutions
+## 📄 Practice Checklist
 
-### Practice Checklist:
-- [ ] Create first application via UI
-- [ ] Create application via CLI
-- [ ] Test different manifest formats
-- [ ] Configure sync policies
-- [ ] Set up multi-cluster deployment
-- [ ] Troubleshoot common issues 
+* [x] ArgoCD CLI installed and logged in
+* [x] Guestbook deployed via CLI and YAML
+* [x] Custom app created from scratch
+* [x] Synced, observed, and troubleshot sync issues
+* [x] Practiced RBAC, hooks, and self-healing
+* [x] Cleaned up all resources
+
+---
+
+## 🔗 Reference
+
+* Docs: [https://argo-cd.readthedocs.io](https://argo-cd.readthedocs.io)
+* Examples: [https://github.com/argoproj/argocd-example-apps](https://github.com/argoproj/argocd-example-apps)
