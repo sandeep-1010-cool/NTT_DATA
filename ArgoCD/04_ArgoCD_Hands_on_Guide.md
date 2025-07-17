@@ -69,9 +69,34 @@ kubectl apply -f argo-template.yaml
 # Purpose: Verify ArgoCD installation
 kubectl get pods -n argocd
 # Expected: Shows all ArgoCD pods in Running state
+
+# Purpose: Check ArgoCD server logs if pod is in Error/CrashLoopBackOff state
+kubectl logs -n argocd argo-cd-argocd-server-75595c4dcf-kh4pk
+# Expected: Shows error messages explaining why server is failing
+
+# Purpose: Check application controller logs if not ready (0/1 Running)
+kubectl logs -n argocd argo-cd-argocd-application-controller-0
+# Expected: Shows application controller startup logs or errors
+
+# Purpose: Check ApplicationSet controller logs if in CrashLoopBackOff
+kubectl logs -n argocd argo-cd-argocd-applicationset-controller-6b45d7ddb8-49dzx
+# Expected: Shows error messages for ApplicationSet controller crashes
+
+# Purpose: Get detailed information about failing pods
+kubectl describe pod -n argocd argo-cd-argocd-server-75595c4dcf-kh4pk
+# Expected: Shows events, resource limits, and failure reasons
+
+# Purpose: Check resource usage to identify constraints
+kubectl top pods -n argocd
+# Expected: Shows CPU and memory usage for all pods
+
+# Purpose: Check cluster events for failure clues
+kubectl get events -n argocd --sort-by='.lastTimestamp'
+# Expected: Shows recent events that might explain the failures
 ```
 
 **Note**: CRDs must be installed separately if not already present in the cluster.
+
 
 ---
 
