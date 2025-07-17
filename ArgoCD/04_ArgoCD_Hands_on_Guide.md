@@ -107,7 +107,7 @@ kubectl get crds | grep argoproj
 
 ```bash
 # Purpose: Install ArgoCD CRDs that are required for operation
-kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds.yaml
+kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.8.4/manifests/crds.yaml
 # Expected: Multiple CRDs created (applications.argoproj.io, appprojects.argoproj.io, etc.)
 
 # Purpose: Restart ArgoCD deployments to pick up the new CRDs
@@ -377,7 +377,7 @@ kubectl logs -n argocd $(kubectl get pods -n argocd -l app.kubernetes.io/name=ar
 # Issue: "resource not found" errors (applications.argoproj.io, appprojects.argoproj.io)
 # Solution: Check if CRDs are installed
 kubectl get crds | grep argoproj
-# Expected: Should show ArgoCD CRDs, if empty run: kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds.yaml
+# Expected: Should show ArgoCD CRDs, if empty run: kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.8.4/manifests/crds.yaml
 ```
 ```
 
