@@ -276,6 +276,11 @@ argocd app logs guestbook
 # Issue: Pods not starting
 # Solution: Check resource constraints
 kubectl describe pods -n default | grep guestbook
+
+# Issue: CrashLoopBackOff in ArgoCD pods
+# Solution: Check pod logs and events
+kubectl logs -n argocd argo-cd-argocd-server-75595c4dcf-9lpfm
+kubectl describe pod -n argocd argo-cd-argocd-server-75595c4dcf-9lpfm
 ```
 
 ### **Quick Verification Commands:**
