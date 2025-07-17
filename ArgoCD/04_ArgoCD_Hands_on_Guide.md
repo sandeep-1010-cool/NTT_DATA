@@ -201,6 +201,7 @@ argocd app get guestbook
 ### **Phase 5: YAML-Based App Deployment (5 min)**
 
 ```bash
+# Purpose: Create ArgoCD Application YAML manifest for guestbook deployment
 cat << EOF > guestbook-app.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -221,8 +222,11 @@ spec:
       prune: true
       selfHeal: true
 EOF
+# Expected: Creates guestbook-app.yaml file with ArgoCD Application definition
 
+# Purpose: Apply the ArgoCD Application manifest to create the application
 kubectl apply -f guestbook-app.yaml
+# Expected: application.argoproj.io/guestbook-yaml created
 ```
 
 ---
@@ -230,9 +234,11 @@ kubectl apply -f guestbook-app.yaml
 ### **Phase 6: Custom App Deployment (7 min)**
 
 ```bash
+# Purpose: Create directory for custom application manifests
 mkdir my-app && cd my-app
+# Expected: Creates my-app directory and navigates into it
 
-# Create Deployment
+# Purpose: Create Kubernetes Deployment manifest for custom application
 cat << EOF > deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -254,8 +260,9 @@ spec:
         ports:
         - containerPort: 80
 EOF
+# Expected: Creates deployment.yaml file with nginx deployment configuration
 
-# Create Service
+# Purpose: Create Kubernetes Service manifest for custom application
 cat << EOF > service.yaml
 apiVersion: v1
 kind: Service
@@ -269,9 +276,68 @@ spec:
     targetPort: 80
   type: ClusterIP
 EOF
+# Expected: Creates service.yaml file with ClusterIP service configuration
 ```
 
 > Commit these to GitHub and deploy using an Application YAML manifest similar to guestbook.
+
+#### 📋 **YAML File Structure Explanation:**
+
+**ArgoCD Application YAML Components:**
+```yaml
+apiVersion: argoproj.io/v1alpha1    # Purpose: Specifies ArgoCD API version
+kind: Application                    # Purpose: Defines resource type as ArgoCD Application
+metadata:                           # Purpose: Application metadata (name, namespace)
+  name: guestbook-yaml
+  namespace: argocd
+spec:                              # Purpose: Application configuration specification
+  project: default                 # Purpose: ArgoCD project assignment
+  source:                          # Purpose: Git repository and path configuration
+    repoURL: https://github.com/argoproj/argocd-example-apps
+    targetRevision: HEAD           # Purpose: Git branch/tag/commit to track
+    path: guestbook               # Purpose: Directory path in repository
+  destination:                     # Purpose: Target cluster and namespace
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:                      # Purpose: Automated sync behavior configuration
+    automated:
+      prune: true                  # Purpose: Remove resources not in Git
+      selfHeal: true              # Purpose: Automatically fix drift
+```
+
+**Kubernetes Manifest Components:**
+```yaml
+# Deployment YAML Purpose: Define application pods and replicas
+apiVersion: apps/v1               # Purpose: Kubernetes API version for apps
+kind: Deployment                  # Purpose: Resource type for pod management
+metadata:
+  name: my-app                   # Purpose: Unique deployment identifier
+spec:
+  replicas: 2                    # Purpose: Number of pod instances
+  selector:                      # Purpose: Pod selection criteria
+    matchLabels:
+      app: my-app
+  template:                      # Purpose: Pod template specification
+    spec:
+      containers:                # Purpose: Container configuration
+      - name: my-app
+        image: nginx:alpine      # Purpose: Container image to run
+        ports:                   # Purpose: Container port exposure
+        - containerPort: 80
+
+# Service YAML Purpose: Define network access to pods
+apiVersion: v1                   # Purpose: Core Kubernetes API
+kind: Service                    # Purpose: Network service resource
+metadata:
+  name: my-app                  # Purpose: Service identifier
+spec:
+  selector:                     # Purpose: Pod selection for traffic routing
+    app: my-app
+  ports:                        # Purpose: Port mapping configuration
+  - port: 80                    # Purpose: Service port
+    targetPort: 80              # Purpose: Container port
+  type: ClusterIP               # Purpose: Service type (internal access)
+```
 
 ---
 
@@ -298,13 +364,15 @@ argocd app sync guestbook
 ### **Phase 9: Advanced App Management (5 min)**
 
 ```bash
-# Enable sync policy & self-heal
+# Purpose: Configure automated sync policy with self-healing and pruning
 argocd app set guestbook --sync-policy automated --self-heal --prune
+# Expected: Application sync policy updated successfully
 
-# Check app history
+# Purpose: View application sync history and deployment timeline
 argocd app history guestbook
+# Expected: Shows list of sync operations with timestamps and results
 
-# Create hook job
+# Purpose: Create a pre-sync hook job for advanced deployment workflows
 kubectl apply -f - <<EOF
 apiVersion: batch/v1
 kind: Job
@@ -322,6 +390,7 @@ spec:
         command: ["echo", "Running PreSync Hook"]
       restartPolicy: Never
 EOF
+# Expected: job.batch/pre-sync-job created
 ```
 
 ---
