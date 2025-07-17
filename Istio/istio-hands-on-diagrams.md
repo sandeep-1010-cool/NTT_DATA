@@ -308,13 +308,39 @@ kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.17/samp
                 └────────────────────────────────────────────┘
 ```
 
-**🔍 Traffic Flow Explanation:**
+**🔍 Traffic Flow Explanation (Improved):**
 
-1. **External Request** → Browser/curl sends HTTP request
-2. **Gateway** → `bookinfo-gateway` receives the request on port 80
-3. **VirtualService** → `bookinfo` VirtualService routes to `productpage` service
-4. **Ingress Gateway** → `istio-ingressgateway` handles the traffic
-5. **Application** → Request reaches `productpage` service and its pods
+1. **External Request**
+   → A client (Browser/cURL/API) sends an HTTP request to the external IP.
+
+2. **Ingress Gateway (`istio-ingressgateway`)**
+   → Exposes Istio to the outside world via a LoadBalancer on port 80/443.
+   → Forwards traffic to the defined Gateway resource.
+
+3. **Gateway (`bookinfo-gateway`)**
+   → Matches incoming host and port
+   → Forwards the request to the appropriate **VirtualService**.
+
+4. **VirtualService (`bookinfo`)**
+   → Defines routing rules for host/path
+   → Directs traffic to the **productpage** service.
+
+5. **Application Service (`productpage`)**
+   → Istio routes the request to one of the backend pods
+   → `productpage` may call `details`, `reviews`, and `ratings` internally.
+
+**✅ Visual Summary:**
+```
+[Browser/cURL] 
+   ↓
+[istio-ingressgateway (LoadBalancer)]
+   ↓
+[bookinfo-gateway]
+   ↓
+[bookinfo VirtualService]
+   ↓
+[productpage Service → Pod]
+```
 
 **📋 Created Resources:**
 - ✅ **Gateway**: `bookinfo-gateway` (entry point configuration)
