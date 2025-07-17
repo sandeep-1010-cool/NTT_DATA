@@ -142,7 +142,7 @@ kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.17/samp
 
 ---
 
-## 🔄 Step 5: Pod Status Monitoring
+## ✅ Step 5: Monitor BookInfo Pod Rollout
 
 ### Commands: `kubectl get pods` (multiple times)
 ```bash
@@ -251,7 +251,7 @@ kubectl label namespace default istio-injection=enabled
 
 ---
 
-## 🌐 Step 8: Configure Istio Gateway and VirtualService
+## ✅ Step 8: Expose BookInfo to External Traffic with Istio Gateway
 
 ### Command: `kubectl apply -f bookinfo-gateway.yaml`
 ```bash
@@ -272,7 +272,7 @@ kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.17/samp
                  ┌─────────────────────────────┐
                  │     🌍 External Clients     │
                  │ ┌────────┐  ┌────────────┐ │
-                 │ │Browser │  │curl/API CL│ │
+                 │ │Browser │  │curl/API Client│ │
                  │ └────────┘  └────────────┘ │
                  └───────────────┬────────────┘
                                  │
@@ -346,6 +346,17 @@ kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.17/samp
 - ✅ **Gateway**: `bookinfo-gateway` (entry point configuration)
 - ✅ **VirtualService**: `bookinfo` (traffic routing rules)
 - ✅ **External Access**: Enabled for BookInfo application
+
+**🔗 Istio Resource Chain:**
+```
+Gateway → VirtualService → Service → Pod (with Sidecar)
+```
+
+**🌐 Optional Browser Test:**
+```bash
+# Open in browser (after port-forward)
+http://localhost:8080/productpage
+```
 
 ---
 
@@ -505,6 +516,15 @@ curl http://localhost:8080/productpage
 │     BookInfo application page                             │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
+```
+
+**🌐 Optional Browser Test:**
+```bash
+# Test with curl (command line)
+curl http://localhost:8080/productpage
+
+# Or open in browser for visual testing
+http://localhost:8080/productpage
 ```
 
 ---
