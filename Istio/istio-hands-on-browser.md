@@ -59,12 +59,18 @@ Learn & practice Istio **step-by-step** on a **free browser-based platform**, wi
 ```bash
 # Check Kubernetes is running
 kubectl get nodes
+# Purpose: Verifies that your Kubernetes cluster is accessible and shows all nodes
+# Expected: Should show 1-2 nodes in "Ready" status
 
 # Check Istio installation
 istioctl version
+# Purpose: Confirms Istio CLI tool is installed and shows version information
+# Expected: Should display Istio version (e.g., 1.17.0)
 
 # Verify Istio is properly installed
 kubectl get pods -n istio-system
+# Purpose: Checks that Istio control plane components are running
+# Expected: Should show pods like istiod, istio-ingressgateway, etc. in "Running" status
 ```
 
 ### Alternative: Play with Kubernetes (PWK)
@@ -87,12 +93,18 @@ kubectl get pods -n istio-system
 ```bash
 # Deploy the BookInfo sample application
 kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.17/samples/bookinfo/platform/kube/bookinfo.yaml
+# Purpose: Deploys the BookInfo microservices demo application
+# Expected: Creates 6 services: productpage, details, reviews, ratings, and review versions
 
 # Verify pods are running
 kubectl get pods
+# Purpose: Checks that all BookInfo pods are created and starting
+# Expected: Should show pods like productpage-v1, details-v1, reviews-v1, etc.
 
 # Wait for all pods to be in Running state
 kubectl wait --for=condition=Ready pod --all --timeout=300s
+# Purpose: Ensures all pods are fully ready before proceeding
+# Expected: Command completes when all pods show "Running" status
 ```
 
 ✅ Deploys the `BookInfo` microservices demo app with 6 services:
@@ -108,6 +120,8 @@ kubectl wait --for=condition=Ready pod --all --timeout=300s
 
 ```bash
 kubectl label namespace default istio-injection=enabled
+# Purpose: Enables automatic Istio sidecar injection for the default namespace
+# Expected: Any new pods created in default namespace will automatically get Istio sidecar
 ```
 
 ---
@@ -116,6 +130,8 @@ kubectl label namespace default istio-injection=enabled
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.17/samples/bookinfo/networking/bookinfo-gateway.yaml
+# Purpose: Creates Istio Gateway and VirtualService to enable external access to BookInfo app
+# Expected: Creates Gateway and VirtualService resources for traffic routing
 ```
 
 ---
@@ -124,10 +140,17 @@ kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.17/samp
 
 ```bash
 kubectl get gateway
-kubectl get virtualservice
-```
+# Purpose: Lists all Istio Gateway resources to verify they were created
+# Expected: Should show "bookinfo-gateway" in the list
 
-💡 Use `kubectl get svc istio-ingressgateway -n istio-system` to find external IP.
+kubectl get virtualservice
+# Purpose: Lists all VirtualService resources to verify traffic routing rules
+# Expected: Should show "bookinfo" VirtualService
+
+kubectl get svc istio-ingressgateway -n istio-system
+# Purpose: Shows the Istio ingress gateway service details
+# Expected: Shows service with external IP or port information
+```
 
 ---
 
@@ -138,12 +161,18 @@ kubectl get virtualservice
 ```bash
 # In Killercoda, use port-forward for easy access
 kubectl port-forward -n istio-system service/istio-ingressgateway 8080:80 &
+# Purpose: Creates a tunnel to access Istio ingress gateway from localhost
+# Expected: Port-forward runs in background, making app accessible at localhost:8080
 
 # Test the application
 curl http://localhost:8080/productpage
+# Purpose: Tests if the BookInfo application is accessible through Istio gateway
+# Expected: Should return HTML content of the BookInfo product page
 
 # Alternative: Get the service URL (if available in Killercoda)
 kubectl get svc istio-ingressgateway -n istio-system
+# Purpose: Shows service details including ports and endpoints
+# Expected: Displays service configuration for external access
 
 # For external access, Killercoda provides a public URL
 # Check the scenario instructions for the specific URL
@@ -176,24 +205,32 @@ Prompt: Generate an Istio manifest to apply traffic shifting between two version
 ```bash
 # Apply traffic splitting (50/50 between v1 and v2)
 kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.17/samples/bookinfo/networking/virtual-service-all-v1.yaml
+# Purpose: Routes all traffic to v1 services (baseline configuration)
+# Expected: All requests go to v1 versions of services
 ```
 
 ### Fault Injection
 ```bash
 # Inject delays and errors
 kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.17/samples/bookinfo/networking/virtual-service-reviews-test-abort.yaml
+# Purpose: Injects HTTP 500 errors for testing fault tolerance
+# Expected: Some requests to reviews service will return errors
 ```
 
 ### Circuit Breaker
 ```bash
 # Apply circuit breaker to ratings service
 kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.17/samples/bookinfo/networking/destination-rule-all.yaml
+# Purpose: Applies circuit breaker policies to prevent cascading failures
+# Expected: Limits concurrent connections and requests to services
 ```
 
 ### Security (mTLS)
 ```bash
 # Enable mutual TLS
 kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.17/samples/bookinfo/security/peer-authentication.yaml
+# Purpose: Enables mutual TLS authentication between services
+# Expected: Services communicate with encrypted mTLS connections
 ```
 
 ---
@@ -204,18 +241,24 @@ kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.17/samp
 ```bash
 # Access Kiali dashboard
 istioctl dashboard kiali
+# Purpose: Opens Kiali dashboard for visualizing service mesh topology
+# Expected: Opens browser with service graph showing traffic flow between services
 ```
 
 ### View Metrics
 ```bash
 # Access Grafana
 istioctl dashboard grafana
+# Purpose: Opens Grafana dashboard for viewing Istio metrics and performance data
+# Expected: Opens browser with pre-configured Istio dashboards
 ```
 
 ### View Traces
 ```bash
 # Access Jaeger
 istioctl dashboard jaeger
+# Purpose: Opens Jaeger for distributed tracing and request flow analysis
+# Expected: Opens browser with Jaeger UI for tracing requests across services
 ```
 
 ---
@@ -225,18 +268,28 @@ istioctl dashboard jaeger
 ```bash
 # Check Istio installation
 istioctl verify-install
+# Purpose: Verifies that Istio is properly installed and configured
+# Expected: Should show "✓ Istio is installed successfully" if everything is OK
 
 # Check proxy status
 istioctl proxy-status
+# Purpose: Shows status of all Istio sidecar proxies in the cluster
+# Expected: Should show "SYNCED" status for all proxies
 
 # Check proxy config
 istioctl proxy-config all -n default
+# Purpose: Shows detailed configuration of Istio proxies in default namespace
+# Expected: Displays routes, clusters, listeners, and other proxy configurations
 
 # View service endpoints
 kubectl get endpoints -n default
+# Purpose: Shows which pods are backing each service
+# Expected: Lists all services and their corresponding pod IPs
 
 # Check Istio resources
 kubectl get virtualservice,destinationrule,gateway -n default
+# Purpose: Lists all Istio traffic management resources
+# Expected: Shows VirtualServices, DestinationRules, and Gateways in the namespace
 ```
 
 ---
