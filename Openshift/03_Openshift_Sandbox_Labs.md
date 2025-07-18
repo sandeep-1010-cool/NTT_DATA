@@ -399,39 +399,133 @@ spec:
 ## 📦 **Quest 5: Treasure Storage** 📦 {#quest-5-treasure-storage}
 
 ### 🎯 **Mission Objective**: 
-Master persistent storage and configuration management.
+Use **ConfigMaps**, **Secrets**, and a **PersistentVolumeClaim** to securely configure and persist data for an application.
 
 ### 🧩 **Clue**:
-> Data is the new gold. Learn to store it safely and access it quickly.
+> Not all treasures are gold – some are mounted under `/etc/config` and `/data`…
 
 ### 🛠 **Your Toolkit**:
+
+#### **1️⃣ Create ConfigMap**:
 ```bash
-oc get pvc
-oc get configmaps
-oc get secrets
-oc describe pvc [name]
-oc describe configmap [name]
+oc create configmap app-config \
+  --from-literal=APP_MODE=debug \
+  --from-literal=WELCOME_MSG="Hello, Vault Keeper!"
+```
+
+#### **2️⃣ Create Secret**:
+```bash
+oc create secret generic app-secret \
+  --from-literal=username=admin \
+  --from-literal=password=OpenShiftRocks123
+```
+
+#### **3️⃣ Create PVC**:
+```bash
+cat <<EOF | oc apply -f -
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: quest-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+EOF
+```
+
+#### **4️⃣ Deploy App Using All 3**:
+```bash
+cat <<EOF | oc apply -f -
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  name: vault-app
+spec:
+  replicas: 1
+  selector:
+    app: vault-app
+  template:
+    metadata:
+      labels:
+        app: vault-app
+    spec:
+      containers:
+      - name: vault-app
+        image: nginx
+        ports:
+        - containerPort: 80
+        envFrom:
+        - configMapRef:
+            name: app-config
+        - secretRef:
+            name: app-secret
+        volumeMounts:
+        - name: data-volume
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: quest-pvc
+EOF
+```
+
+#### **5️⃣ Test It**:
+```bash
+# Get pod name
+POD=$(oc get pods -l app=vault-app -o jsonpath='{.items[0].metadata.name}')
+
+# Write file to PVC
+oc exec $POD -- sh -c 'echo "Welcome Vault Keeper!" > /usr/share/nginx/html/index.html'
+
+# Expose and access the app
+oc expose dc vault-app
+oc get routes
 ```
 
 ### ✅ **Your Mission**:
-1. **Explore Persistent Volume Claims** (PVCs)
-2. **Check ConfigMaps** for configuration data
-3. **Review Secrets** (safely!)
-4. **Understand storage classes**
+1. **Complete steps 1–5** above
+2. **Visit the exposed URL** – you should see **"Welcome Vault Keeper!"**
+3. **Delete the pod**, confirm PVC persists the file
+4. **Share your findings** with route URL or screenshot
 
 ### 🎮 **Mission Report Template**:
 ```
 ✅ MISSION COMPLETE - Quest 5: Treasure Storage
 
 📦 STORAGE INVENTORY:
-- PVCs Found: [persistent volumes]
-- ConfigMaps: [configuration data]
-- Secrets: [sensitive data found]
-- Storage Classes: [available types]
+- ConfigMap Created: [app-config]
+- Secret Created: [app-secret]
+- PVC Created: [quest-pvc]
+- App Deployed: [vault-app]
+- Route URL: [your app's public URL]
+- Data Persistence Test: [success/failure]
 
 🎯 NEXT STEPS:
 [What you want to explore next]
 ```
+
+### 🏅 **Success Criteria**:
+- ✅ Created ConfigMap with environment variables
+- ✅ Created Secret with sensitive data
+- ✅ Created PVC for persistent storage
+- ✅ Deployed app using all three resources
+- ✅ Verified data persistence across pod restarts
+- ✅ Posted mission report with findings
+
+### 🎁 **Bonus Challenge**:
+- **+50 XP** if you can explain the difference between ConfigMaps and Secrets
+- **+25 XP** if you test the app and verify it's accessible
+- **+25 XP** if you can show the data persists after pod deletion
+
+### 🛠 **Pro Tips**:
+- Use `oc get configmaps` to list all ConfigMaps
+- Use `oc get secrets` to list all Secrets (safely!)
+- Use `oc describe pvc quest-pvc` to check PVC status
+- Use `oc get pods -l app=vault-app` to check your app status
+- **Note**: Secrets are base64 encoded, ConfigMaps are plain text
 
 ---
 
