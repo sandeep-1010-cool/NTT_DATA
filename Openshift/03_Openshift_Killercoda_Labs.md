@@ -24,8 +24,10 @@
 ### Important Notes for Developer Sandbox
 - **Project Creation**: The Developer Sandbox restricts creating new projects
 - **Use Existing Project**: All labs will use your existing project `vuyyalasandeep91-dev`
+- **Permission Limitations**: Some "Forbidden" errors are normal - you can still work with basic resources
 - **Resource Limits**: Be mindful of resource usage within the free tier
 - **Session Duration**: Sandbox sessions have time limits
+- **Existing Resources**: Your project may have pre-existing resources (workspace, modelmesh-serving, etc.)
 
 ### Getting Started with OpenShift Developer Sandbox
 
@@ -109,11 +111,14 @@ oc project vuyyalasandeep91-dev
 # Verify the project
 oc project
 
-# List current resources
+# List current resources (ignore "Forbidden" errors - they're normal)
 oc get all
+
+# List only basic resources to avoid permission errors
+oc get pods,services,deployments
 ```
 
-**Important**: The OpenShift Developer Sandbox restricts project creation. Use your existing project `vuyyalasandeep91-dev` for all labs.
+**Important**: The OpenShift Developer Sandbox restricts project creation. Use your existing project `vuyyalasandeep91-dev` for all labs. Some "Forbidden" errors are normal and don't affect your ability to work with basic OpenShift resources.
 
 #### **Step 2: Deploy Your First Application**
 ```bash
@@ -137,14 +142,36 @@ oc get routes
 
 #### **Step 4: Explore Your Deployment**
 ```bash
-# List all resources in your project
-oc get all
+# List basic resources (avoid permission errors)
+oc get pods,services,deployments,routes
 
 # View deployment details
-oc describe deploymentconfig nodejs-ex
+oc describe deployment nodejs-ex
 
 # Check application logs
-oc logs dc/nodejs-ex
+oc logs deployment/nodejs-ex
+
+# If using DeploymentConfig instead of Deployment:
+# oc describe deploymentconfig nodejs-ex
+# oc logs dc/nodejs-ex
+```
+
+#### **Step 5: Troubleshooting Common Issues**
+```bash
+# If you see "Forbidden" errors, they're normal in Developer Sandbox
+# Focus on resources you can access: pods, services, deployments, routes
+
+# Check if your application is running
+oc get pods -l app=nodejs-ex
+
+# View application logs
+oc logs -l app=nodejs-ex
+
+# Check service endpoints
+oc get endpoints
+
+# Verify routes are working
+oc get routes
 ```
 
 ### Exercise 1.1: Create and Manage Projects
