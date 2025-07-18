@@ -101,77 +101,156 @@ Learn basic OpenShift operations including project creation, pod management, and
 **Complete this exercise before proceeding to the detailed labs below.**
 
 #### **Step 1: Use Your Existing Project**
+
+**Purpose**: Navigate to your working project and understand the current state of your OpenShift environment.
+
+**Expected Outcomes**:
+- Successfully switch to your existing project
+- View current project context
+- List available resources in your project
+- Understand which resources you can access
+
 ```bash
 # Note: Developer Sandbox has restrictions on project creation
 # Use your existing project instead of creating a new one
 
 # Switch to your existing project
 oc project vuyyalasandeep91-dev
+# Purpose: Set your current working context to the existing project
+# Expected: Confirmation that you're now in the vuyyalasandeep91-dev project
 
 # Verify the project
 oc project
+# Purpose: Display current project context and confirm you're in the right project
+# Expected: Shows "Using project "vuyyalasandeep91-dev" on server..."
 
 # List current resources (ignore "Forbidden" errors - they're normal)
 oc get all
+# Purpose: View all resources in your project to understand what's already running
+# Expected: Shows existing pods, services, deployments (some "Forbidden" errors are normal)
 
 # List only basic resources to avoid permission errors
 oc get pods,services,deployments
+# Purpose: View only the resources you have permission to access
+# Expected: Clean list of pods, services, and deployments without permission errors
 ```
 
 **Important**: The OpenShift Developer Sandbox restricts project creation. Use your existing project `vuyyalasandeep91-dev` for all labs. Some "Forbidden" errors are normal and don't affect your ability to work with basic OpenShift resources.
 
 #### **Step 2: Deploy Your First Application**
+
+**Purpose**: Deploy your first application using OpenShift's Source-to-Image (S2I) build process and monitor the deployment lifecycle.
+
+**Expected Outcomes**:
+- Successfully deploy a Node.js application from source code
+- Understand the S2I build process
+- Monitor pod creation and application startup
+- See the complete deployment lifecycle
+
 ```bash
 # Deploy a sample Node.js application
 oc new-app nodejs~https://github.com/sclorg/nodejs-ex
+# Purpose: Create a new application using S2I build from Git repository
+# Expected: BuildConfig, ImageStream, DeploymentConfig, and Service are created automatically
 
 # Monitor the deployment
 oc get pods -w
+# Purpose: Watch real-time pod status changes during deployment
+# Expected: See pods transition from Pending → ContainerCreating → Running
 ```
 
 #### **Step 3: Expose Your Application**
+
+**Purpose**: Make your application accessible from outside the cluster by creating a route and understanding OpenShift's networking concepts.
+
+**Expected Outcomes**:
+- Create a public route for your application
+- Understand how routes work in OpenShift
+- Access your application from a web browser
+- Learn about OpenShift's external networking
+
 ```bash
 # Create a route to access your application
 oc expose service nodejs-ex
+# Purpose: Create a Route resource that exposes the service externally
+# Expected: A Route is created with a public URL for accessing your application
 
 # Get the route URL
 oc get routes
+# Purpose: Display the route information including the public URL
+# Expected: Shows route name, hostname, and service it exposes
 
 # Access your application in the browser using the route URL
+# Purpose: Test that your application is accessible from outside the cluster
+# Expected: Your Node.js application loads in the browser
 ```
 
 #### **Step 4: Explore Your Deployment**
+
+**Purpose**: Learn to inspect and troubleshoot your deployed application using OpenShift CLI commands and understand the resources created.
+
+**Expected Outcomes**:
+- View all resources created for your application
+- Understand deployment configuration details
+- Access application logs for troubleshooting
+- Learn to use OpenShift CLI for application management
+
 ```bash
 # List basic resources (avoid permission errors)
 oc get pods,services,deployments,routes
+# Purpose: View all resources created for your application
+# Expected: Shows pods, services, deployments, and routes for your application
 
 # View deployment details
 oc describe deployment nodejs-ex
+# Purpose: Get detailed information about the deployment configuration
+# Expected: Shows deployment spec, status, events, and configuration details
 
 # Check application logs
 oc logs deployment/nodejs-ex
+# Purpose: View application logs for troubleshooting and monitoring
+# Expected: Shows application startup logs and any runtime logs
 
 # If using DeploymentConfig instead of Deployment:
 # oc describe deploymentconfig nodejs-ex
 # oc logs dc/nodejs-ex
+# Purpose: Alternative commands for DeploymentConfig-based deployments
+# Expected: Same detailed information but for DeploymentConfig resources
 ```
 
 #### **Step 5: Troubleshooting Common Issues**
+
+**Purpose**: Learn to diagnose and resolve common issues with OpenShift applications and understand troubleshooting techniques.
+
+**Expected Outcomes**:
+- Identify and resolve common deployment issues
+- Use label selectors for targeted troubleshooting
+- Understand service connectivity
+- Verify application accessibility
+
 ```bash
 # If you see "Forbidden" errors, they're normal in Developer Sandbox
 # Focus on resources you can access: pods, services, deployments, routes
 
 # Check if your application is running
 oc get pods -l app=nodejs-ex
+# Purpose: List only pods with the specific app label
+# Expected: Shows only your application pods with their status
 
 # View application logs
 oc logs -l app=nodejs-ex
+# Purpose: View logs from all pods with the app label
+# Expected: Shows logs from your application for troubleshooting
 
 # Check service endpoints
 oc get endpoints
+# Purpose: Verify that services have proper endpoints
+# Expected: Shows service endpoints and their pod selectors
 
 # Verify routes are working
 oc get routes
+# Purpose: Check route status and accessibility
+# Expected: Shows route URLs and their status
 ```
 
 ### Exercise 1.1: Create and Manage Projects
@@ -186,32 +265,62 @@ oc get routes
 - Apply best practices for project naming and structure
 
 #### Step 1: Use Your Existing Project
+
+**Purpose**: Set up your working environment and understand project context in OpenShift.
+
+**Expected Outcomes**:
+- Successfully navigate to your working project
+- Understand project context and permissions
+- View available resources in your project
+- Learn about project limitations in Developer Sandbox
+
 ```bash
 # Note: Developer Sandbox restricts project creation
 # Use your existing project for all exercises
 
 # Switch to your existing project
 oc project vuyyalasandeep91-dev
+# Purpose: Set the current working context to your project
+# Expected: Confirmation that you're now working in the specified project
 
 # Verify the project
 oc project
+# Purpose: Display current project context and server information
+# Expected: Shows current project name and server URL
 
 # List current resources
 oc get all
+# Purpose: View all resources currently in your project
+# Expected: Shows existing pods, services, deployments (some errors are normal)
 ```
 
 **Concept**: Projects in OpenShift are Kubernetes namespaces with additional features like security policies, quotas, and network isolation. In the Developer Sandbox, you'll use your existing project `vuyyalasandeep91-dev` for all exercises.
 
 #### Step 2: Explore Project Resources
+
+**Purpose**: Learn to explore and understand the resources available in your OpenShift project and understand the project structure.
+
+**Expected Outcomes**:
+- View all resources in your project
+- Understand project metadata and configuration
+- Learn about available resource types
+- Develop familiarity with OpenShift resource organization
+
 ```bash
 # View all resources in the project
 oc get all
+# Purpose: List all resources of common types in your project
+# Expected: Shows pods, services, deployments, routes, and other resources
 
 # View project details
-oc describe project openshift-labs
+oc describe project vuyyalasandeep91-dev
+# Purpose: Get detailed information about the project configuration
+# Expected: Shows project metadata, labels, annotations, and status
 
 # List all resource types available
 oc api-resources
+# Purpose: View all resource types you can work with
+# Expected: Shows comprehensive list of available Kubernetes and OpenShift resources
 ```
 
 #### Step 3: Set Project Quotas
