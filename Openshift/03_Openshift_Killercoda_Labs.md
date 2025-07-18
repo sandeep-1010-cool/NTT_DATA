@@ -51,20 +51,35 @@
 
 #### Step 3: Install OpenShift CLI (oc)
 ```bash
-# Download oc CLI for your platform
+# For Windows:
+# 1. Download from: https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/windows/oc.zip
+# 2. Extract the zip file
+# 3. Add the extracted folder to your system PATH
+# 4. Open a new command prompt and test: oc version
+
 # For Linux/macOS:
 curl -L https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz | tar xz
 sudo mv oc /usr/local/bin/
-
-# For Windows:
-# Download from: https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/windows/oc.zip
+oc version
 ```
 
-#### Step 4: Login via CLI
+#### Step 4: Get Your Login Token
+1. In the OpenShift web console, click on your username `vuyyalasandeep91` in the top right corner
+2. Select "Copy login command" from the dropdown menu
+3. Copy the `oc login` command that appears (it will include your token and server URL)
+4. Save this command for the next step
+
+#### Step 5: Login via CLI
 ```bash
-# Get your login token from the web console
-# Go to your username in the top right → Copy login command
-oc login --token=YOUR_TOKEN --server=YOUR_SERVER_URL
+# Use the login command you copied from the web console
+# It will look something like this:
+oc login --token=sha256~YOUR_TOKEN_HERE --server=https://api.YOUR_CLUSTER.openshiftapps.com:6443
+
+# Verify you're logged in
+oc whoami
+
+# List your projects
+oc get projects
 ```
 
 ---
@@ -73,6 +88,53 @@ oc login --token=YOUR_TOKEN --server=YOUR_SERVER_URL
 
 ### Objective
 Learn basic OpenShift operations including project creation, pod management, and service configuration.
+
+### Quick Start Exercise - Your First Application
+**Complete this exercise before proceeding to the detailed labs below.**
+
+#### **Step 1: Create Your First Project**
+```bash
+# Create a new project for the labs
+oc new-project openshift-labs
+
+# Verify the project was created
+oc get projects
+
+# Switch to the project
+oc project openshift-labs
+```
+
+#### **Step 2: Deploy Your First Application**
+```bash
+# Deploy a sample Node.js application
+oc new-app nodejs~https://github.com/sclorg/nodejs-ex
+
+# Monitor the deployment
+oc get pods -w
+```
+
+#### **Step 3: Expose Your Application**
+```bash
+# Create a route to access your application
+oc expose service nodejs-ex
+
+# Get the route URL
+oc get routes
+
+# Access your application in the browser using the route URL
+```
+
+#### **Step 4: Explore Your Deployment**
+```bash
+# List all resources in your project
+oc get all
+
+# View deployment details
+oc describe deploymentconfig nodejs-ex
+
+# Check application logs
+oc logs dc/nodejs-ex
+```
 
 ### Exercise 1.1: Create and Manage Projects
 
