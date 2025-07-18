@@ -212,66 +212,41 @@ oc delete pod nginx-pod
 ## 🔐 **Quest 4: Hacker Shield** 🛡️
 
 ### 🎯 **Mission Objective**: 
-Create a secure DeploymentConfig with a custom **SCC** and **Service Account**.
+Implement app-level security best practices in the Developer Sandbox environment.
 
 ### 🧩 **Clue**:
-> Only those who wear the right armor (SCC) can survive the harsh world of OpenShift.
+> In the sandbox realm, you must work with what you have. Focus on app-level security, not cluster-level permissions.
 
-### 🛠 **Your Toolkit**:
+### ⚠️ **Sandbox Limitations**:
+- **Cannot create custom SCCs** (cluster-level permission required)
+- **Cannot use `oc adm` commands** (admin privileges needed)
+- **Cannot modify cluster RBAC** (restricted access)
+
+### 🛠 **Your Toolkit** (Sandbox-Compatible):
 ```bash
-# Create SCC
-oc apply -f my-scc.yaml
+# Check available SCCs (read-only)
+oc get scc
 
-# Create Service Account
+# Create service account (project-level)
 oc create serviceaccount secure-sa
 
-# Assign SCC to SA
-oc adm policy add-scc-to-user my-scc -z secure-sa
-
-# Deploy app using that SA
+# Deploy app with security context
 oc apply -f secure-app.yaml
 
-# Verify
-oc get pods -l app=secure-app
+# Verify pod security
+oc get pods -l app=secure-app -o yaml | grep -A 5 securityContext
+
+# Check pod logs for security issues
+oc logs -l app=secure-app
 ```
 
 ### ✅ **Your Mission**:
-1. **Create an SCC** that allows **MustRunAsNonRoot**
+1. **Explore available SCCs** (read-only)
 2. **Create a service account**: `secure-sa`
-3. **Deploy any app** (`nginx`, `python`, etc.) using that SA
-4. **Confirm the pod is Running**
+3. **Deploy app with security context** (no custom SCC)
+4. **Verify non-root execution** and security compliance
 
 ### 📋 **Required Files**:
-
-#### `my-scc.yaml`:
-```yaml
-apiVersion: security.openshift.io/v1
-kind: SecurityContextConstraints
-metadata:
-  name: my-scc
-allowPrivilegedContainer: false
-allowHostNetwork: false
-allowHostPorts: false
-allowHostPID: false
-allowHostIPC: false
-readOnlyRootFilesystem: false
-runAsUser:
-  type: MustRunAsNonRoot
-seLinuxContext:
-  type: MustRunAs
-supplementalGroups:
-  type: RunAsAny
-users: []
-groups: []
-volumes:
-  - configMap
-  - downwardAPI
-  - emptyDir
-  - persistentVolumeClaim
-  - projected
-  - secret
-priority: 10
-```
 
 #### `secure-app.yaml`:
 ```yaml
@@ -297,6 +272,15 @@ spec:
         securityContext:
           runAsNonRoot: true
           runAsUser: 1000
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: false
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
 ```
 
 ### 🎮 **Mission Report Template**:
@@ -304,26 +288,33 @@ spec:
 ✅ MISSION COMPLETE - Quest 4: Hacker Shield
 
 🛡️ SECURITY AUDIT:
-- SCC Created: [my-scc]
+- Available SCCs: [list found]
 - Service Account: [secure-sa]
 - Pod Status: [running/error]
-- Security Context: [non-root user]
-- Deployment Success: [yes/no]
+- Security Context: [non-root user verified]
+- Permission Errors: [any encountered]
 
 🎯 NEXT STEPS:
 [What you want to explore next]
 ```
 
 ### 🏅 **Success Criteria**:
-- ✅ Successfully created custom SCC
-- ✅ Created and configured service account
-- ✅ Deployed app with secure context
-- ✅ Pod is running with non-root user
+- ✅ Explored available SCCs (read-only)
+- ✅ Created service account successfully
+- ✅ Deployed app with security context
+- ✅ Verified non-root user execution
 - ✅ Posted mission report with findings
 
 ### 🎁 **Bonus Challenge**:
-- **+50 XP** if you can explain why the SCC is needed
+- **+50 XP** if you can explain why `runAsNonRoot: true` is important
 - **+25 XP** if you test the app and verify it's accessible
+- **+25 XP** if you identify which SCC your pod is using
+
+### 🛠 **Pro Tips**:
+- Use `oc describe pod secure-app` to see which SCC is applied
+- Check `oc get scc` to see available security policies
+- If you get permission errors, they're expected in sandbox
+- Focus on app-level security practices you can control
 
 ---
 
