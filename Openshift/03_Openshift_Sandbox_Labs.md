@@ -1,6 +1,31 @@
 # OpenShift Quest Mode: Interactive Learning Adventure
 
-## 🗺️ **Game Board: OpenShift Quest Mode**
+## 📋 **Quick Navigation**
+
+### 🎮 **Quest System**
+- [🗺️ Game Board](#-game-board-openshift-quest-mode)
+- [🎯 How to Play](#-how-to-play)
+- [🏆 Leaderboard System](#-leaderboard-system)
+- [🔧 Setup Requirements](#-setup-requirements)
+
+### 🚀 **Quests**
+- [🔥 Quest 1: Cluster Explorer](#-quest-1-cluster-explorer-)
+- [🚀 Quest 2: Launch Your App](#-quest-2-launch-your-app-)
+- [🐞 Quest 3: Debug That Pod!](#-quest-3-debug-that-pod-)
+- [🔐 Quest 4: Hacker Shield](#-quest-4-hacker-shield-)
+- [📦 Quest 5: Treasure Storage](#-quest-5-treasure-storage-)
+- [⚙️ Quest 6: Assembly Line](#-quest-6-assembly-line-)
+- [🌐 Quest 7: Route Master](#-quest-7-route-master-)
+- [🧙 Quest 8: Magic Mesh](#-quest-8-magic-mesh-)
+- [🧠 Boss Level: Optimize & Monitor](#-boss-level-optimize--monitor-)
+
+### 🏆 **Achievements**
+- [🏆 Achievement System](#-achievement-system)
+- [🎮 Ready to Start Your Adventure?](#-ready-to-start-your-adventure)
+
+---
+
+## 🗺️ **Game Board: OpenShift Quest Mode** {#game-board-openshift-quest-mode}
 
 | Quest                                 | Mission Type    | Skill Focus                | Completion Badge   | XP Points |
 | ------------------------------------- | --------------- | -------------------------- | ------------------ | --------- |
@@ -14,7 +39,7 @@
 | 🧙 **Quest 8: Magic Mesh**            | Advanced        | Istio + VirtualService     | 🧙 Mesh Mage       | 500 XP    |
 | 🧠 **Boss Level**: Optimize & Monitor | Final Exam      | Monitoring + Alerts        | 🧠 Mastermind      | 1000 XP   |
 
-## 🎯 **How to Play**
+## 🎯 **How to Play** {#how-to-play}
 
 1. **Start with Quest 1** - Complete each quest in order
 2. **Use the provided toolkit** - Each quest gives you specific commands to use
@@ -22,13 +47,13 @@
 4. **Earn badges** - Collect badges as you complete each quest
 5. **Track your XP** - Build up your OpenShift mastery points
 
-## 🏆 **Leaderboard System**
+## 🏆 **Leaderboard System** {#leaderboard-system}
 - **Rookie**: 0-500 XP
 - **Explorer**: 501-1000 XP  
 - **Veteran**: 1001-2000 XP
 - **Master**: 2001+ XP
 
-## 🔧 **Setup Requirements**
+## 🔧 **Setup Requirements** {#setup-requirements}
 
 ### Prerequisites
 - Access to [OpenShift Developer Sandbox](https://developers.redhat.com/developer-sandbox)
@@ -49,7 +74,7 @@
 
 ---
 
-## 🔥 **Quest 1: Cluster Explorer** 🧭
+## 🔥 **Quest 1: Cluster Explorer** 🧭 {#quest-1-cluster-explorer}
 
 ### 🎯 **Mission Objective**: 
 Verify your OpenShift access and list all resources **you have permissions for**.
@@ -94,7 +119,7 @@ oc get pods,svc,deploy
 
 ---
 
-## 🚀 **Quest 2: Launch Your App** 🛸
+## 🚀 **Quest 2: Launch Your App** 🛸 {#quest-2-launch-your-app}
 
 ### 🎯 **Mission Objective**: 
 Deploy your first application and make it accessible to the world.
@@ -155,7 +180,7 @@ oc get routes
 
 ---
 
-## 🐞 **Quest 3: Debug That Pod!** 🔍
+## 🐞 **Quest 3: Debug That Pod!** 🔍 {#quest-3-debug-that-pod}
 
 ### 🎯 **Mission Objective**: 
 Master the art of troubleshooting and debugging in OpenShift.
@@ -209,7 +234,7 @@ oc delete pod nginx-pod
 
 ---
 
-## 🔐 **Quest 4: Hacker Shield** 🛡️
+## 🔐 **Quest 4: Hacker Shield** 🛡️ {#quest-4-hacker-shield}
 
 ### 🎯 **Mission Objective**: 
 Implement app-level security best practices in the Developer Sandbox environment.
@@ -318,7 +343,7 @@ spec:
 
 ---
 
-## 📦 **Quest 5: Treasure Storage** 📦
+## 📦 **Quest 5: Treasure Storage** 📦 {#quest-5-treasure-storage}
 
 ### 🎯 **Mission Objective**: 
 Master persistent storage and configuration management.
@@ -357,7 +382,7 @@ oc describe configmap [name]
 
 ---
 
-## ⚙️ **Quest 6: Assembly Line** 🤖
+## ⚙️ **Quest 6: Assembly Line** 🤖 {#quest-6-assembly-line}
 
 ### 🎯 **Mission Objective**: 
 Set up automated CI/CD pipelines for your applications.
@@ -395,7 +420,7 @@ oc start-build [build-name]
 
 ---
 
-## 🌐 **Quest 7: Route Master** 🌍
+## 🌐 **Quest 7: Route Master** 🌍 {#quest-7-route-master}
 
 ### 🎯 **Mission Objective**: 
 Master networking and routing in OpenShift.
@@ -433,7 +458,7 @@ oc describe service [service-name]
 
 ---
 
-## 🧙 **Quest 8: Magic Mesh** 🧙
+## 🧙 **Quest 8: Magic Mesh** 🧙 {#quest-8-magic-mesh}
 
 ### 🎯 **Mission Objective**: 
 Explore advanced service mesh capabilities.
@@ -471,7 +496,7 @@ oc get gateways
 
 ---
 
-## 🧠 **Boss Level: Optimize & Monitor** 🧠
+## 🧠 **Boss Level: Optimize & Monitor** 🧠 {#boss-level-optimize--monitor}
 
 ### 🎯 **Mission Objective**: 
 Implement comprehensive monitoring and optimization.
@@ -513,7 +538,7 @@ oc top nodes
 
 ---
 
-## 🏆 **Achievement System**
+## 🏆 **Achievement System** {#achievement-system}
 
 ### 🎖️ **Badges to Collect**:
 - 🧭 **Pathfinder**: Complete Quest 1
@@ -541,6 +566,6 @@ oc top nodes
 
 ---
 
-## 🎮 **Ready to Start Your Adventure?**
+## 🎮 **Ready to Start Your Adventure?** {#ready-to-start-your-adventure}
 
 **Begin with Quest 1: Cluster Explorer** and post your mission report to unlock the next quest! 
