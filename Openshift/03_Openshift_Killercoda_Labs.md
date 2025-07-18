@@ -21,6 +21,12 @@
 - Basic understanding of containers and Kubernetes concepts
 - Git repository for storing code examples
 
+### Important Notes for Developer Sandbox
+- **Project Creation**: The Developer Sandbox restricts creating new projects
+- **Use Existing Project**: All labs will use your existing project `vuyyalasandeep91-dev`
+- **Resource Limits**: Be mindful of resource usage within the free tier
+- **Session Duration**: Sandbox sessions have time limits
+
 ### Getting Started with OpenShift Developer Sandbox
 
 #### Step 1: Access the Sandbox
@@ -92,17 +98,22 @@ Learn basic OpenShift operations including project creation, pod management, and
 ### Quick Start Exercise - Your First Application
 **Complete this exercise before proceeding to the detailed labs below.**
 
-#### **Step 1: Create Your First Project**
+#### **Step 1: Use Your Existing Project**
 ```bash
-# Create a new project for the labs
-oc new-project openshift-labs
+# Note: Developer Sandbox has restrictions on project creation
+# Use your existing project instead of creating a new one
 
-# Verify the project was created
-oc get projects
+# Switch to your existing project
+oc project vuyyalasandeep91-dev
 
-# Switch to the project
-oc project openshift-labs
+# Verify the project
+oc project
+
+# List current resources
+oc get all
 ```
+
+**Important**: The OpenShift Developer Sandbox restricts project creation. Use your existing project `vuyyalasandeep91-dev` for all labs.
 
 #### **Step 2: Deploy Your First Application**
 ```bash
@@ -147,19 +158,22 @@ oc logs dc/nodejs-ex
 - Explore project resources and understand their organization
 - Apply best practices for project naming and structure
 
-#### Step 1: Create a New Project
+#### Step 1: Use Your Existing Project
 ```bash
-# Create a new project for our labs
-oc new-project openshift-labs
+# Note: Developer Sandbox restricts project creation
+# Use your existing project for all exercises
 
-# Verify the project was created
-oc get projects
+# Switch to your existing project
+oc project vuyyalasandeep91-dev
 
-# Switch to the project
-oc project openshift-labs
+# Verify the project
+oc project
+
+# List current resources
+oc get all
 ```
 
-**Concept**: Projects in OpenShift are Kubernetes namespaces with additional features like security policies, quotas, and network isolation.
+**Concept**: Projects in OpenShift are Kubernetes namespaces with additional features like security policies, quotas, and network isolation. In the Developer Sandbox, you'll use your existing project `vuyyalasandeep91-dev` for all exercises.
 
 #### Step 2: Explore Project Resources
 ```bash
