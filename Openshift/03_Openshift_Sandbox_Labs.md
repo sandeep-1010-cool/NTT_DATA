@@ -17,6 +17,7 @@
 - [⚙️ Quest 6: Assembly Line](#-quest-6-assembly-line-)
 - [🌐 Quest 7: Route Master](#-quest-7-route-master-)
 - [🧙 Quest 8: Magic Mesh](#-quest-8-magic-mesh-)
+- [🧠 Quest 9: Mastermind](#-quest-9-mastermind-)
 - [🧠 Boss Level: Optimize & Monitor](#-boss-level-optimize--monitor-)
 
 ### 🏆 **Achievements**
@@ -37,7 +38,8 @@
 | ⚙️ **Quest 6: Assembly Line**         | Automation      | CI/CD with Pipelines       | 🤖 DevOps Engineer | 400 XP    |
 | 🌐 **Quest 7: Route Master**          | Connectivity    | Services + Routes          | 🌍 Network Guru    | 350 XP    |
 | 🧙 **Quest 8: Magic Mesh**            | Advanced        | Istio + VirtualService     | 🧙 Mesh Mage       | 500 XP    |
-| 🧠 **Boss Level**: Optimize & Monitor | Final Exam      | Monitoring + Alerts        | 🧠 Mastermind      | 1000 XP   |
+| 🧠 **Quest 9: Mastermind**            | Monitoring      | Prometheus + Alerting      | 🧠 Mastermind      | 600 XP    |
+| 🏆 **Boss Level**: Optimize & Monitor | Final Exam      | Monitoring + Alerts        | 🏆 Grand Master    | 1000 XP   |
 
 ## 🎯 **How to Play** {#how-to-play}
 
@@ -671,76 +673,419 @@ oc get routes
 ## 🌐 **Quest 7: Route Master** 🌍 {#quest-7-route-master}
 
 ### 🎯 **Mission Objective**: 
-Master networking and routing in OpenShift.
+Deploy two services — **frontend** and **backend** — that talk to each other inside the cluster and are exposed separately to the outside world.
 
 ### 🧩 **Clue**:
-> The network is the nervous system of your cluster. Master it.
+> Only those who name their services well can summon them from within the mesh.
 
 ### 🛠 **Your Toolkit**:
+
+#### **1️⃣ Deploy Both Apps**:
 ```bash
-oc get routes
+# Deploy backend app
+oc new-app https://github.com/sclorg/nodejs-ex --name=backend
+
+# Deploy frontend app
+oc new-app https://github.com/sclorg/nodejs-ex --name=frontend
+```
+
+#### **2️⃣ Create Services** (if needed):
+If `oc new-app` didn't create services:
+```bash
+oc expose dc backend --port=8080 --name=backend-svc
+oc expose dc frontend --port=8080 --name=frontend-svc
+```
+
+#### **3️⃣ Test Pod-to-Pod Access**:
+```bash
+# Get pod names
+BACKEND_POD=$(oc get pods -l app=backend -o jsonpath='{.items[0].metadata.name}')
+FRONTEND_POD=$(oc get pods -l app=frontend -o jsonpath='{.items[0].metadata.name}')
+
+# Test communication from frontend to backend
+oc exec $FRONTEND_POD -- curl -s http://backend-svc:8080
+```
+
+#### **4️⃣ Expose Both with Custom Routes**:
+```bash
+oc expose svc backend-svc --name=backend-route
+oc expose svc frontend-svc --name=frontend-route
+```
+
+To create with custom host:
+```bash
+cat <<EOF | oc apply -f -
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: custom-frontend
+spec:
+  host: frontend-quest.apps.YOUR-SANDBOX-DOMAIN
+  to:
+    kind: Service
+    name: frontend-svc
+  port:
+    targetPort: 8080
+EOF
+```
+
+> Replace `YOUR-SANDBOX-DOMAIN` with what you see in `oc get routes`.
+
+#### **5️⃣ Verify Network Connectivity**:
+```bash
+# List all services
 oc get services
-oc describe route [route-name]
-oc describe service [service-name]
+
+# List all routes
+oc get routes
+
+# Test service connectivity
+oc exec $FRONTEND_POD -- curl -s http://backend-svc:8080
+
+# Test external access
+curl -s http://backend-route-URL
+curl -s http://frontend-route-URL
 ```
 
 ### ✅ **Your Mission**:
-1. **List all routes** in your project
-2. **Examine service configurations**
-3. **Test route connectivity**
-4. **Understand the networking model**
+1. **Deploy both apps** and expose services
+2. **`curl` from frontend to backend** (inside cluster)
+3. **Create 2 public routes** and access via browser
+4. **Share any 1 route URL** or screenshot
+5. **Type `done`** to unlock Quest 8: Mesh Mage
 
 ### 🎮 **Mission Report Template**:
 ```
 ✅ MISSION COMPLETE - Quest 7: Route Master
 
 🌐 NETWORKING STATUS:
-- Routes Found: [public URLs]
-- Services Active: [service list]
-- Connectivity: [working/broken]
+- Backend App: [deployed/running]
+- Frontend App: [deployed/running]
+- Services Created: [backend-svc, frontend-svc]
+- Internal Communication: [frontend → backend curl test]
+- Routes Created: [backend-route, frontend-route]
+- External Access: [URLs accessible]
 - Network Model: [understanding level]
 
 🎯 NEXT STEPS:
 [What you want to explore next]
 ```
 
+### 🏅 **Success Criteria**:
+- ✅ Deployed backend and frontend apps
+- ✅ Created services for both apps
+- ✅ Verified pod-to-pod communication
+- ✅ Created public routes for both apps
+- ✅ Tested external access to both apps
+- ✅ Posted mission report with findings
+
+### 🎁 **Bonus Challenge**:
+- **+50 XP** if you can explain the difference between ClusterIP and Route
+- **+25 XP** if you test both apps and verify they're accessible
+- **+25 XP** if you can show the service-to-service communication logs
+
+### 🛠 **Pro Tips**:
+- Use `oc get services` to list all services
+- Use `oc get routes` to see public URLs
+- Use `oc describe service backend-svc` for service details
+- Use `oc describe route backend-route` for route details
+- **Note**: Services enable internal communication, Routes enable external access
+- Use `oc exec $POD -- curl $SERVICE` to test internal connectivity
+
 ---
 
 ## 🧙 **Quest 8: Magic Mesh** 🧙 {#quest-8-magic-mesh}
 
 ### 🎯 **Mission Objective**: 
-Explore advanced service mesh capabilities.
+Use OpenShift Service Mesh (Istio) to deploy 2 versions of the same app and route traffic between them using a **VirtualService**.
 
 ### 🧩 **Clue**:
-> Service mesh is like magic - it makes complex networking simple.
+> One app. Two paths. The mesh decides who gets how much.
+
+### 🧠 **Assumption**:
+You've already installed **OpenShift Service Mesh Operator** and created:
+- `ServiceMeshControlPlane`
+- `ServiceMeshMemberRoll`
+
+> Let me know if not — I'll help you bootstrap it first.
 
 ### 🛠 **Your Toolkit**:
+
+#### **1️⃣ Label Namespace for Mesh Injection**:
 ```bash
+oc label namespace $(oc project -q) istio-injection=enabled --overwrite
+```
+
+#### **2️⃣ Deploy Two Versions of App**:
+```bash
+# Version v1
+oc new-app https://github.com/sclorg/nodejs-ex.git --name app-v1
+
+# Version v2 (simulate new version)
+oc new-app https://github.com/sclorg/nodejs-ex.git --name app-v2
+```
+
+#### **3️⃣ Create Kubernetes Service**:
+```bash
+cat <<EOF | oc apply -f -
+apiVersion: v1
+kind: Service
+metadata:
+  name: mesh-app
+  labels:
+    app: mesh-app
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: mesh-app
+EOF
+```
+
+#### **4️⃣ Patch Deployments with Label for Routing**:
+```bash
+oc label deployment app-v1 app=mesh-app version=v1 --overwrite
+oc label deployment app-v2 app=mesh-app version=v2 --overwrite
+```
+
+#### **5️⃣ Create Istio VirtualService & DestinationRule**:
+```bash
+cat <<EOF | oc apply -f -
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: mesh-app
+spec:
+  host: mesh-app
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+  - name: v2
+    labels:
+      version: v2
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: mesh-app
+spec:
+  hosts:
+  - mesh-app
+  http:
+  - route:
+    - destination:
+        host: mesh-app
+        subset: v1
+      weight: 80
+    - destination:
+        host: mesh-app
+        subset: v2
+      weight: 20
+EOF
+```
+
+#### **6️⃣ Test Traffic Split**:
+```bash
+# Get pod
+POD=$(oc get pod -l app=mesh-app -o jsonpath='{.items[0].metadata.name}')
+
+# Run curl 10 times
+for i in {1..10}; do oc exec $POD -- curl -s http://mesh-app:8080; echo; done
+```
+
+🔍 You should see mixed responses indicating 80/20 split between v1 and v2.
+
+#### **7️⃣ Verify Mesh Components**:
+```bash
+# Check VirtualServices
 oc get virtualservices
+
+# Check DestinationRules
 oc get destinationrules
-oc get serviceentries
-oc get gateways
+
+# Check service mesh pods
+oc get pods -n istio-system
+
+# Check mesh injection
+oc get pods --show-labels | grep istio-injection
 ```
 
 ### ✅ **Your Mission**:
-1. **Check if service mesh is installed**
-2. **Explore VirtualServices**
-3. **Examine DestinationRules**
-4. **Understand the mesh architecture**
+1. **Deploy v1 and v2** under Service Mesh
+2. **Apply `VirtualService` and `DestinationRule`**
+3. **Run `curl` loop** and confirm split traffic
+4. **Share your findings** with curl output or observation
 
 ### 🎮 **Mission Report Template**:
 ```
 ✅ MISSION COMPLETE - Quest 8: Magic Mesh
 
 🧙 MESH STATUS:
-- Service Mesh: [installed/not available]
-- VirtualServices: [found configurations]
-- DestinationRules: [traffic policies]
+- Service Mesh: [installed/working]
+- VirtualServices: [mesh-app created]
+- DestinationRules: [mesh-app created]
+- Traffic Split: [80/20 v1/v2]
+- Mesh Injection: [enabled/working]
+- Traffic Test Results: [curl output summary]
 - Mesh Architecture: [understanding level]
 
 🎯 NEXT STEPS:
 [What you want to explore next]
 ```
+
+### 🏅 **Success Criteria**:
+- ✅ Labeled namespace for mesh injection
+- ✅ Deployed v1 and v2 versions of app
+- ✅ Created Kubernetes service for mesh routing
+- ✅ Applied VirtualService and DestinationRule
+- ✅ Verified traffic split (80/20)
+- ✅ Posted mission report with findings
+
+### 🎁 **Bonus Challenge**:
+- **+50 XP** if you can explain the difference between VirtualService and DestinationRule
+- **+25 XP** if you modify the traffic split to 50/50 and test
+- **+25 XP** if you can show the mesh telemetry and metrics
+
+### 🛠 **Pro Tips**:
+- Use `oc get virtualservices` to list VirtualServices
+- Use `oc get destinationrules` to list DestinationRules
+- Use `oc get pods -n istio-system` to check mesh components
+- Use `oc describe virtualservice mesh-app` for detailed configuration
+- **Note**: Service mesh requires proper namespace labeling for injection
+- Use `oc logs -l app=mesh-app` to see traffic routing logs
+
+---
+
+## 🧠 **Quest 9: Mastermind – Monitoring & Alerting** 🧠 {#quest-9-mastermind}
+
+### 🎯 **Mission Objective**: 
+Enable deep visibility, track metrics, and set alerts that awaken when danger (or downtime) is near — using **Prometheus**, **ServiceMonitor**, and **PrometheusRule**.
+
+### 🧩 **Clue**:
+> You cannot monitor what you don't label. Metrics only flow where annotations go.
+
+### 🧠 **Assumption**:
+You are using **OpenShift Monitoring Stack** (comes pre-installed in sandbox).
+
+### 🛠 **Your Toolkit**:
+
+#### **1️⃣ Deploy a Prometheus-Compatible App**:
+```bash
+oc new-app prom/node-exporter --name=monitor-me
+```
+
+#### **2️⃣ Add Scrape Annotations to Pod**:
+```bash
+oc patch deployment monitor-me --patch '
+spec:
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9100"
+' --type=merge
+```
+
+> Change `port` to match container's metrics port
+
+#### **3️⃣ Create a ServiceMonitor**:
+```bash
+cat <<EOF | oc apply -f -
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: monitor-me
+  labels:
+    team: devops
+spec:
+  selector:
+    matchLabels:
+      app: monitor-me
+  endpoints:
+    - port: web
+      interval: 30s
+EOF
+```
+
+#### **4️⃣ Create an Alert Rule (PrometheusRule)**:
+```bash
+cat <<EOF | oc apply -f -
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: monitor-me-rules
+spec:
+  groups:
+  - name: high-cpu
+    rules:
+    - alert: HighCPUDetected
+      expr: process_cpu_seconds_total > 0.5
+      for: 1m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High CPU usage on monitor-me"
+        description: "CPU usage is above threshold"
+EOF
+```
+
+#### **5️⃣ Test It**:
+```bash
+# Simulate CPU load
+oc exec $(oc get pods -l app=monitor-me -o jsonpath='{.items[0].metadata.name}') -- sh -c "yes > /dev/null &"
+
+# Wait 1–2 mins and check alerts
+oc get prometheusrules
+oc get servicemonitors
+```
+
+You can also view metrics via web console:
+**Monitoring → Metrics → Query `process_cpu_seconds_total`**
+
+### ✅ **Your Mission**:
+1. **Deploy a metrics-emitting app** (node-exporter)
+2. **Set up `ServiceMonitor` + `PrometheusRule`**
+3. **Trigger the alert** and validate it in the console
+4. **Share your findings** in the mission report format
+
+### 🎮 **Mission Report Template**:
+```
+✅ MISSION COMPLETE - Quest 9: Mastermind
+
+🧠 MONITORING STATUS:
+- App Deployed: [monitor-me]
+- ServiceMonitor: [created/working]
+- PrometheusRule: [created/working]
+- Metrics Collection: [active/verified]
+- Alert Triggered: [yes/no]
+- Console Access: [metrics visible]
+- Monitoring Architecture: [understanding level]
+
+🎯 NEXT STEPS:
+[What you want to explore next]
+```
+
+### 🏅 **Success Criteria**:
+- ✅ Deployed node-exporter app with metrics
+- ✅ Created ServiceMonitor for metrics collection
+- ✅ Created PrometheusRule for alerting
+- ✅ Triggered and verified alert
+- ✅ Posted mission report with findings
+
+### 🎁 **Bonus Challenge**:
+- **+50 XP** if you can explain the difference between ServiceMonitor and PrometheusRule
+- **+25 XP** if you create a custom metric and alert on it
+- **+25 XP** if you can show the alert firing in the web console
+
+### 🛠 **Pro Tips**:
+- Use `oc get servicemonitors` to list ServiceMonitors
+- Use `oc get prometheusrules` to list PrometheusRules
+- Use `oc describe servicemonitor monitor-me` for detailed configuration
+- Use `oc describe prometheusrule monitor-me-rules` for alert details
+- **Note**: Metrics port must match the container's actual metrics endpoint
+- Use web console Monitoring → Metrics for visual verification
 
 ---
 
@@ -797,7 +1142,8 @@ oc top nodes
 - 🤖 **DevOps Engineer**: Complete Quest 6
 - 🌍 **Network Guru**: Complete Quest 7
 - 🧙 **Mesh Mage**: Complete Quest 8
-- 🧠 **Mastermind**: Complete Boss Level
+- 🧠 **Mastermind**: Complete Quest 9
+- 🏆 **Grand Master**: Complete Boss Level
 
 ### 🎯 **XP Tracking**:
 - **Quest 1**: 100 XP
@@ -808,9 +1154,10 @@ oc top nodes
 - **Quest 6**: 400 XP
 - **Quest 7**: 350 XP
 - **Quest 8**: 500 XP
+- **Quest 9**: 600 XP
 - **Boss Level**: 1000 XP
 
-**Total Possible XP**: 3250 XP
+**Total Possible XP**: 3850 XP
 
 ---
 
