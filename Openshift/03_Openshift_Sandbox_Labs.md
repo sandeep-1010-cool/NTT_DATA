@@ -532,38 +532,139 @@ oc get routes
 ## ⚙️ **Quest 6: Assembly Line** 🤖 {#quest-6-assembly-line}
 
 ### 🎯 **Mission Objective**: 
-Set up automated CI/CD pipelines for your applications.
+Create and run a **CI/CD pipeline** that clones a Git repo, builds the image with **Buildah**, and deploys it in your namespace.
 
 ### 🧩 **Clue**:
-> Automation is the key to DevOps. Build once, deploy everywhere.
+> A builder without a workspace is just a dreamer. A pipeline with a PVC becomes a factory.
 
-### 🛠 **Your Toolkit**:
+### 🛠 **Your Toolkit** (Tekton YAMLs):
+
+You'll need 3 objects:
+- 📦 `Pipeline`
+- 🚀 `PipelineRun`
+- 📂 `VolumeClaimTemplate`
+
+#### **1️⃣ Create Pipeline**:
+```bash
+cat <<EOF | oc apply -f -
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: build-and-deploy
+spec:
+  workspaces:
+    - name: shared-workspace
+  params:
+    - name: git-url
+      type: string
+    - name: image-name
+      type: string
+  tasks:
+    - name: fetch-repo
+      taskRef:
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+      params:
+        - name: url
+          value: \$(params.git-url)
+    - name: build-image
+      runAfter: ["fetch-repo"]
+      taskRef:
+        name: buildah
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+      params:
+        - name: IMAGE
+          value: \$(params.image-name)
+EOF
+```
+
+#### **2️⃣ Create PipelineRun**:
+```bash
+cat <<EOF | oc apply -f -
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: build-and-deploy-run
+spec:
+  pipelineRef:
+    name: build-and-deploy
+  params:
+    - name: git-url
+      value: https://github.com/sclorg/nodejs-ex
+    - name: image-name
+      value: image-registry.openshift-image-registry.svc:5000/\$(oc project -q)/tekton-app:latest
+  workspaces:
+    - name: shared-workspace
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 1Gi
+EOF
+```
+
+#### **3️⃣ Monitor Progress**:
 ```bash
 oc get pipelineruns
-oc get tasks
-oc get buildconfigs
-oc start-build [build-name]
+oc describe pipelinerun build-and-deploy-run
+oc logs -f pipelinerun/build-and-deploy-run --all
+```
+
+#### **4️⃣ Deploy the Built Image**:
+```bash
+oc new-app \$(oc project -q)/tekton-app:latest
+oc expose svc tekton-app
+oc get routes
 ```
 
 ### ✅ **Your Mission**:
-1. **Check if pipelines are available**
-2. **Explore build configurations**
-3. **Start a manual build**
-4. **Monitor build progress**
+1. **Apply the Pipeline + PipelineRun**
+2. **Ensure `git-clone` and `buildah` tasks are pre-installed** (if not, I'll provide YAMLs for them)
+3. **Wait for the pipeline to finish**
+4. **Deploy the image** using the commands above
+5. **Share your findings** with route URL or issues
 
 ### 🎮 **Mission Report Template**:
 ```
 ✅ MISSION COMPLETE - Quest 6: Assembly Line
 
 🤖 AUTOMATION STATUS:
-- Pipelines Available: [yes/no]
-- Build Configs: [found configurations]
-- Build Status: [success/failure]
-- Automation Level: [manual/automated]
+- Pipeline Created: [build-and-deploy]
+- PipelineRun Status: [success/failure]
+- Tasks Available: [git-clone, buildah]
+- Build Duration: [time taken]
+- Image Built: [tekton-app:latest]
+- App Deployed: [yes/no]
+- Route URL: [your app's public URL]
 
 🎯 NEXT STEPS:
 [What you want to explore next]
 ```
+
+### 🏅 **Success Criteria**:
+- ✅ Created Pipeline with git-clone and buildah tasks
+- ✅ Created PipelineRun with proper parameters
+- ✅ Pipeline executed successfully
+- ✅ Image built and pushed to registry
+- ✅ App deployed from built image
+- ✅ Posted mission report with findings
+
+### 🎁 **Bonus Challenge**:
+- **+50 XP** if you can explain the difference between Pipeline and PipelineRun
+- **+25 XP** if you test the app and verify it's accessible
+- **+25 XP** if you can show the pipeline logs and explain each step
+
+### 🛠 **Pro Tips**:
+- Use `oc get tasks` to see available Tekton tasks
+- Use `oc get pipelineruns` to monitor pipeline execution
+- Use `oc logs pipelinerun/build-and-deploy-run --all` for detailed logs
+- **Note**: If tasks are missing, you may need to install them first
+- Use `oc get routes` to get your app's public URL
 
 ---
 
