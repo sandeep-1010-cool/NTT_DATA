@@ -36,6 +36,13 @@
    - **Terms and conditions**: Check the box to agree
 5. Click "Submit" and wait for your sandbox to be provisioned (usually 2-3 minutes)
 
+#### Step 1.5: Select OpenShift Platform
+1. On the Red Hat Developer Sandbox dashboard, you'll see multiple product cards
+2. **Select the "OpenShift" card** (first card with red and black "O" logo)
+3. Click the **"Try it"** button on the OpenShift card
+4. This will provision your OpenShift cluster for the labs
+5. Wait for the OpenShift cluster to be ready (2-3 minutes)
+
 #### Step 2: Access Your Cluster
 1. Once provisioned, you'll see your cluster URL
 2. Click on the cluster URL to access the web console
