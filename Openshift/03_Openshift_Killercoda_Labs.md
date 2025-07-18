@@ -26,8 +26,15 @@
 #### Step 1: Access the Sandbox
 1. Visit [OpenShift Developer Sandbox](https://developers.redhat.com/developer-sandbox)
 2. Click "Start your free sandbox"
-3. Sign in with your Red Hat account (create one if needed)
-4. Wait for your sandbox to be provisioned (usually 2-3 minutes)
+3. Sign in with your Red Hat account using these credentials:
+   - **Email**: `vuyyalasandeep91@gmail.com`
+   - **Password**: `ChangePwd@13081991`
+4. Complete the required information form:
+   - **First name**: `sandeep`
+   - **Last name**: `vuyyala`
+   - **Email address**: `vuyyalasandeep91@gmail.com`
+   - **Terms and conditions**: Check the box to agree
+5. Click "Submit" and wait for your sandbox to be provisioned (usually 2-3 minutes)
 
 #### Step 2: Access Your Cluster
 1. Once provisioned, you'll see your cluster URL
