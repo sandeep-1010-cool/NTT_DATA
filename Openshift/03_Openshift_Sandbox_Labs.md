@@ -140,6 +140,9 @@ oc expose service quest2-app
 
 # Get the public route
 oc get routes
+
+# Alternative: Modern deployment with YAML
+# oc apply -f quest2-app.yaml
 ```
 
 ### ✅ **Your Mission**:
@@ -255,14 +258,26 @@ oc get scc
 # Create service account (project-level)
 oc create serviceaccount secure-sa
 
-# Deploy app with security context
+# Deploy app with security context (Modern Deployment)
 oc apply -f secure-app.yaml
 
-# Verify pod security
-oc get pods -l app=secure-app -o yaml | grep -A 5 securityContext
+# OR use legacy DeploymentConfig (if needed)
+# oc apply -f secure-app-dc.yaml
 
-# Check pod logs for security issues
-oc logs -l app=secure-app
+# Verify pod security (use pod name, not label)
+oc get pods -o yaml | grep -A 10 securityContext
+
+# Check pod logs (use pod name)
+oc logs secure-app-1-deploy
+
+# Alternative: Check all pods and find the right one
+oc get pods --show-labels
+
+# Get specific pod details
+oc describe pod secure-app-1-deploy
+
+# Alternative: Use oc new-app for quick deployment
+# oc new-app nginx:latest --name=secure-app --serviceaccount=secure-sa
 ```
 
 ### ✅ **Your Mission**:
@@ -273,15 +288,16 @@ oc logs -l app=secure-app
 
 ### 📋 **Required Files**:
 
-#### `secure-app.yaml`:
+#### `secure-app.yaml` (Modern Deployment):
 ```yaml
-apiVersion: apps.openshift.io/v1
-kind: DeploymentConfig
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: secure-app
 spec:
   replicas: 1
   selector:
+    matchLabels:
     app: secure-app
   template:
     metadata:
@@ -299,8 +315,43 @@ spec:
           runAsUser: 1000
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: false
-        resources:
-          requests:
+  resources:
+    requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+```
+
+#### `secure-app-dc.yaml` (Legacy DeploymentConfig - if needed):
+```yaml
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  name: secure-app-dc
+spec:
+  replicas: 1
+  selector:
+    app: secure-app-dc
+  template:
+    metadata:
+      labels:
+        app: secure-app-dc
+    spec:
+      serviceAccountName: secure-sa
+      containers:
+      - name: secure-app
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: false
+  resources:
+    requests:
             memory: "64Mi"
             cpu: "250m"
           limits:
@@ -340,6 +391,8 @@ spec:
 - Check `oc get scc` to see available security policies
 - If you get permission errors, they're expected in sandbox
 - Focus on app-level security practices you can control
+- **Note**: `DeploymentConfig` is deprecated - use `Deployment` for new apps
+- Use `oc new-app` for quick prototyping, `oc apply` for production deployments
 
 ---
 
