@@ -13,27 +13,94 @@
 
 ---
 
-### **Key Concepts**
+## **1. BUILD TOOLS FUNDAMENTALS**
 
-#### **Build Tools**
-- **Definition**: Automates the process of converting source code into executable applications.
-- **Activities**: Includes compiling, linking, packaging, and converting code to executable form.
-- **Examples**: Tools vary based on programming language. For Java, Apache Maven is used.
+### **1.1 Build Tools Introduction**
+- **Definition**: Build tools are commonly known as programs that automate the process of building an executable application from source code.
+- **Activities**: This building process includes activities like compiling, linking, and packaging the code into an executable form.
+- **Market**: There are multiple build tools available in the market.
+- **Popular Examples**:
+  - **Apache Ant**: Traditional build tool with XML-based configuration
+  - **Apache Maven**: Project Object Model (POM) based build tool for Java projects
+  - **Gradle**: Modern build tool with Groovy/Kotlin DSL
+- **Language-Specific**: Tools vary based on programming language. For Java, Apache Maven is commonly used.
 
-#### **Apache Maven**
+### **1.2 Software Build Process**
+- **Overview**: There are multiple phases during software build process, so different tools are used for each phase and which tool is for which phase, everything is defined under `pom.xml`.
+- **Build Process Phases**:
+  - **Compilation**: Uses `gcc compiler` to compile source code
+  - **Code Review**: Uses `pmd` and `SonarQube` for static code analysis and quality checks
+  - **Test Cases**: Uses `Junit` for unit testing
+  - **Test Case Report**: Uses `Sure-Fire` for generating test reports
+  - **Code Coverage**: Uses `Cobertura` for code coverage analysis
+  - **Package**: Creates `application.war` as the final artifact
+
+---
+
+## **2. APACHE MAVEN**
+
+### **2.1 Maven Basics**
 - **Purpose**: A build tool for Java-based projects.
 - **Key Features**:
   - Based on **Project Object Model (POM)**.
   - Resolves dependencies defined in `pom.xml`.
   - Downloads dependencies from the internet if not available locally.
-  - Commands used:
-    - `mvn compile`: Generates compiled code in `Target/classes`.
-    - `mvn test`: Creates test reports in `Target/surefire-reports`.
-    - `mvn package`: Creates an executable `.war` file in `Target`.
+
+### **2.2 Java Project Structure**
+- **Standard Maven Directory Structure**:
+  - **`src` folder**: Contains source code and test cases
+    - **`main` folder**: Contains Java source code
+    - **`test` folder**: Contains test cases
+  - **`pom.xml` file**: Project Object Model configuration file
+  - **Additional files**: `build.properties`, `build.xml` (for Ant projects)
+
+### **2.3 Maven Commands**
+- **`mvn compile`**: Generates compiled code in `Target/classes` folder. Inside classes folder there will be compiled code `.class` files.
+- **`mvn test`**: Creates test reports in `Target/surefire-reports` folder which will contain test case report.
+- **`mvn package`**: Creates an executable `.war` file in `Target` (e.g., `target/example.war`) which is basically the file that we will deploy to Tomcat server.
+
+### **2.4 pom.xml Configuration for Build Tools**
+- **PMD Plugin**: 
+  ```xml
+  <!-- PMD -->
+  <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-pmd-plugin</artifactId>
+  </plugin>
+  ```
+- **JUnit Testing**:
+  ```xml
+  <!-- TESTING -->
+  <dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+  </dependency>
+  ```
+- **Surefire Reports**:
+  ```xml
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
+  ```
+- **Cobertura Coverage**:
+  ```xml
+  <plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>cobertura-maven-plugin</artifactId>
+    <version>${cobertura.version}</version>
+  </plugin>
+  ```
 
 ---
 
-### **JFrog Artifactory**
+## **3. JFROG ARTIFACTORY**
+
+### **3.1 JFrog Artifactory Overview**
 - **Purpose**: Repository for storing and managing build artifacts.
 - **Types of Repositories**:
   - **Local**: Stores artifacts (e.g., `.war`, `.zip`) private to the organization.
@@ -44,9 +111,7 @@
   - Enhances security by avoiding direct internet downloads.
   - Saves bandwidth through caching.
 
----
-
-### **JFrog OSS Artifactory Installation**
+### **3.2 JFrog OSS Artifactory Installation**
 - **Steps**:
   1. Update packages and install Java (prerequisite).
   2. Download OSS binary and unzip the package.
@@ -58,7 +123,9 @@
 
 ---
 
-### **Apache Tomcat**
+## **4. APACHE TOMCAT**
+
+### **4.1 Tomcat Overview**
 - **Overview**: Open-source web server and servlet container for Java applications.
 - **Installation**:
   - Update packages and install Java.
@@ -67,7 +134,9 @@
 
 ---
 
-### **Jenkins Pipeline**
+## **5. JENKINS CI/CD PIPELINE**
+
+### **5.1 Jenkins Pipeline Overview**
 - **Pipeline Type**: Declarative syntax used for simplicity and clarity.
 - **Stages**:
   1. **Checkout**: Pulls code from Git repository.
@@ -85,17 +154,13 @@
      - Places `.war` file in `webapps` directory.
      - Restarts Tomcat server.
 
----
-
-### **Master-Slave Setup**
+### **5.2 Master-Slave Setup**
 - **Slave Configuration**:
   - Created a new node labeled `test-slave`.
   - Defined `/tmp` as the remote root directory for Jenkins files.
   - Connected slave to master using SSH credentials.
 
----
-
-### **Pipeline Execution**
+### **5.3 Pipeline Execution**
 - **Process**:
   1. Open required ports (`8081`, `8082`).
   2. Execute pipeline stages sequentially.
@@ -107,7 +172,9 @@
 
 ---
 
-### **Practical Demo Highlights**
+## **6. PRACTICAL IMPLEMENTATION**
+
+### **6.1 Practical Demo Highlights**
 - **JFrog Repository**:
   - Artifacts uploaded to `libs-snapshot-local`.
   - Verified artifact availability and download functionality.
@@ -115,15 +182,15 @@
   - Application deployed and accessible via browser.
   - Verified functionality by adding and editing contacts.
 
----
-
-### **Challenges and Solutions**
+### **6.2 Challenges and Solutions**
 - **Issue**: JFrog configuration in Jenkins system tab failed.
 - **Solution**: Used JFrog pipeline functions (`RT server`, `RT upload`, `RT download`) directly in the script.
 
 ---
 
-### **Conclusion**
+## **7. CONCLUSION**
+
+### **7.1 Summary**
 - **Outcome**: Successfully integrated Jenkins with JFrog, built the application using Maven, and deployed it to Tomcat.
 - **Recommendation**: Use declarative pipelines for simplicity and follow JFrog documentation for artifact management.
 
