@@ -2,6 +2,18 @@
 
 ---
 
+## **Table of Contents**
+
+1. **[Build Tools Fundamentals](#1-build-tools-fundamentals)**
+2. **[Apache Maven](#2-apache-maven)**
+3. **[JFrog Artifactory](#3-jfrog-artifactory)**
+4. **[Apache Tomcat](#4-apache-tomcat)**
+5. **[Jenkins CI/CD Pipeline](#5-jenkins-cicd-pipeline)**
+6. **[Practical Implementation](#6-practical-implementation)**
+7. **[Conclusion](#7-conclusion)**
+
+---
+
 #### **Overview**
 - **Objective**: Upload artifacts to JFrog repository using Jenkins CI/CD pipeline, build a Java-based application, and deploy it to a Tomcat server.
 - **Key Steps**:
