@@ -451,11 +451,36 @@
 ## **4. APACHE TOMCAT**
 
 ### **4.1 Tomcat Overview**
-- **Overview**: Open-source web server and servlet container for Java applications.
-- **Installation**:
-  - Update packages and install Java.
-  - Modify `tomcat-users.xml` to set username, password, and roles.
-  - Change port from `8080` to `8082` for compatibility.
+- **Purpose**: Open-source web server and servlet container for Java applications
+- **Default Port**: 8080 (needs to be opened from networking section)
+- **Installation**: Update packages, install Java, modify `tomcat-users.xml`
+- **Port**: Change from `8080` to `8082` for compatibility
+
+### **4.2 Tomcat Installation Commands**
+```bash
+sudo apt update
+sudo apt install default-jre -y
+mkdir -p /home/cloudadmin/tomcat/tomcat1
+chmod 755 /home/cloudadmin/tomcat/tomcat1
+cd /home/cloudadmin/tomcat/tomcat1
+wget https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.24/bin/apache-tomcat-8.5.24.tar.gz
+tar -xzvf apache-tomcat-8.5.24.tar.gz
+chown -R cloudadmin:cloudadmin /home/cloudadmin/tomcat/tomcat1/apache-tomcat-8.5.24
+cp tomcat-users.xml /home/cloudadmin/tomcat/tomcat1/apache-tomcat-8.5.24/conf/tomcat-users.xml
+cp context.xml /home/cloudadmin/tomcat/tomcat1/apache-tomcat-8.5.24/webapps/manager/META-INF/context.xml
+sh /home/cloudadmin/tomcat/tomcat1/apache-tomcat-8.5.24/bin/startup.sh
+```
+
+### **4.3 Tomcat Configuration Files**
+- **tomcat-users.xml**: Provide username and password for tomcat console and enable roles
+  ```xml
+  <user username="cloudadmin" password="ansibleawx@123" roles="manager-gui,admin-gui,manager-script"/>
+  ```
+- **context.xml**: Add entry under Context tag if missing
+  ```xml
+  <!-- <Valve className="org.apache.catalina.valves.RemoteAddrValve"
+  allow="127\.\d+\.\d+\.\d+|::10:0:0:0:0:0:0:1" />-->
+  ```
 
 ---
 
