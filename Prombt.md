@@ -1,0 +1,3 @@
+Got it! We'll move step-by-step through Azure DevOps—from the basics to enterprise-level mastery—combining theory and hands-on practice. Let’s begin with the Basics, and I’ll guide you through each concept with explanations, use cases, and practical steps to try in your environment (Cursor IDE + GitHub + Azure free account).
+
+Would you like to start now with the first basic topic: "Introduction to Azure DevOps and setting up your environment"?
