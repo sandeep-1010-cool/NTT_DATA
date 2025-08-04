@@ -51,20 +51,49 @@ A service mesh is a **dedicated infrastructure layer** that handles service-to-s
 
 ```mermaid
 graph TB
-    subgraph "Traditional Architecture"
+    %% Styling definitions
+    classDef service fill:#4CAF50,stroke:#1B5E20,color:white
+    classDef proxy fill:#2196F3,stroke:#0D47A1,color:white
+    classDef title fill:#f9f9f9,stroke:#999,color:black,stroke-dasharray: 5 5
+
+    %% Traditional Architecture
+    subgraph Traditional["Traditional Architecture"]
+        direction TB
         A1[Service A] --> B1[Service B]
         A1 --> C1[Service C]
         B1 --> C1
     end
-    
-    subgraph "Service Mesh Architecture"
-        A2[Service A] --- AP[Proxy A]
-        B2[Service B] --- BP[Proxy B]
-        C2[Service C] --- CP[Proxy C]
-        AP <--> BP
-        AP <--> CP
-        BP <--> CP
+
+    %% Service Mesh Architecture
+    subgraph Mesh["Service Mesh Architecture"]
+        direction TB
+        subgraph ServiceA["Service A + Proxy"]
+            A2[Service A]
+            PA[Proxy A]
+            A2 --- PA
+        end
+        
+        subgraph ServiceB["Service B + Proxy"]
+            B2[Service B]
+            PB[Proxy B]
+            B2 --- PB
+        end
+        
+        subgraph ServiceC["Service C + Proxy"]
+            C2[Service C]
+            PC[Proxy C]
+            C2 --- PC
+        end
+        
+        PA <--> PB
+        PA <--> PC
+        PB <--> PC
     end
+
+    %% Apply styles
+    class A1,B1,C1,A2,B2,C2 service
+    class PA,PB,PC proxy
+    class Traditional,Mesh title
 ```
 
 ### Service Mesh Patterns
