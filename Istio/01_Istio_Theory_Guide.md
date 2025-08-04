@@ -1,6 +1,4 @@
 # Complete Theoretical Guide to Istio Service Mesh
-*Comprehensive theory.md documentation*
-
 ---
 
 ## 📋 Table of Contents
