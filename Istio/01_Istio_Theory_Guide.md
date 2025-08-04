@@ -395,9 +395,10 @@ Istio supports connecting multiple Kubernetes clusters.
 Multiple clusters, each with its own Istio control plane, can be federated.
 
 ```mermaid
-graph LR
-    Cluster1[Cluster 1 (Istio)] <--> Cluster2[Cluster 2 (Istio)]
-    Cluster1 <--> Cluster3[Cluster 3 (Istio)]
+flowchart LR
+    Cluster1["Cluster 1<br/>(Istio)"] <--> Cluster2["Cluster 2<br/>(Istio)"]
+    Cluster1 <--> Cluster3["Cluster 3<br/>(Istio)"]
+    Cluster2 <--> Cluster3
 ```
 
 ---
