@@ -207,12 +207,6 @@ istioctl install --set profile=demo
 
 ---
 
-*For more details and hands-on examples, see the [Official Istio Docs](https://istio.io/latest/docs/).*
-
-Absolutely! Here’s a **continuation of your Istio Service Mesh guide**, covering intermediate concepts in the same clean, practical, diagram-rich, and beginner-friendly style. This will help bridge the gap between basic and advanced usage—ideal for someone ready to go beyond the fundamentals.
-
----
-
 ## 9. 🚦 Advanced Traffic Management
 
 Istio enables sophisticated control over how traffic flows between services.
