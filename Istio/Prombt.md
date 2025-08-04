@@ -1,4 +1,3 @@
-````markdown
 # Istio Service-Mesh – Complete Theoretical Guide  
 _theory.md_
 
