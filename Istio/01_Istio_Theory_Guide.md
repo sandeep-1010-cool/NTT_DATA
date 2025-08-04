@@ -69,17 +69,38 @@ graph LR
 - istiod tells Envoy proxies how to behave.
 
 ```mermaid
-graph TD
-    subgraph ControlPlane
-        istiod[istiod]
+flowchart TD
+    %% Control Plane
+    subgraph Control Plane
+        direction TB
+        istiod[istiod<br/>(Control Plane)]
     end
-    subgraph DataPlane
-        AppA[App A] --> EnvoyA[Envoy Proxy]
-        AppB[App B] --> EnvoyB[Envoy Proxy]
-        EnvoyA <--> EnvoyB
+
+    %% Data Plane
+    subgraph Data Plane
+        direction TB
+        subgraph Pod A
+            AppA[App A]
+            EnvoyA[Envoy Proxy]
+            AppA -- "localhost traffic" --> EnvoyA
+        end
+        subgraph Pod B
+            AppB[App B]
+            EnvoyB[Envoy Proxy]
+            AppB -- "localhost traffic" --> EnvoyB
+        end
+        EnvoyA <==> EnvoyB
     end
-    istiod --> EnvoyA
-    istiod --> EnvoyB
+
+    %% Control/config flow
+    istiod -- "configuration & certificates" --> EnvoyA
+    istiod -- "configuration & certificates" --> EnvoyB
+
+    %% Styling for clarity
+    classDef cp fill:#e3f2fd,stroke:#90caf9;
+    classDef dp fill:#fffde7,stroke:#fff176;
+    class istiod cp;
+    class AppA,EnvoyA,AppB,EnvoyB dp;
 ```
 
 ---
