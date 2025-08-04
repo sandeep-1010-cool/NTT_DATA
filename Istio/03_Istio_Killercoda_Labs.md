@@ -1,7 +1,3 @@
-Perfect! We'll now **learn Istio and Service Mesh concepts from scratch**, using **custom, visual, and practical examples**, not just Bookinfo. I'll guide you as an expert in a **layer-by-layer approach**.
-
----
-
 # 🚀 **ISTIO SERVICE MESH — COMPLETE CONCEPTUAL + PRACTICAL GUIDE**
 
 We’ll break this into **core modules**:
