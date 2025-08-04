@@ -48,7 +48,7 @@ Istio is an **open-source service mesh** that provides a uniform way to:
 A service mesh is a **dedicated infrastructure layer** that handles service-to-service communication in a microservices architecture.
 
 ```mermaid
-graph TB
+graph LR
     %% Styling definitions
     classDef service fill:#4CAF50,stroke:#1B5E20,color:white
     classDef proxy fill:#2196F3,stroke:#0D47A1,color:white
@@ -56,7 +56,7 @@ graph TB
 
     %% Traditional Architecture
     subgraph Traditional["Traditional Architecture"]
-        direction TB
+        direction LR
         A1[Service A] --> B1[Service B]
         A1 --> C1[Service C]
         B1 --> C1
@@ -64,24 +64,10 @@ graph TB
 
     %% Service Mesh Architecture
     subgraph Mesh["Service Mesh Architecture"]
-        direction TB
-        subgraph ServiceA["Service A + Proxy"]
-            A2[Service A]
-            PA[Proxy A]
-            A2 --- PA
-        end
-        
-        subgraph ServiceB["Service B + Proxy"]
-            B2[Service B]
-            PB[Proxy B]
-            B2 --- PB
-        end
-        
-        subgraph ServiceC["Service C + Proxy"]
-            C2[Service C]
-            PC[Proxy C]
-            C2 --- PC
-        end
+        direction LR
+        A2[Service A] --- PA[Proxy A]
+        B2[Service B] --- PB[Proxy B]
+        C2[Service C] --- PC[Proxy C]
         
         PA <--> PB
         PA <--> PC
