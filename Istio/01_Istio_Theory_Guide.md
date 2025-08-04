@@ -73,34 +73,30 @@ flowchart TD
     %% Control Plane
     subgraph Control Plane
         direction TB
-        istiod[istiod<br/>(Control Plane)]
+        istiod["istiod<br/>(Control Plane)"]
     end
 
     %% Data Plane
     subgraph Data Plane
         direction TB
-        subgraph Pod A
-            AppA[App A]
-            EnvoyA[Envoy Proxy]
-            AppA -- "localhost traffic" --> EnvoyA
+        subgraph PodA["Pod: App A"]
+            AppA["App A<br/>(Container)"]
+            EnvoyA["Envoy Proxy<br/>(Sidecar)"]
         end
-        subgraph Pod B
-            AppB[App B]
-            EnvoyB[Envoy Proxy]
-            AppB -- "localhost traffic" --> EnvoyB
+        subgraph PodB["Pod: App B"]
+            AppB["App B<br/>(Container)"]
+            EnvoyB["Envoy Proxy<br/>(Sidecar)"]
         end
-        EnvoyA <==> EnvoyB
     end
 
-    %% Control/config flow
-    istiod -- "configuration & certificates" --> EnvoyA
-    istiod -- "configuration & certificates" --> EnvoyB
+    %% Application containers communicate only via Envoy
+    AppA -- "localhost" --> EnvoyA
+    AppB -- "localhost" --> EnvoyB
+    EnvoyA <--> EnvoyB
 
-    %% Styling for clarity
-    classDef cp fill:#e3f2fd,stroke:#90caf9;
-    classDef dp fill:#fffde7,stroke:#fff176;
-    class istiod cp;
-    class AppA,EnvoyA,AppB,EnvoyB dp;
+    %% Control plane manages Envoys
+    istiod -- "Configuration" --> EnvoyA
+    istiod -- "Configuration" --> EnvoyB
 ```
 
 ---
