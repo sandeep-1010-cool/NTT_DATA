@@ -111,38 +111,60 @@ graph LR
 
 ### High-Level Architecture
 ```mermaid
-graph TB
-    subgraph "Control Plane"
+graph TD
+    %% Styling definitions
+    classDef controlPlane fill:#2196F3,stroke:#0D47A1,color:white
+    classDef dataPlane fill:#4CAF50,stroke:#1B5E20,color:white
+    classDef gateway fill:#FFC107,stroke:#FF9800,color:black
+    classDef app fill:#9C27B0,stroke:#7B1FA2,color:white
+
+    %% Control Plane
+    subgraph ControlPlane["Control Plane"]
         istiod[istiod<br/>- Pilot<br/>- Citadel<br/>- Galley]
+        class istiod controlPlane
     end
-    
-    subgraph "Data Plane"
-        subgraph "Namespace A"
-            A1[App A] --- AE[Envoy A]
+
+    %% Data Plane
+    subgraph DataPlane["Data Plane"]
+        direction LR
+        subgraph NamespaceA["Namespace A"]
+            A1[App A]:::app
+            AE[Envoy A]:::dataPlane
+            A1 --> AE
         end
         
-        subgraph "Namespace B"
-            B1[App B] --- BE[Envoy B]
-            B2[App B-v2] --- BE2[Envoy B-v2]
-        end
-        
-        subgraph "Gateway"
-            IG[Istio Ingress<br/>Gateway]
-            EG[Istio Egress<br/>Gateway]
+        subgraph NamespaceB["Namespace B"]
+            B1[App B]:::app
+            BE[Envoy B]:::dataPlane
+            B2[App B-v2]:::app
+            BE2[Envoy B-v2]:::dataPlane
+            B1 --> BE
+            B2 --> BE2
         end
     end
-    
-    istiod -.->|xDS Config| AE
-    istiod -.->|xDS Config| BE
-    istiod -.->|xDS Config| BE2
-    istiod -.->|xDS Config| IG
-    istiod -.->|xDS Config| EG
-    
-    AE <-->|mTLS| BE
-    AE <-->|mTLS| BE2
-    
+
+    %% Gateway
+    subgraph Gateway["Gateway"]
+        direction LR
+        IG[Istio Ingress<br/>Gateway]:::gateway
+        EG[Istio Egress<br/>Gateway]:::gateway
+    end
+
+    %% Connections
+    istiod -->|xDS Config| AE
+    istiod -->|xDS Config| BE
+    istiod -->|xDS Config| BE2
+    istiod -->|xDS Config| IG
+    istiod -->|xDS Config| EG
+
+    AE ---|mTLS| BE
+    AE ---|mTLS| BE2
+
     Internet --> IG
     EG --> External[External Services]
+
+    %% Styles
+    class ControlPlane,DataPlane title
 ```
 
 ### Architecture Layers
