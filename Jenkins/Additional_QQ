@@ -1,0 +1,325 @@
+### Questions and Answers Based on the Provided Content
+
+#### **General Overview of Patching Process**
+1. **Q: When is the patching scheduled to take place?**  
+   **A:** Patching will be scheduled during late office hours in the US Eastern Time zone, preferably around 4 or 5 AM, as users will be sleeping, minimizing complaints and issues.
+
+2. **Q: How many patching environments are there?**  
+   **A:** There are three environments:  
+   - Test environment (TestNet)  
+   - Production environment (RR)  
+   - Standby environment (WW)  
+
+3. **Q: How many change requests are created each month for patching?**  
+   **A:** Three change requests are created each month, one for each environment.
+
+4. **Q: Why is patching done on Fridays?**  
+   **A:** Fridays are chosen because fewer jobs run compared to other weekdays, and the weekend allows for troubleshooting if needed.
+
+---
+
+#### **Environment Details**
+5. **Q: What is the active environment currently being used?**  
+   **A:** The active environment is RR (Production).
+
+6. **Q: What is the role of WW (Standby)?**  
+   **A:** WW is the standby environment replicating everything from RR. It is not actively used by users but serves as a backup.
+
+7. **Q: What happens during the switch-over between primary and standby servers?**  
+   **A:** During the switch-over, there is downtime (5-10 minutes or more depending on the master load), and users are impacted as the services transition to the standby servers.
+
+---
+
+#### **Patching Schedule**
+8. **Q: What is the sequence of patching activities?**  
+   **A:**  
+   - **Week 1:** Notifications are sent to users.  
+   - **Week 2:** TestNet patching and validation are performed.  
+   - **Week 3:** Production (RR) and Standby (WW) patching are carried out.
+
+9. **Q: Why is TestNet patched first?**  
+   **A:** TestNet is patched first to validate and ensure no corruption occurs before moving on to production patching.
+
+10. **Q: What time is the patching done for each environment?**  
+    **A:**  
+    - **TestNet:** Between 10 AM and 11 AM.  
+    - **Standby (WW):** Around 8 AM or 9 AM.  
+    - **Production (RR):** Starts at 7 AM.
+
+---
+
+#### **Downtime and Impact**
+11. **Q: Why does downtime occur during patching?**  
+    **A:** Downtime occurs because the servers reboot after patching and during the switch-over process from primary to standby servers.
+
+12. **Q: How long does downtime typically last?**  
+    **A:** Downtime can last anywhere from 5 to 10 minutes or more, depending on the master load and the number of jobs running.
+
+13. **Q: What is affected during downtime?**  
+    **A:** Users are unable to access the Jenkins dashboard and other services temporarily.
+
+---
+
+#### **Notifications and Change Requests**
+14. **Q: Who manages Linux patching notifications?**  
+    **A:** Notifications for Linux patching are managed by the LICM team.
+
+15. **Q: When should notifications for patching be sent to users?**  
+    **A:** Notifications should be sent early and not rely solely on the LICM team's notifications.
+
+16. **Q: What are the steps for creating change requests?**  
+    **A:**  
+    - Create three change requests for the three environments.  
+    - Ensure notifications are sent early to users.  
+    - Follow the patching schedule (Week 1, Week 2, Week 3).
+
+---
+
+#### **Calendar and Scheduling**
+17. **Q: How is the calendar organized for patching?**  
+    **A:**  
+    - Week 1: Notification period.  
+    - Week 2: TestNet patching and validation.  
+    - Week 3: Production (RR) and Standby (WW) patching.
+
+18. **Q: How are weeks identified in the calendar?**  
+    **A:** Week 1, Week 2, Week 3, and Week 4 are represented as lines in the calendar.
+
+19. **Q: What is the URL provided for accessing the patching calendar?**  
+    **A:** The URL will be shared by the team for accessing the scheduling details.
+
+---
+
+#### **Validation and Troubleshooting**
+20. **Q: What validation is done after TestNet patching?**  
+    **A:** Test validations are performed to ensure no corruption has occurred in the TestNet environment after patching.
+
+21. **Q: What happens if issues arise during patching?**  
+    **A:** Troubleshooting is done to fix any problems before proceeding to production patching.
+
+22. **Q: Why is it important to patch standby servers first?**  
+    **A:** Standby servers are patched first to ensure they are ready to take over as primary servers during the switch-over.
+
+---
+
+#### **Miscellaneous**
+23. **Q: What team is responsible for managing Linux patching?**  
+    **A:** The LICM team manages Linux patching.
+
+24. **Q: What is the role of RR in the patching process?**  
+    **A:** RR is the active environment where all jobs and user activities are performed. It undergoes patching in Week 3 after TestNet validation.
+
+25. **Q: How does the patching script affect servers?**  
+    **A:** The script reboots servers after patching, causing temporary downtime.
+
+---
+
+This structured Q&A format covers all the content in an organized manner without leaving any information. Let me know if additional formatting or details are required!
+
+=============
+
+### Questions and Answers Based on the New Content
+
+#### **Environment Overview**
+1. **Q: How many environments are currently available?**  
+   **A:** There are three environments:  
+   - **Production (RR):** Active environment located in New Jersey.  
+   - **Standby (WW):** Dormant environment located in Maryland.  
+   - **TestNet:** A duplicate of the production environment used for testing.
+
+2. **Q: What is the purpose of the TestNet environment?**  
+   **A:** TestNet is used for testing upgrades, patches, plugins, and tools before moving them to production. It replicates the production environment entirely.
+
+3. **Q: Why is replication done between RR and WW environments?**  
+   **A:** Replication ensures that if the active RR environment goes down (e.g., due to a power outage), WW can take over seamlessly without data loss.
+
+4. **Q: Where are the data centers located?**  
+   **A:** The RR environment is located in New Jersey, and the WW environment is located in Maryland.
+
+---
+
+#### **Cluster Setup**
+5. **Q: What are the clusters in the environments?**  
+   **A:** Both production and test environments have clusters:  
+   - **OCP Primary Cluster**  
+   - **OCP Secondary Cluster**  
+
+6. **Q: What happens if the primary cluster fails?**  
+   **A:** If the primary cluster fails, the secondary cluster takes over to minimize downtime and maintain service continuity.
+
+---
+
+#### **Patching Process**
+7. **Q: What is the flow of patching in the TestNet environment?**  
+   **A:**  
+   - Patches are tested in TestNet first.  
+   - Validations are performed to ensure no issues.  
+   - Change requests are created and submitted for approval.  
+   - Once approved, patches are applied to production.
+
+8. **Q: Who reviews and approves change requests?**  
+   **A:** Change requests are reviewed and approved by Doug.
+
+9. **Q: What kind of patches are applied to servers?**  
+   **A:** Patches can include third-party software updates, kernel updates, security patches, and version upgrades.
+
+10. **Q: What is the role of the LICM team in patching?**  
+    **A:** The LICM team works with Red Hat to decide which patches need to be applied. They package and send the patches to the team.
+
+---
+
+#### **Documentation and Follow-Up**
+11. **Q: Is there documentation available for the patching process?**  
+    **A:** Yes, documentation is available, but it requires modifications before being shared with the team.
+
+12. **Q: What should be reviewed in the documentation?**  
+    **A:** The documentation includes details on the patches being applied, their impact on services, and steps for validation.
+
+13. **Q: What follow-up task was mentioned in the session?**  
+    **A:** Modifications to the patching documentation need to be completed and shared with the team.
+
+---
+
+#### **Impact and Troubleshooting**
+14. **Q: What challenges can arise during kernel updates or upgrades?**  
+    **A:** Kernel updates can sometimes cause servers to fail during patching. If this happens, the LICM team must be contacted to resolve the issue, as they have admin access.
+
+15. **Q: What happens if a server fails to come up after patching?**  
+    **A:** The LICM team must prioritize and troubleshoot the issue, as no one else has admin access to the servers.
+
+16. **Q: How can the team ensure no impact on services during patching?**  
+    **A:** By reviewing the change logs of the kernel and validating patches in TestNet before applying them to production.
+
+---
+
+#### **Patch List and Updates**
+17. **Q: Where can the list of patches be accessed?**  
+    **A:** The list of patches can be accessed through the URL provided during the session.
+
+18. **Q: What does the patch list include?**  
+    **A:** The patch list includes:  
+    - Patch names (e.g., RPM names).  
+    - Versions.  
+    - Updates (e.g., security patches, antivirus updates).  
+    - Change logs.
+
+19. **Q: What should be done if the impact of a patch is unclear?**  
+    **A:** Research the patch details, and if necessary, reach out to the LICM team for clarification.
+
+---
+
+#### **Security and Updates**
+20. **Q: What security concerns were mentioned regarding patches?**  
+    **A:** Past security updates caused issues when servers were infected due to untested patches. Proper validation and review of changes are critical to avoid such impacts.
+
+21. **Q: What is the role of RPM in patching?**  
+    **A:** RPM is the package name for patches, which includes the version and details about the updates being applied.
+
+---
+
+This Q&A format organizes the new content systematically and avoids repetition from the previous session. Let me know if further refinements are needed!
+
+==========
+
+### Questions and Answers Based on the New Content
+
+#### **Change Request Process**
+1. **Q: What is the first step before performing any infrastructure changes?**  
+   **A:** You need to create a change request using SMC.
+
+2. **Q: Do you need to create a new change request from scratch?**  
+   **A:** No, there is already a template available for patching. You can copy and modify the existing change request.
+
+3. **Q: What is the parent change number used for?**  
+   **A:** The parent change number links your change request to the overarching LCM change request.
+
+4. **Q: What should be done if you face security constraints while accessing the change request?**  
+   **A:** You need to raise a request for access through your manager or directly with the appropriate team.
+
+---
+
+#### **Automated Patching**
+5. **Q: Is patching performed manually or automated?**  
+   **A:** Patching is automated using AWX (Ansible Tower), with predefined playbooks for environments like WW, RR, and TestNet.
+
+6. **Q: What is the role of the admin during automated patching?**  
+   **A:** The admin monitors the process and communicates with Jenkins users about potential disturbances during patching.
+
+7. **Q: What happens if an issue arises during automated patching?**  
+   **A:** Troubleshooting steps depend on the nature of the issue, and coordination with the LICM team may be required.
+
+---
+
+#### **Patching Flow**
+8. **Q: What is the sequence of creating change requests for patching?**  
+   **A:**  
+   - Week 2: Create a change request for TestNet.  
+   - Week 3: Create a change request for the WW environment in production.  
+   - Week 3: Create a change request for the RR environment in production.
+
+9. **Q: When should patching be scheduled?**  
+   **A:** Patching is typically scheduled on Fridays, with sufficient time allocated (e.g., 13 hours) to address potential issues.
+
+10. **Q: What should be done after patching is completed?**  
+    **A:** Validate the patch release number, ensure all servers are functioning correctly, and close the change request.
+
+---
+
+#### **SMC Access and Process**
+11. **Q: What tabs in SMC are most relevant for creating a change request?**  
+    **A:** The **Planning Tab** is where most of the information is filled out, including the implementer name, schedule, and configuration items.
+
+12. **Q: Who can perform the patching?**  
+    **A:** The implementer listed in the change request performs the patching. The verifier must be a different person.
+
+13. **Q: What happens if the patch release number does not match?**  
+    **A:** You need to contact the LICM team to resolve the discrepancy.
+
+14. **Q: What is the CI section used for in the change request?**  
+    **A:** The CI (Configuration Items) section lists all the servers involved in the patching process.
+
+---
+
+#### **Closing Change Requests**
+15. **Q: How many tickets are involved in closing a change request?**  
+    **A:** There are three tickets: two child tickets and one parent ticket.
+
+16. **Q: What steps are required to close a change request?**  
+    **A:**  
+    - Validate the patch release number.  
+    - Ensure all servers are functioning correctly.  
+    - Use the "Close" button after completing verification.
+
+17. **Q: Can you directly click the "Close" button to close the change request?**  
+    **A:** No, you need to follow the proper process, including filling out the closing information and ensuring all validation steps are complete.
+
+---
+
+#### **Troubleshooting and Coordination**
+18. **Q: What should be done if issues arise during patching?**  
+    **A:** Create a new change request, coordinate with the LICM team, and troubleshoot the issue.
+
+19. **Q: What happens if the patching process exceeds the allocated time?**  
+    **A:** Additional time should be requested in advance to avoid complications, as resolving issues may require coordination with other teams.
+
+20. **Q: Who should be contacted for access to SMC or specific change requests?**  
+    **A:** Your manager or the appropriate team (e.g., Doug's team for EPE) should be contacted for access.
+
+---
+
+#### **General Notes**
+21. **Q: What changes are automatically created during the patching process?**  
+    **A:** Two change tasks are automatically created, so there is no need to manually create them.
+
+22. **Q: What happens during the implementation phase of the change request?**  
+    **A:** The implementer clicks the "Implement" button to start the patching process and updates the status upon completion.
+
+23. **Q: What is the significance of the patch release number?**  
+    **A:** It ensures the correct patch was applied and matches the expected release for the servers.
+
+24. **Q: What is the role of AWX in the patching process?**  
+    **A:** AWX automates the patching process using predefined playbooks, reducing manual intervention.
+
+---
+
+This structured Q&A format summarizes the session effectively while avoiding duplication from previous discussions. Let me know if further clarification is needed!
