@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plain Text Quiz Application</title>
+    <title>Markdown Quiz Application</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -26,7 +26,7 @@
         }
         textarea {
             width: 100%;
-            height: 200px;
+            height: 300px;
             margin-bottom: 20px;
             font-family: monospace;
             white-space: pre-wrap;
@@ -39,16 +39,10 @@
 </head>
 <body>
     <div class="quiz-container">
-        <h1>Plain Text Quiz Application</h1>
+        <h1>Markdown Quiz Application</h1>
 
         <!-- Input area for quiz data -->
-        <textarea id="quizDataInput" placeholder="Enter quiz data here, e.g.:
-Question: Which of the following are valid protocols for a Gateway server configuration?
-Choice: HTTP
-Choice: HTTPS
-Choice: TCP
-Choice: UDP
-Answer: HTTP, HTTPS, TCP"></textarea>
+        <textarea id="quizDataInput" placeholder="Enter quiz data in Markdown format here"></textarea>
         <button onclick="loadQuiz()">Load Quiz</button>
 
         <!-- Quiz display area -->
@@ -58,40 +52,45 @@ Answer: HTTP, HTTPS, TCP"></textarea>
     <script>
         let quizData = []; // Array to store quiz data dynamically
 
-        // Function to parse plain text input and load the quiz
+        // Function to parse Markdown input and load the quiz
         function loadQuiz() {
             const inputData = document.getElementById("quizDataInput").value;
 
             try {
-                // Parse the plain text input into structured data
-                const lines = inputData.split("\n"); // Split input into lines
+                // Split the input into sections based on "---" (Markdown separator)
+                const sections = inputData.split("---").map(section => section.trim());
                 quizData = [];
-                let currentQuestion = null;
 
-                lines.forEach((line, index) => {
-                    line = line.trim(); // Normalize the input (trim spaces)
+                sections.forEach(section => {
+                    if (section) {
+                        const lines = section.split("\n").map(line => line.trim());
+                        let question = null;
+                        let options = [];
+                        let answer = null;
 
-                    if (line.toLowerCase().startsWith("question")) {
-                        // Start a new question
-                        const questionText = line.replace(/question:/i, "").trim();
-                        currentQuestion = { question: questionText, options: [], answer: null };
-                        quizData.push(currentQuestion);
-                    } else if (line.toLowerCase().startsWith("choice")) {
-                        // Add a choice to the current question
-                        if (currentQuestion) {
-                            currentQuestion.options.push(line.replace(/choice:/i, "").trim());
-                        }
-                    } else if (line.toLowerCase().startsWith("answer")) {
-                        // Set the correct answer for the current question
-                        if (currentQuestion) {
-                            currentQuestion.answer = line.replace(/answer:/i, "").trim();
+                        lines.forEach(line => {
+                            if (line.startsWith("**Question")) {
+                                // Extract the question text
+                                question = line.replace(/\*\*Question\s\d+:\s*/, "").trim();
+                            } else if (line.startsWith("**Choice:**")) {
+                                // Extract choice text
+                                options.push(line.replace("**Choice:**", "").trim());
+                            } else if (line.startsWith("**Answer:**")) {
+                                // Extract answer text
+                                answer = line.replace("**Answer:**", "").trim();
+                            }
+                        });
+
+                        if (question && options.length > 0 && answer) {
+                            // Add parsed data to the quizData array
+                            quizData.push({ question, options, answer });
                         }
                     }
                 });
 
                 // Validate the quiz data
                 if (quizData.length === 0) {
-                    throw new Error("No valid questions found. Please follow the format: Question, Choice, Answer.");
+                    throw new Error("No valid questions found. Please follow the Markdown format.");
                 }
 
                 // Render the quiz
@@ -107,7 +106,7 @@ Answer: HTTP, HTTPS, TCP"></textarea>
                     item.options.forEach((option) => {
                         optionsElement.innerHTML += `
                             <label>
-                                <input type="checkbox" name="question${index}" value="${option}">
+                                <input type="radio" name="question${index}" value="${option}">
                                 ${option}
                             </label><br>
                         `;
@@ -123,15 +122,12 @@ Answer: HTTP, HTTPS, TCP"></textarea>
                     quizContainer.appendChild(questionElement);
 
                     // Add event listener for revealing the answer
-                    optionsElement.addEventListener("change", () => {
-                        const selectedOptions = Array.from(
-                            document.querySelectorAll(`input[name="question${index}"]:checked`)
-                        ).map(option => option.value.trim().toLowerCase());
-                        
-                        const correctAnswers = item.answer.split(",").map(ans => ans.trim().toLowerCase());
+                    optionsElement.addEventListener("change", (e) => {
+                        const selectedOption = e.target.value.trim().toLowerCase();
+                        const correctAnswer = item.answer.trim().toLowerCase();
                         const feedback = document.getElementById(`feedback${index}`);
                         
-                        if (selectedOptions.sort().join(",") === correctAnswers.sort().join(",")) {
+                        if (selectedOption === correctAnswer) {
                             feedback.style.display = "block";
                             feedback.style.color = "green";
                             feedback.innerHTML = "Correct!";
