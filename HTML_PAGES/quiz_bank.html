@@ -19,10 +19,6 @@
         .options {
             margin-bottom: 20px;
         }
-        .results {
-            margin-top: 20px;
-            font-weight: bold;
-        }
         button {
             padding: 10px 20px;
             font-size: 16px;
@@ -33,7 +29,7 @@
             height: 200px;
             margin-bottom: 20px;
             font-family: monospace;
-            white-space: pre-wrap; /* Ensures formatting of placeholder text */
+            white-space: pre-wrap;
         }
         .feedback {
             font-weight: bold;
@@ -46,19 +42,13 @@
         <h1>Plain Text Quiz Application</h1>
 
         <!-- Input area for quiz data -->
-        <textarea id="quizDataInput" placeholder="question: What is the capital of France?
-choice: London
-choice: Paris
-choice: Rome
-choice: Berlin
-answer: Paris
-
-question: What is 5 + 3?
-choice: 6
-choice: 7
-choice: 8
-choice: 9
-answer: 8"></textarea>
+        <textarea id="quizDataInput" placeholder="Enter quiz data here, e.g.:
+Question: Which of the following are valid protocols for a Gateway server configuration?
+Choice: HTTP
+Choice: HTTPS
+Choice: TCP
+Choice: UDP
+Answer: HTTP, HTTPS, TCP"></textarea>
         <button onclick="loadQuiz()">Load Quiz</button>
 
         <!-- Quiz display area -->
@@ -78,28 +68,30 @@ answer: 8"></textarea>
                 quizData = [];
                 let currentQuestion = null;
 
-                lines.forEach(line => {
-                    line = line.trim();
-                    if (line.startsWith("question:")) {
+                lines.forEach((line, index) => {
+                    line = line.trim(); // Normalize the input (trim spaces)
+
+                    if (line.toLowerCase().startsWith("question")) {
                         // Start a new question
-                        currentQuestion = { question: line.replace("question:", "").trim(), options: [], answer: null };
+                        const questionText = line.replace(/question:/i, "").trim();
+                        currentQuestion = { question: questionText, options: [], answer: null };
                         quizData.push(currentQuestion);
-                    } else if (line.startsWith("choice:")) {
+                    } else if (line.toLowerCase().startsWith("choice")) {
                         // Add a choice to the current question
                         if (currentQuestion) {
-                            currentQuestion.options.push(line.replace("choice:", "").trim());
+                            currentQuestion.options.push(line.replace(/choice:/i, "").trim());
                         }
-                    } else if (line.startsWith("answer:")) {
+                    } else if (line.toLowerCase().startsWith("answer")) {
                         // Set the correct answer for the current question
                         if (currentQuestion) {
-                            currentQuestion.answer = line.replace("answer:", "").trim();
+                            currentQuestion.answer = line.replace(/answer:/i, "").trim();
                         }
                     }
                 });
 
                 // Validate the quiz data
                 if (quizData.length === 0) {
-                    throw new Error("No valid questions found. Please follow the format: question, choice, answer.");
+                    throw new Error("No valid questions found. Please follow the format: Question, Choice, Answer.");
                 }
 
                 // Render the quiz
@@ -112,10 +104,10 @@ answer: 8"></textarea>
                     
                     const optionsElement = document.createElement("div");
                     optionsElement.classList.add("options");
-                    item.options.forEach((option, optionIndex) => {
+                    item.options.forEach((option) => {
                         optionsElement.innerHTML += `
                             <label>
-                                <input type="radio" name="question${index}" value="${option}">
+                                <input type="checkbox" name="question${index}" value="${option}">
                                 ${option}
                             </label><br>
                         `;
@@ -131,10 +123,15 @@ answer: 8"></textarea>
                     quizContainer.appendChild(questionElement);
 
                     // Add event listener for revealing the answer
-                    optionsElement.addEventListener("change", (e) => {
-                        const selectedOption = e.target.value;
+                    optionsElement.addEventListener("change", () => {
+                        const selectedOptions = Array.from(
+                            document.querySelectorAll(`input[name="question${index}"]:checked`)
+                        ).map(option => option.value.trim().toLowerCase());
+                        
+                        const correctAnswers = item.answer.split(",").map(ans => ans.trim().toLowerCase());
                         const feedback = document.getElementById(`feedback${index}`);
-                        if (selectedOption === item.answer) {
+                        
+                        if (selectedOptions.sort().join(",") === correctAnswers.sort().join(",")) {
                             feedback.style.display = "block";
                             feedback.style.color = "green";
                             feedback.innerHTML = "Correct!";
