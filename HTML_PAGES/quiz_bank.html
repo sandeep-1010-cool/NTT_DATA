@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plain Text Quiz Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .quiz-container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .question {
+            margin-top: 20px;
+        }
+        .options {
+            margin-bottom: 20px;
+        }
+        .results {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+            font-family: monospace;
+            white-space: pre-wrap; /* Ensures formatting of placeholder text */
+        }
+        .feedback {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Plain Text Quiz Application</h1>
+
+        <!-- Input area for quiz data -->
+        <textarea id="quizDataInput" placeholder="question: What is the capital of France?
+choice: London
+choice: Paris
+choice: Rome
+choice: Berlin
+answer: Paris
+
+question: What is 5 + 3?
+choice: 6
+choice: 7
+choice: 8
+choice: 9
+answer: 8"></textarea>
+        <button onclick="loadQuiz()">Load Quiz</button>
+
+        <!-- Quiz display area -->
+        <div id="quiz"></div>
+    </div>
+
+    <script>
+        let quizData = []; // Array to store quiz data dynamically
+
+        // Function to parse plain text input and load the quiz
+        function loadQuiz() {
+            const inputData = document.getElementById("quizDataInput").value;
+
+            try {
+                // Parse the plain text input into structured data
+                const lines = inputData.split("\n"); // Split input into lines
+                quizData = [];
+                let currentQuestion = null;
+
+                lines.forEach(line => {
+                    line = line.trim();
+                    if (line.startsWith("question:")) {
+                        // Start a new question
+                        currentQuestion = { question: line.replace("question:", "").trim(), options: [], answer: null };
+                        quizData.push(currentQuestion);
+                    } else if (line.startsWith("choice:")) {
+                        // Add a choice to the current question
+                        if (currentQuestion) {
+                            currentQuestion.options.push(line.replace("choice:", "").trim());
+                        }
+                    } else if (line.startsWith("answer:")) {
+                        // Set the correct answer for the current question
+                        if (currentQuestion) {
+                            currentQuestion.answer = line.replace("answer:", "").trim();
+                        }
+                    }
+                });
+
+                // Validate the quiz data
+                if (quizData.length === 0) {
+                    throw new Error("No valid questions found. Please follow the format: question, choice, answer.");
+                }
+
+                // Render the quiz
+                const quizContainer = document.getElementById("quiz");
+                quizContainer.innerHTML = ""; // Clear any existing quiz
+                quizData.forEach((item, index) => {
+                    const questionElement = document.createElement("div");
+                    questionElement.classList.add("question");
+                    questionElement.innerHTML = `<p>${index + 1}. ${item.question}</p>`;
+                    
+                    const optionsElement = document.createElement("div");
+                    optionsElement.classList.add("options");
+                    item.options.forEach((option, optionIndex) => {
+                        optionsElement.innerHTML += `
+                            <label>
+                                <input type="radio" name="question${index}" value="${option}">
+                                ${option}
+                            </label><br>
+                        `;
+                    });
+
+                    const feedbackElement = document.createElement("div");
+                    feedbackElement.classList.add("feedback");
+                    feedbackElement.id = `feedback${index}`;
+                    feedbackElement.style.display = "none"; // Hide feedback initially
+
+                    questionElement.appendChild(optionsElement);
+                    questionElement.appendChild(feedbackElement);
+                    quizContainer.appendChild(questionElement);
+
+                    // Add event listener for revealing the answer
+                    optionsElement.addEventListener("change", (e) => {
+                        const selectedOption = e.target.value;
+                        const feedback = document.getElementById(`feedback${index}`);
+                        if (selectedOption === item.answer) {
+                            feedback.style.display = "block";
+                            feedback.style.color = "green";
+                            feedback.innerHTML = "Correct!";
+                        } else {
+                            feedback.style.display = "block";
+                            feedback.style.color = "red";
+                            feedback.innerHTML = `Wrong! Correct answer is: ${item.answer}`;
+                        }
+                    });
+                });
+
+            } catch (error) {
+                alert("Error loading quiz: " + error.message);
+            }
+        }
+    </script>
+</body>
+</html>
