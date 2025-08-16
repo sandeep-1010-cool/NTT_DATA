@@ -71,24 +71,56 @@ Think of control plane as **air traffic control tower** 🛫 guiding all the sid
 
 ## 4. Diagram — Istio Architecture
 
-```mermaid
-flowchart LR
-  C[Client] --> IG[Istio Ingress Gateway]
-  IG --> E1[Envoy Sidecar (Pod A)]
-  E1 --> E2[Envoy Sidecar (Pod B)]
-  E2 --> APPB[App Container B]
-  
-  subgraph "Data Plane"
-    E1
-    E2
-  end
-  
-  subgraph "Control Plane (Istiod)"
-    CP1[Pilot: Routing Config]
-    CP2[Citadel: Security/TLS]
-    CP3[Telemetry/Policies]
-  end
-```
+Here's the corrected Istio architecture diagram with proper Mermaid syntax:
+
+````artifact
+id: istio_architecture_corrected
+name: Istio Architecture Diagram (Corrected)
+type: mermaid
+content: |-
+  flowchart LR
+    C[Client] --> IG[Istio Ingress Gateway]
+    IG --> E1[Envoy Sidecar Pod A]
+    E1 --> APPA[App Container A]
+    E1 --> E2[Envoy Sidecar Pod B]
+    E2 --> APPB[App Container B]
+
+    subgraph DP [Data Plane]
+      IG
+      E1
+      APPA
+      E2
+      APPB
+    end
+
+    subgraph CP [Control Plane - Istiod]
+      CP1[Pilot - Routing/Config Distribution]
+      CP2[Citadel - Security/TLS & Identity]
+      CP3[Telemetry - Metrics, Tracing, Policies]
+    end
+
+    CP1 -.-> IG
+    CP1 -.-> E1
+    CP1 -.-> E2
+    CP2 -.-> IG
+    CP2 -.-> E1
+    CP2 -.-> E2
+    CP3 -.-> IG
+    CP3 -.-> E1
+    CP3 -.-> E2
+````
+
+### Key Fixes:
+
+1. **Removed Parentheses**: Changed `(Pod A)` to `Pod A` to avoid Mermaid parsing errors
+2. **Replaced Arrow Symbols**: Changed `→` to `-` for proper Mermaid syntax
+3. **Added Subgraph Labels**: Used `DP` and `CP` as subgraph identifiers
+4. **Control Plane Connections**: Added dotted lines showing how Istiod components manage data plane proxies
+
+The diagram now properly shows:
+- **Traffic Flow**: Client → Ingress Gateway → Sidecar A → App A → Sidecar B → App B
+- **Control Plane Management**: Istiod components controlling all data plane proxies
+- **Service Mesh Architecture**: Clear separation between data plane and control plane
 
 ---
 
