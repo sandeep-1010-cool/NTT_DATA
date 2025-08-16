@@ -73,7 +73,7 @@ Think of control plane as **air traffic control tower** 🛫 guiding all the sid
 
 Here's the corrected Istio architecture diagram with proper Mermaid syntax:
 
-````artifact
+````mermaid
 id: istio_architecture_corrected
 name: Istio Architecture Diagram (Corrected)
 type: mermaid
