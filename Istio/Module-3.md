@@ -75,22 +75,18 @@ Think of control plane as **air traffic control tower** 🛫 guiding all the sid
 flowchart LR
   C[Client] --> IG[Istio Ingress Gateway]
   IG --> E1[Envoy Sidecar (Pod A)]
-  E1 --> APPA[App Container A]
   E1 --> E2[Envoy Sidecar (Pod B)]
   E2 --> APPB[App Container B]
-
+  
   subgraph "Data Plane"
-    IG
     E1
-    APPA
     E2
-    APPB
   end
-
+  
   subgraph "Control Plane (Istiod)"
-    CP1[Pilot → Routing/Config Distribution]
-    CP2[Citadel → Security/TLS & Identity]
-    CP3[Telemetry → Metrics, Tracing, Policies]
+    CP1[Pilot: Routing Config]
+    CP2[Citadel: Security/TLS]
+    CP3[Telemetry/Policies]
   end
 ```
 
